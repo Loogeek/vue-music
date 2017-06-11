@@ -18,6 +18,7 @@
     "better-scroll": "^0.1.15",
     "fastclick": "^1.0.6",
     "jsonp": "^0.2.1",
+    "sass-loader": "^6.0.5",
     "vue": "^2.3.3",
     "vue-router": "^2.3.1"
   },
@@ -68,7 +69,6 @@
     "ora": "^1.2.0",
     "phantomjs-prebuilt": "^2.1.14",
     "rimraf": "^2.6.0",
-    "sass-loader": "^6.0.5",
     "semver": "^5.3.0",
     "shelljs": "^0.7.6",
     "sinon": "^2.1.0",
