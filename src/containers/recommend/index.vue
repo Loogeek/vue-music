@@ -1,11 +1,11 @@
 <template>
     <section class="recommend">
-        <slider></slider>
+        <slider v-if="slideList.length" :slideList="slideList"></slider>
     </section>
 </template>
 
 <script type="text/ecmascript-6">
-    import Slider from 'components/slider';
+    import Slider from 'components/Slider';
     import { fetchSliderList } from 'api/recommend';
     import { ERR_OK } from 'api/config';
 
@@ -23,7 +23,6 @@
                 fetchSliderList().then(resp => {
                     if (resp.code === ERR_OK) {
                         this.slideList = resp.data.slider;
-                        console.log(11, this.slideList);
                     }
                 }).catch(err => {
                     console.warn(err);
@@ -37,5 +36,7 @@
 </script>
 
 <style scoped lang="scss">
-
+    .recommend {
+        overflow: hidden;
+    }
 </style>
