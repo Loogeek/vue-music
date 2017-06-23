@@ -9,6 +9,7 @@ var opn = require('opn')
 var path = require('path')
 var express = require('express')
 var webpack = require('webpack')
+var axios = require('axios')
 var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = process.env.NODE_ENV === 'testing'
   ? require('./webpack.prod.conf')
@@ -23,6 +24,25 @@ var autoOpenBrowser = !!config.dev.autoOpenBrowser
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+
+var apiRoutes = express.Router();
+
+apiRoutes.get('/getDiscList', function(req, res) {
+  var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg';
+
+  axios.get(url, {
+    headers: {
+      referer: 'https://y.qq.com/portal/playlist.html',
+      authority: 'c.y.qq.com'
+    },
+    params: req.query
+  }).then(resp => {
+    res.json(resp.data);
+  }).catch(e => console.warn(e));
+});
+
+app.use('/api', apiRoutes);
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {

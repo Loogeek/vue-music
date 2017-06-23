@@ -1,5 +1,5 @@
 <template>
-    <div class="m-slider" ref="slider">
+    <article class="m-slider" ref="slider">
         <ul class="m-slider-list" ref="sliderList">
             <li class="m-slider-list-item" v-for="item in slideList">
                 <a :href="item.linkUrl">
@@ -10,7 +10,7 @@
         <ul class="m-slider-dots">
             <li :class="[index + 1 === currentPage ? 'active' : '', 'm-slider-dots-item']" v-for="(item, index) in sliderChildren"></li>
         </ul>
-    </div>
+    </article>
 </template>
 
 <script>
@@ -107,7 +107,6 @@
                     }
 
                     this.scroll.goToPage(this.currentPage + 1, 0, 400, 'linear');
-                    console.log(this.currentPage);
                 }, this.interval);
             }
         }

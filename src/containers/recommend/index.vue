@@ -1,22 +1,41 @@
 <template>
-    <section class="recommend">
-        <slider v-if="slideList.length" :slideList="slideList"></slider>
-    </section>
+    <div class="recommend">
+        <scroll v-if="recommendList.length">
+            <slider v-if="slideList.length" :slideList="slideList"></slider>
+            <section class="recommend-list">
+                <header class="recommend-list-header">热门歌单推荐</header>
+                <ul class="recommend-list-wrp">
+                    <li v-for="item in recommendList" class="list-item">
+                        <div class="list-item-left">
+                            <img :src="item.imgurl">
+                        </div>
+                        <div class="list-item-right">
+                            <h4 class="list-item-right-header" v-html="item.creator.name"></h4>
+                            <p class="list-item-right-desc" v-html="item.dissname"></p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </scroll>
+    </div>
 </template>
 
 <script type="text/ecmascript-6">
     import Slider from 'components/Slider';
-    import { fetchSliderList } from 'api/recommend';
+    import Scroll from 'components/Scroll';
+    import { fetchSliderList, fetchRecommendList } from 'api/recommend';
     import { ERR_OK } from 'api/config';
 
     export default {
         data() {
             return {
-                slideList: []
+                slideList: [],
+                recommendList: []
             };
         },
         created() {
             this.fetchSliderList();
+            this.fetchRecommendList();
         },
         methods: {
             fetchSliderList() {
@@ -27,16 +46,71 @@
                 }).catch(err => {
                     console.warn(err);
                 });
+            },
+            fetchRecommendList() {
+                fetchRecommendList().then(resp => {
+                    if (resp.code === ERR_OK) {
+                        this.recommendList = resp.data.list;
+                    }
+                });
             }
         },
         components: {
-            Slider
+            Slider,
+            Scroll
         }
     };
 </script>
 
 <style scoped lang="scss">
+    @import '~common/scss/variable';
+
     .recommend {
         overflow: hidden;
+
+        &-list {
+            &-header {
+                height: 6.5rem;
+                line-height: 6.5rem;
+                text-align: center;
+                font-size: $font-size-medium;
+                color: $color-theme;
+            }
+
+            .list-item {
+                display: flex;
+                padding: 0 20px 20px;
+                align-items: center;
+
+                &-left {
+                    width: 6rem;
+                    height: 6rem;
+                    overflow: hidden;
+                    margin-right: 2rem;
+
+                    > img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+                &-right {
+                    flex: 1;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    font-size: 1.4rem;
+
+                    &-header {
+                        margin-bottom: 1rem;
+                        color: $color-text;
+                    }
+
+                    &-desc {
+                        color: $color-text-d;
+                    }
+                }
+            }
+        }
     }
 </style>
