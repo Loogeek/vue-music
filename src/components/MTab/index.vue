@@ -23,6 +23,10 @@
     @import "~common/scss/variable";
 
     .m-tab {
+        position: fixed;
+        top: 4.4rem;
+        left: 0;
+        width: 100%;
         display: flex;
         height: 4.4rem;
         line-height: 4.4rem;

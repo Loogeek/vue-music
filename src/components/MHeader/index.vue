@@ -6,7 +6,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-export default {};
+    export default {};
 </script>
 
 <style scoped lang="scss">
@@ -14,7 +14,10 @@ export default {};
     @import "~common/scss/mixin";
 
     .m-header {
-        position: relative;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
         height: 4.4rem;
         text-align: center;
         color: $color-theme;
