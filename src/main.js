@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+import 'babel-polyfill';
 import fastclick from 'fastclick';
 import VueLazyload from 'vue-lazyload';
 import style from 'common/scss/index.scss';
