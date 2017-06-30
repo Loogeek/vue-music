@@ -6,7 +6,7 @@
                 <section class="recommend-list" v-if="recommendList.length > 0">
                     <header class="recommend-list-header">热门歌单推荐</header>
                     <ul>
-                        <li v-for="item in recommendList" class="list-item">
+                        <li v-for="(item, index) in recommendList" class="list-item" :key="index">
                             <div class="list-item-left">
                                 <img v-lazy="item.imgurl">
                             </div>
@@ -18,7 +18,7 @@
                     </ul>
                 </section>
             </div>
-            <Loading v-if="recommendList.length === 0" />
+            <Loading v-if="recommendList.length === 0"></Loading>
         </Scroll>
     </div>
 </template>
