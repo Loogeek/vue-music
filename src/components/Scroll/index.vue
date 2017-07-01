@@ -45,6 +45,9 @@
             },
             destroy() {
                 this.scroll && this.scroll.destroy();                
+            },
+            scrollToElement(el, ...args) {
+                this.scroll && this.scroll.scrollToElement(el, args);
             }
         },
         watch: {

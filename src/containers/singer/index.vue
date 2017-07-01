@@ -1,8 +1,8 @@
 <template>
     <section class="singer">
-        <scroll :data="singerList">
-            <ul>
-                <li class="singer-item" v-for="(singer, index) in singerList" :key="index">
+        <scroll :data="singerList" ref="singerScroll">
+            <ul id="scrollHook">
+                <li class="singer-item" v-for="(singer, index) in singerList" :key="index" :data-title="singer.title">
                     <h3 class="singer-item-index">{{singer.title}}</h3>
                     <ul class="singer-item-list">
                         <li class="singer-item-list-item" v-for="(item, index) in singer.items" :key="index">
@@ -14,7 +14,7 @@
             </ul>
         </scroll>
         <ul class="singer-alphabetlist">
-            <li class="singer-alphabetlist-item" v-for="(item, index) in singerList" :key="index">
+            <li class="singer-alphabetlist-item" v-for="(item, index) in singerList" :key="index" @click="handleSelectItem(item)">
                 {{item.title.slice(0, 1)}}
             </li>
         </ul>
@@ -44,7 +44,6 @@
                 fetchSingerList().then(resp => {
                     if (resp.code === ERR_OK) {
                         this.singerList = this.formatSingerList(resp.data.list);
-                        console.log(this.formatSingerList(resp.data.list));
                     }
                 });
             },
@@ -64,7 +63,6 @@
                 );
                 
                 ret.push(hotList);
-
                 data && data.map(item => {
                     const key = item.Findex;
                     if (key.match(/[a-zA-Z]/)) {
@@ -75,8 +73,11 @@
                             ));
                         } else {
                             formatList[key] = {
-                                title: item.Findex,
-                                items: []
+                                title: key,
+                                items: [new Singer(
+                                    item.Fsinger_mid,
+                                    item.Fsinger_name
+                                )]
                             };
                         }
                     }
@@ -88,6 +89,11 @@
                         formatList[a].title.charCodeAt() - formatList[b].title.charCodeAt()
                     ).map(item => formatList[item])
                 ];
+            },
+            handleSelectItem(item) {
+                const oUl = document.querySelector('#scrollHook');
+                const target = oUl.querySelector(`[data-title=${item.title}]`);
+                this.$refs.singerScroll.scrollToElement(target, 0);
             }
         },
         components: {
