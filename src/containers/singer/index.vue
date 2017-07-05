@@ -1,8 +1,8 @@
 <template>
     <section class="singer">
         <scroll :data="singerList" ref="singerScroll">
-            <ul id="scrollHook">
-                <li class="singer-item" v-for="(singer, index) in singerList" :key="index" :data-title="singer.title">
+            <ul>
+                <li class="singer-item" v-for="(singer, index) in singerList" :key="index" ref="listGroup">
                     <h3 class="singer-item-index">{{singer.title}}</h3>
                     <ul class="singer-item-list">
                         <li class="singer-item-list-item" v-for="(item, index) in singer.items" :key="index">
@@ -13,8 +13,11 @@
                 </li>
             </ul>
         </scroll>
-        <ul class="singer-alphabetlist">
-            <li class="singer-alphabetlist-item" v-for="(item, index) in singerList" :key="index" @click="handleSelectItem(item)">
+        <ul class="singer-alphabetlist" 
+            @touchstart="handleTouchStart" 
+            @touchmove.stop.prevent="handleTouchMove"
+        >
+            <li v-for="(item, index) in singerList" :class="['singer-alphabetlist-item', {'current': currentIndex === index}]" :key="index" :data-index="index">
                 {{item.title.slice(0, 1)}}
             </li>
         </ul>
@@ -29,12 +32,17 @@
 
     const HOT_NAME = '热门';
     const HOT_SINGER_LEN = 10;
+    const ALPHABET_ITEM_HEIGHT = 18;
 
     export default {
         data() {
             return {
-                singerList: []
+                singerList: [],
+                currentIndex: 0
             };
+        },
+        created() {
+            this.touches = {};
         },
         mounted() {
             this.fetchSingerList();
@@ -90,10 +98,20 @@
                     ).map(item => formatList[item])
                 ];
             },
-            handleSelectItem(item) {
-                const oUl = document.querySelector('#scrollHook');
-                const target = oUl.querySelector(`[data-title=${item.title}]`);
-                this.$refs.singerScroll.scrollToElement(target, 0);
+            handleTouchStart(e) {
+                this.touches.startIndex = parseInt(e.target.dataset.index);
+                this.touches.startY = e.touches[0].pageY;
+                this.currentIndex = this.touches.startIndex;
+                this._scrollToElement();
+            },
+            handleTouchMove(e) {
+                const moveY = Math.floor((e.touches[0].pageY - this.touches.startY) / ALPHABET_ITEM_HEIGHT);
+                this.currentIndex = this.touches.startIndex + moveY; 
+                this._scrollToElement();
+            },
+            _scrollToElement() {
+                const targetDOM = this.$refs.listGroup[this.currentIndex];
+                this.$refs.singerScroll.scrollToElement(targetDOM, 0);
             }
         },
         components: {
