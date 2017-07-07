@@ -1,14 +1,14 @@
 <template>
     <article class="m-slider" ref="slider">
         <ul class="m-slider-list" ref="sliderList">
-            <li class="m-slider-list-item" v-for="item in slideList">
+            <li class="m-slider-list-item" v-for="(item, index) in slideList" :key="index">
                 <a :href="item.linkUrl">
                     <img :src="item.picUrl">
                 </a>
             </li>
         </ul>
         <ul class="m-slider-dots">
-            <li :class="[index + 1 === currentPage ? 'active' : '', 'm-slider-dots-item']" v-for="(item, index) in sliderChildren"></li>
+            <li :class="[index + 1 === currentPage ? 'active' : '', 'm-slider-dots-item']" v-for="(item, index) in sliderChildren" :key="index"></li>
         </ul>
     </article>
 </template>

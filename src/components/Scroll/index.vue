@@ -20,6 +20,10 @@
             data: {
                 type: Array,
                 default: []
+            },
+            listenScroll: {
+                type: Boolean,
+                default: false
             }
         },
         mounted() {
@@ -33,6 +37,13 @@
                     probeType: this.probeType,
                     click: this.click
                 });
+
+                if (this.listenScroll) {
+                    const _this = this;
+                    this.scroll.on('scroll', pos => {
+                        _this.$emit('onScroll', pos);
+                    });
+                }
             },
             enable() {
                 this.scroll && this.scroll.enable();                

@@ -20,6 +20,10 @@
     @import "~common/scss/variable";
 
     .loading {
+        position: absolute;
+        width: 100%;
+        top: 50%;
+        transform: translateY(-50%);
         text-align: center;
 
         &-img {

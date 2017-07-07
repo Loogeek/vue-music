@@ -25,7 +25,7 @@
 
 <script type="text/ecmascript-6">
     import Slider from 'components/Slider';
-    import Loading from 'components/loading';
+    import Loading from 'components/Loading';
     import Scroll from 'components/Scroll';
     import { fetchSliderList, fetchRecommendList } from 'api/recommend';
     import { ERR_OK } from 'api/config';
