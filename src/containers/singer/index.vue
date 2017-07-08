@@ -11,8 +11,10 @@
                     <h3 class="singer-item-index">{{singer.title}}</h3>
                     <ul class="singer-item-list">
                         <li class="singer-item-list-item" v-for="(item, index) in singer.items" :key="index">
-                            <img class="item-avatar" v-lazy="item.avatar">
-                            <span class="item-name">{{item.name}}</span>
+                            <router-link :to="_routerPath(item)" class="item-link">
+                                <img class="item-avatar" v-lazy="item.avatar">
+                                <span class="item-name">{{item.name}}</span>
+                            </router-link>
                         </li>
                     </ul>
                 </li>
@@ -28,15 +30,17 @@
         </ul>
         <div class="singer-list-title" v-if="listTopTitle" ref="listTitle">{{ listTopTitle }}</div>
         <Loading v-if="singerList.length === 0"></Loading>
+        <router-view></router-view>
     </section>
 </template>
 
 <script type="text/ecmascript-6">
+    import { mapState, mapActions } from 'vuex';
     import Scroll from 'components/Scroll';
     import Loading from 'components/Loading';
     import Singer from 'common/js/singer';
-    import { fetchSingerList } from 'api/singer';
-    import { ERR_OK } from 'api/config';
+    // import { fetchSingerList } from 'api/singer';
+    // import { ERR_OK } from 'api/config';
 
     const HOT_NAME = '热门';
     const HOT_SINGER_LEN = 10;
@@ -49,7 +53,7 @@
                 currentIndex: 0,
                 scrollY: 0,
                 listTitleDiff: 0,
-                singerList: [],
+                // singerList: [],
                 listGroupHeight: []
             };
         },
@@ -68,16 +72,19 @@
                     return;
                 }
                 return this.singerList[this.currentIndex] && this.singerList[this.currentIndex].title;
-            }
+            },
+            ...mapState([
+                'singerList'
+            ])
         },
         methods: {
-            fetchSingerList() {
-                fetchSingerList().then(resp => {
-                    if (resp.code === ERR_OK) {
-                        this.singerList = this.formatSingerList(resp.data.list);
-                    }
-                });
-            },
+            // _fetchSingerList() {
+            //     fetchSingerList().then(resp => {
+            //         if (resp.code === ERR_OK) {
+            //             this.singerList = this.formatSingerList(resp.data.list);
+            //         }
+            //     });
+            // },
             formatSingerList(data) {
                 let formatList = {};
                 let hotList = {
@@ -142,7 +149,10 @@
             },
             handleScroll(pos) {
                 this.scrollY = -pos.y;
-            }, 
+            },
+            _routerPath(item) {
+                return `/singer/${item.id}`;
+            },
             _scrollToElement() {
                 const targetDOM = this.$refs.listGroup[this.currentIndex];
                 this.$refs.singerScroll.scrollToElement(targetDOM, 0);
@@ -156,7 +166,10 @@
                     _listGroupHeight.push(height);
                 });
                 this.listGroupHeight = _listGroupHeight;
-            }
+            },
+            ...mapActions([
+                'fetchSingerList'
+            ])
         },
         watch: {
             singerList() {
@@ -213,8 +226,13 @@
 
             &-list-item {
                 display: flex;
-                align-items: center;
                 padding: 2rem 0 0 3rem;
+
+                .item-link {
+                    flex: 1;
+                    display: flex;
+                    align-items: center;
+                }
 
                 .item-avatar {
                     width: 5rem;

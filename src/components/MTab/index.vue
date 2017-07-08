@@ -36,8 +36,10 @@
                 padding-bottom: .5rem;
                 color: $color-text-l;
             }
+        }
 
-            .link-active {
+        .router-link-active {
+            span {
                 color: $color-theme;
                 border-bottom: .2rem solid $color-theme;
             }

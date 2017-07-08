@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import store from './store';
 import App from './App';
 import router from './router';
 import 'babel-polyfill';
@@ -16,5 +17,6 @@ Vue.use(VueLazyload, {
 new Vue({
     el: '#app',
     router,
+    store,
     render: h => h(App)
 });
