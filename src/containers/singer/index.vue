@@ -35,15 +35,10 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import { mapState, mapActions } from 'vuex';
+    import { mapGetters, mapActions } from 'vuex';
     import Scroll from 'components/Scroll';
     import Loading from 'components/Loading';
-    import Singer from 'common/js/singer';
-    // import { fetchSingerList } from 'api/singer';
-    // import { ERR_OK } from 'api/config';
 
-    const HOT_NAME = '热门';
-    const HOT_SINGER_LEN = 10;
     const ALPHABET_ITEM_HEIGHT = 18;
     const LIST_TOP_TITLE_HEIGHT = 30;
 
@@ -53,7 +48,6 @@
                 currentIndex: 0,
                 scrollY: 0,
                 listTitleDiff: 0,
-                // singerList: [],
                 listGroupHeight: []
             };
         },
@@ -73,61 +67,11 @@
                 }
                 return this.singerList[this.currentIndex] && this.singerList[this.currentIndex].title;
             },
-            ...mapState([
+            ...mapGetters([
                 'singerList'
             ])
         },
         methods: {
-            // _fetchSingerList() {
-            //     fetchSingerList().then(resp => {
-            //         if (resp.code === ERR_OK) {
-            //             this.singerList = this.formatSingerList(resp.data.list);
-            //         }
-            //     });
-            // },
-            formatSingerList(data) {
-                let formatList = {};
-                let hotList = {
-                    title: HOT_NAME,
-                    items: []
-                };
-                let ret = [];
-
-                hotList.items = data && data.slice(0, 10).map(item => 
-                    new Singer(
-                        item.Fsinger_mid,
-                        item.Fsinger_name
-                    )
-                );
-                
-                ret.push(hotList);
-                data && data.map(item => {
-                    const key = item.Findex;
-                    if (key.match(/[a-zA-Z]/)) {
-                        if (formatList[key]) {
-                            formatList[key].items.push(new Singer(
-                                item.Fsinger_mid,
-                                item.Fsinger_name
-                            ));
-                        } else {
-                            formatList[key] = {
-                                title: key,
-                                items: [new Singer(
-                                    item.Fsinger_mid,
-                                    item.Fsinger_name
-                                )]
-                            };
-                        }
-                    }
-                });
-
-                return [
-                    ...ret, 
-                    ...Object.keys(formatList).sort((a, b) => 
-                        formatList[a].title.charCodeAt() - formatList[b].title.charCodeAt()
-                    ).map(item => formatList[item])
-                ];
-            },
             handleTouchStart(e) {
                 this.touches.startIndex = parseInt(e.target.dataset.index);
                 this.touches.startY = e.touches[0].pageY;
@@ -190,8 +134,10 @@
                 }
             },
             listTitleDiff(newValue) {
-                let diffY = newValue > 0 && newValue < LIST_TOP_TITLE_HEIGHT ? newValue - LIST_TOP_TITLE_HEIGHT : 0;
-                this.$refs.listTitle.style.webkitTransform = `translateY(${diffY}px)`;
+                if (this.$refs.listTitle) {
+                    let diffY = newValue > 0 && newValue < LIST_TOP_TITLE_HEIGHT ? newValue - LIST_TOP_TITLE_HEIGHT : 0;
+                    this.$refs.listTitle.style.webkitTransform = `translateY(${diffY}px)`;
+                }
             }
         },
         components: {
