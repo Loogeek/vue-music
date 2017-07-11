@@ -1,6 +1,8 @@
 const state = {
     singerList: [],
-    singerDetail: {}
+    singerDetail: {
+        list: []
+    }
 };
 
 export default state;

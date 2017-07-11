@@ -8,12 +8,13 @@ export class Singer {
 
 export class CreateSong {
     constructor(props) {
-        this.albummid = props.albummid;
-        this.songname = props.songname;
-        this.singer   = filterSinger(props.singer);
-        this.interval = props.interval;
-        this.image    = `https://y.gtimg.cn/music/photo_new/T002R300x300M000${props.albummid}.jpg?max_age=2592000`;
-        this.url      = `http://ws.stream.qqmusic.qq.com/${props.songid}.m4a?fromtag=46`;
+        this.albumname = props.albumname;
+        this.albummid  = props.albummid;
+        this.songname  = props.songname;
+        this.singer    = filterSinger(props.singer);
+        this.interval  = props.interval;
+        this.image     = props.albummid ? `https://y.gtimg.cn/music/photo_new/T002R300x300M000${props.albummid}.jpg?max_age = 2592000` : '';
+        this.url       = `http://ws.stream.qqmusic.qq.com/${props.songid}.m4a?fromtag=46`;
     }
 };
 

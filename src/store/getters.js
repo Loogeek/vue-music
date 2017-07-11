@@ -55,8 +55,19 @@ export const singerList = state => {
 
 export const singerDetail = state => {
     const { singerDetail } = state;
-    const songList = singerDetail.list && singerDetail.list.map(singer => new CreateSong(singer.musicData));
     
-    return songList;
+    if (singerDetail.list.length > 0) {
+        return {
+            list: singerDetail.list && singerDetail.list.map(singer => new CreateSong(singer.musicData)),
+            ...new Singer(
+                singerDetail.singer_mid,
+                singerDetail.singer_name
+            )
+        };
+    } else {
+        return {
+            list: []
+        };
+    }
 };
 

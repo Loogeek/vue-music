@@ -19,7 +19,7 @@
             },
             data: {
                 type: Array,
-                default: []
+                default: () => []
             },
             listenScroll: {
                 type: Boolean,
