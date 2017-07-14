@@ -3,20 +3,29 @@
         <section class="singer-detail">
             <header class="singer-detail-header">
                 <span class="back">
-                    <i class="icon-back"></i>
+                    <i class="icon-back" @click="handleBack"></i>
                 </span>
                 <h2 class="name" v-html="singerDetail.name"></h2>
             </header>
-            <div class="singer-detail-image" :style="bgStyle">
+            <div class="singer-detail-image" :style="bgStyle" ref="singerBg">
                 <div class="filter"></div>
-                <div class="play-btn">
+                <div class="play-btn" v-if="singerDetail.list.length > 0">
                     <i class="icon-play"></i>
                     <span class="play-btn-text">随机播放全部</span>
                 </div>
             </div>
-            <scroll :data="singerDetail.list">
-                <song-list :songList="singerDetail.list"></song-list>
-            </scroll>
+            <div class="singer-detail-layer" ref="layerHook"></div>
+            <div class="singer-detail-list" ref="listWrap">
+                <scroll
+                    ref="scrollHook"
+                    @onScroll="handleScroll"
+                    :data="singerDetail.list"
+                    :listenScroll="true"
+                    :probeType="3"
+                >
+                    <song-list :songList="singerDetail.list"></song-list>
+                </scroll>
+            </div>
         </section>
     </transition>
 </template>
@@ -26,6 +35,8 @@
     import Scroll from 'components/Scroll';
     import SongList from 'components/SongList';
 
+    const TOP_TITLE_HEIGHT = 40;
+
     export default {
         mounted() {
             const singerId = this.$route.params.id;
@@ -33,8 +44,9 @@
             if (singerId) {
                 this.fetchSingerDetail(singerId);
             } else {
-                this.$route.back();
+                this.$router.back();
             }
+            this.$refs.listWrap.style.top = `${this.$refs.singerBg.offsetWidth * 0.7}px`;
         },
         computed: {
             bgStyle() {
@@ -45,6 +57,15 @@
             ])
         },
         methods: {
+            handleBack() {
+                this.$router.back();
+            },
+            handleScroll(pos) {
+                const posY = pos.y;
+                if (-posY + TOP_TITLE_HEIGHT < this.$refs.listWrap.style.top) {
+                    this.$refs.layerHook.style.webkitTransform = `translateY(${posY}px)`;
+                }
+            },
             ...mapActions([
                 'fetchSingerDetail'
             ])
@@ -60,7 +81,7 @@
     @import "~common/scss/variable";
     @import "~common/scss/mixin";
 
-    .slide-enter-active, .slider-leave-active {
+    .slide-enter-active, .slide-leave-active {
         transition: all .3s linear;
     }
 
@@ -150,11 +171,21 @@
             }
         }
 
-        .m-scroll {
+        &-layer {
+            position: relative;
+            height: 100%;
+            background-color: $color-background;
+        }
+
+        &-list {
             position: fixed;
-            top: 263px;
+            top: 0;
             bottom: 0;
             width: 100%;
+
+            .m-scroll {
+                overflow: initial;
+            }
             
             .song-list {
                 padding: 2rem 3rem;
