@@ -15,7 +15,14 @@ export const fetchSingerList = ({ commit }) => {
     });
 };
 
-export const fetchSingerDetail = ({commit}, singerId) => {
+export const setCurrentSinger = ({ commit }, currentSinger) => {
+    commit({
+        type: types.SET_CURRENT_SINGER,
+        currentSinger
+    });
+};
+
+export const fetchSingerDetail = ({ commit }, singerId) => {
     fetchSingerDetailReq(singerId).then(resp => {
         if (resp.code === ERR_OK) {
             commit({
@@ -24,6 +31,15 @@ export const fetchSingerDetail = ({commit}, singerId) => {
             });
         } else {
             console.warn('fetch singer detail error:', resp.message);
+        }
+    });
+};
+
+export const resetSingerDetail = ({commit, state}) => {
+    commit({
+        type: types.RESET_SINGER_DETAIL,
+        singerDetail: {
+            list: []
         }
     });
 };

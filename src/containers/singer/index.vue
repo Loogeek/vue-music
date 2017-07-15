@@ -10,7 +10,7 @@
                 <li class="singer-item" v-for="(singer, index) in singerList" :key="index" ref="listGroup">
                     <h3 class="singer-item-index">{{singer.title}}</h3>
                     <ul class="singer-item-list">
-                        <li class="singer-item-list-item" v-for="(item, index) in singer.items" :key="index">
+                        <li class="singer-item-list-item" v-for="(item, index) in singer.items" :key="index" @click="setCurrentSinger(item)">
                             <router-link :to="_routerPath(item)" class="item-link">
                                 <img class="item-avatar" v-lazy="item.avatar">
                                 <span class="item-name">{{item.name}}</span>
@@ -94,6 +94,9 @@
             handleScroll(pos) {
                 this.scrollY = -pos.y;
             },
+            setCurrentSinger(singerItem) {
+                this.setCurrentSinger(singerItem);
+            },
             _routerPath(item) {
                 return `/singer/${item.id}`;
             },
@@ -112,7 +115,8 @@
                 this.listGroupHeight = _listGroupHeight;
             },
             ...mapActions([
-                'fetchSingerList'
+                'fetchSingerList',
+                'setCurrentSinger'
             ])
         },
         watch: {

@@ -25,8 +25,8 @@
                 >
                     <song-list :songList="singerDetail.list"></song-list>
                 </scroll>
+                <Loading v-if="singerDetail.list.length === 0"></Loading> 
             </div>
-            <Loading v-if="singerDetail.list.length === 0"></Loading>
         </section>
     </transition>
 </template>
@@ -51,10 +51,11 @@
         },
         mounted() {
             const singerId = this.$route.params.id;
- 
-            if (singerId) {
+            
+            if (this.singerDetail.id !== singerId) {
+                this.resetSingerDetail();
                 this.fetchSingerDetail(singerId);
-            } else {
+            } else if (!singerId) {
                 this.$router.back();
             }
 
@@ -64,10 +65,11 @@
         },
         computed: {
             bgStyle() {
-                return `background-image: url(${this.singerDetail.avatar})`;
+                return `background-image: url(${this.currentSinger.avatar})`;
             },
             ...mapGetters([
-                'singerDetail'
+                'singerDetail',
+                'currentSinger'
             ])
         },
         methods: {
@@ -78,7 +80,8 @@
                 this.scrollY = pos.y;
             },
             ...mapActions([
-                'fetchSingerDetail'
+                'fetchSingerDetail',
+                'resetSingerDetail'
             ])
         },
         watch: {
@@ -97,7 +100,9 @@
                         const blur = 1 + Math.min(20, precent * 20);
                         this.$refs.layerHook.style[prefixTransform] = `translateY(${newVal}px)`;
                         singerBgStyle[prefixBackdrop] = `blur${blur}`;
-                        singerBgStyle.paddingTop = `${this.bgHeight}px`;
+                        // 之所以改变背景图和标题同高是因为标题没有背景色无法遮住滚动的歌曲
+                        // 所以得通过改变背景图来达到效果
+                        singerBgStyle.paddingTop = `${this.bgHeight}px`;  
                         singerBgStyle.height = 0;
                         playBtnStyle.display = '';
                     } else {

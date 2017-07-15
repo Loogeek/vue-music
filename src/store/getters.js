@@ -71,3 +71,5 @@ export const singerDetail = state => {
     }
 };
 
+export const currentSinger = state => state.currentSinger;
+
