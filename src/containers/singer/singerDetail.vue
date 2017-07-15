@@ -9,7 +9,7 @@
             </header>
             <div class="singer-detail-image" :style="bgStyle" ref="singerBg">
                 <div class="filter"></div>
-                <div class="play-btn" v-if="singerDetail.list.length > 0">
+                <div class="play-btn" v-if="singerDetail.list.length > 0" ref="playBtn">
                     <i class="icon-play"></i>
                     <span class="play-btn-text">随机播放全部</span>
                 </div>
@@ -26,6 +26,7 @@
                     <song-list :songList="singerDetail.list"></song-list>
                 </scroll>
             </div>
+            <Loading v-if="singerDetail.list.length === 0"></Loading>
         </section>
     </transition>
 </template>
@@ -34,10 +35,20 @@
     import { mapActions, mapGetters } from 'vuex';
     import Scroll from 'components/Scroll';
     import SongList from 'components/SongList';
+    import Loading from 'components/Loading';
+    import { prefixStyle } from 'common/js/dom';
 
     const TOP_TITLE_HEIGHT = 40;
 
+    const prefixTransform = prefixStyle('transform');
+    const prefixBackdrop = prefixStyle('backdrop-filter');
+
     export default {
+        data() {
+            return {
+                scrollY: 0
+            };
+        },
         mounted() {
             const singerId = this.$route.params.id;
  
@@ -46,7 +57,10 @@
             } else {
                 this.$router.back();
             }
-            this.$refs.listWrap.style.top = `${this.$refs.singerBg.offsetWidth * 0.7}px`;
+
+            this.bgHeight = window.innerWidth * 0.7;
+            this.$refs.listWrap.style.top = `${this.bgHeight}px`;
+            this.maxScrollY = this.bgHeight - TOP_TITLE_HEIGHT;
         },
         computed: {
             bgStyle() {
@@ -61,18 +75,46 @@
                 this.$router.back();
             },
             handleScroll(pos) {
-                const posY = pos.y;
-                if (-posY + TOP_TITLE_HEIGHT < this.$refs.listWrap.style.top) {
-                    this.$refs.layerHook.style.webkitTransform = `translateY(${posY}px)`;
-                }
+                this.scrollY = pos.y;
             },
             ...mapActions([
                 'fetchSingerDetail'
             ])
         },
+        watch: {
+            scrollY(newVal) {
+                const singerBgStyle = this.$refs.singerBg.style;
+                const playBtnStyle = this.$refs.playBtn.style;
+                const precent = Math.abs(newVal / this.bgHeight);
+                let zIndex = 0;
+
+                if (newVal > 0) {
+                    zIndex = 10;
+                    const scaleChange = 1 + precent;
+                    singerBgStyle[prefixTransform] = `scale(${scaleChange})`;
+                } else {
+                    if (-newVal < this.maxScrollY) {
+                        const blur = 1 + Math.min(20, precent * 20);
+                        this.$refs.layerHook.style[prefixTransform] = `translateY(${newVal}px)`;
+                        singerBgStyle[prefixBackdrop] = `blur${blur}`;
+                        singerBgStyle.paddingTop = `${this.bgHeight}px`;
+                        singerBgStyle.height = 0;
+                        playBtnStyle.display = '';
+                    } else {
+                        singerBgStyle.paddingTop = 0;
+                        singerBgStyle.height = `${TOP_TITLE_HEIGHT}px`;
+                        playBtnStyle.display = 'none';
+                        zIndex = 10;
+                    }
+                }
+
+                this.$refs.singerBg.style.zIndex = zIndex;
+            }
+        },
         components: {
             Scroll,
-            SongList
+            SongList,
+            Loading
         }
     };
 </script>
