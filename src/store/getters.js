@@ -73,3 +73,10 @@ export const singerDetail = state => {
 
 export const currentSinger = state => state.currentSinger;
 
+export const playSong = state => {
+    return {
+        ...state.playSong,
+        currentSong: state.playSong.playList[state.playSong.currentIndex] || {}
+    };
+};
+

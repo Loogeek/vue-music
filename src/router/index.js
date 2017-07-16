@@ -4,7 +4,7 @@ import recommend from 'containers/recommend';
 import rank from 'containers/rank';
 import search from 'containers/search';
 import singer from 'containers/singer';
-import singerDetail from 'containers/singer/singerDetail';
+import singerDetail from 'containers/singerDetail';
 
 Vue.use(Router);
 

@@ -1,6 +1,6 @@
 <template>
     <ul class="song-list">
-        <li class="song-list-item" v-for="(item, index) in songList" :key="index">
+        <li class="song-list-item" v-for="(item, index) in songList" :key="index" @click="handlePlaySong(item, index)">
             <div class="rank"></div>
             <div class="content">
                 <h4 class="content-name" v-html="item.songname"></h4>
@@ -16,6 +16,11 @@
             songList: {
                 type: Array,
                 default: () => []
+            }
+        },
+        methods: {
+            handlePlaySong(item, index) {
+                this.$emit('onPlaySong', item, index);
             }
         }
     };

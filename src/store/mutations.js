@@ -12,6 +12,15 @@ const mutations = {
     },
     [types.SET_CURRENT_SINGER](state, payload) {
         state.currentSinger = payload.currentSinger;
+    },
+    [types.SET_PLAY_SONG](state, payload) {
+        state.playSong = {
+            playing: true,
+            fullScreen: true,
+            sequenceList: payload.list,
+            playList: payload.list,
+            currentIndex: payload.currentIndex
+        };
     }
 };
 
