@@ -1,0 +1,145 @@
+@import "~common/scss/variable";
+@import "~common/scss/mixin";
+
+.music-player {
+    .larger-player {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 200;
+        background-color: $color-background;
+
+        &-header {
+            position: relative;
+            margin-bottom: 2.5rem;
+
+            .back {
+                position: absolute;
+                top: 0;
+                left: .6rem;
+                z-index: 50;
+
+                .icon-back {
+                    display: block;
+                    padding: 1rem;
+                    font-size: $font-size-large-x;
+                    color: $color-theme;
+                    transform: rotate(-90deg);
+                }
+            }
+
+            .songname {
+                width: 70%;
+                margin: 0 auto;
+                @extend %no-wrap;
+                z-index: 50;
+                text-align: center;
+                line-height: 4rem;
+                font-size: $font-size-large;
+                color: $color-text;
+            }
+
+            .singer {
+                line-height: 2rem;
+                text-align: center;
+                font-size: $font-size-medium;
+                color: $color-text;
+            }
+        }
+
+        &-body {
+
+            &-left {
+                width: 80%;
+                margin: 0 auto;
+
+                >img {
+                    border-radius: 50%;
+                }
+            }
+        }
+
+        &-bgimg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: .6;
+            filter: blur(2rem);
+
+            >img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .mini-player {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 300;
+        height: 6rem;
+        background: $color-highlight-background;
+
+        &-img {
+            width: 4rem;
+            height: 4rem;
+            padding: 0 1rem 0 2rem;
+
+            >img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+
+        &-content {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 2rem;
+            overflow: hidden;
+
+            .songname {
+                margin-bottom: .2rem;
+                @extend %no-wrap;
+                font-size: $font-size-medium;
+                color: $color-text;
+            }
+
+            .singer {
+                @extend %no-wrap;
+                font-size: $font-size-small;
+                color: $color-text-d;
+            }
+        }
+
+        &-control {
+            width: 3rem;
+            padding: 0 1rem;
+
+            .icon-play-mini,
+            .icon-pause-mini,
+            .icon-playlist {
+                font-size: 3rem;
+                color: $color-theme-d;
+            }
+
+            .icon-mini {
+                font-size: 3.2rem;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+    }
+}

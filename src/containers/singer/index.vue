@@ -27,7 +27,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import Scroll from 'components/Scroll';
 import Loading from 'components/Loading';
 
@@ -107,9 +107,11 @@ export default {
             this.listGroupHeight = _listGroupHeight;
         },
         ...mapActions([
-            'fetchSingerList',
-            'setCurrentSinger'
-        ])
+            'fetchSingerList'
+        ]),
+        ...mapMutations({
+            setCurrentSinger: 'SET_CURRENT_SINGER'
+        })
     },
     watch: {
         singerList() {
@@ -145,86 +147,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "~common/scss/variable";
-
-.singer {
-    position: fixed;
-    top: 88px;
-    bottom: 0;
-    width: 100%;
-    overflow: hidden;
-
-    &-item {
-        padding-bottom: 3rem;
-
-        &-index {
-            height: 30px;
-            line-height: 30px;
-            padding-left: 2rem;
-            font-size: $font-size-small;
-            color: $color-text-l;
-            background-color: $color-highlight-background;
-        }
-
-        &-list-item {
-            display: flex;
-            padding: 2rem 0 0 3rem;
-
-            .item-link {
-                flex: 1;
-                display: flex;
-                align-items: center;
-            }
-
-            .item-avatar {
-                width: 5rem;
-                height: 5rem;
-                border-radius: 50%;
-            }
-
-            .item-name {
-                margin-left: 2rem;
-                color: $color-text-l;
-                font-size: $font-size-medium;
-            }
-        }
-    }
-
-    &-list-title {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 30px;
-        line-height: 30px;
-        padding-left: 2rem;
-        font-size: $font-size-small;
-        color: $color-text-l;
-        background-color: $color-highlight-background;
-    }
-
-    &-alphabetlist {
-        position: fixed;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        width: 2rem;
-        padding: 2rem 0;
-        border-radius: 1rem;
-        text-align: center;
-        background-color: $color-background-d;
-        font-family: Helvetica;
-
-        &-item {
-            padding: .3rem;
-            line-height: 1;
-            color: $color-text-l;
-            font-size: $font-size-small;
-
-            &.current {
-                color: $color-theme;
-            }
-        }
-    }
-}
+    @import './style';
 </style>

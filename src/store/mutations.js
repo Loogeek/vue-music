@@ -8,10 +8,12 @@ const mutations = {
         state.singerDetail = payload.singerDetail;
     },
     [types.RESET_SINGER_DETAIL](state, payload) {
-        state.singerDetail = payload.singerDetail;
+        state.singerDetail = {
+            list: []
+        };
     },
-    [types.SET_CURRENT_SINGER](state, payload) {
-        state.currentSinger = payload.currentSinger;
+    [types.SET_CURRENT_SINGER](state, currentSinger) {
+        state.currentSinger = currentSinger;
     },
     [types.SET_PLAY_SONG](state, payload) {
         state.playSong = {
@@ -21,6 +23,9 @@ const mutations = {
             playList: payload.list,
             currentIndex: payload.currentIndex
         };
+    },
+    [types.SET_FULL_SCREEN](state, fullScreen) {
+        state.playSong.fullScreen = fullScreen;
     }
 };
 
