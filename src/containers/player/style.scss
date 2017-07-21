@@ -2,6 +2,7 @@
 @import "~common/scss/mixin";
 
 .music-player {
+
     .larger-player {
         position: fixed;
         top: 0;
@@ -10,6 +11,29 @@
         bottom: 0;
         z-index: 200;
         background-color: $color-background;
+
+        &.larger-player-an-enter,
+        &.larger-player-an-leaver-to {
+            opacity: 0;
+
+            .larger-player-header {
+                transform: translateY(-10rem);
+            }
+
+            .larger-player-footer {
+                transform: translateY(10rem);
+            }
+        }
+
+        &.larger-player-an-enter-active,
+        &.larger-player-an-leaver-active {
+            transition: all .5s;
+
+            .larger-player-header,
+            .larger-player-footer {
+                transition: all .5s cubic-bezier(0.86, 0.18, 0.82, 1.32);
+            }
+        }        
 
         &-header {
             position: relative;
@@ -61,6 +85,44 @@
             }
         }
 
+        &-footer {
+            position: absolute;
+            bottom: 5rem;
+            width: 100%;
+
+            .operators {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                &-icon {
+                    flex: 1;
+                    color: $color-theme;
+
+                    > i {
+                        font-size: 3rem;
+                    }
+                }
+
+                .i-left {
+                    text-align: right;
+                }
+
+                .i-center {
+                    text-align: center;
+                    padding: 0 2rem;
+
+                    > i {
+                        font-size: 4rem;
+                    }
+                }
+
+                .i-right {
+                    text-align: left;
+                }
+            }
+        }
+
         &-bgimg {
             position: absolute;
             top: 0;
@@ -88,6 +150,18 @@
         z-index: 300;
         height: 6rem;
         background: $color-highlight-background;
+
+
+        &.mini-player-an-enter,
+        &.mini-player-an-leaver-to {
+            transform: translate3d(0, 6rem, 0);
+            opacity: 0;
+        }
+
+        &.mini-player-an-enter-active,
+        &.mini-player-an-leaver-active {
+            transition: all .3s;
+        }        
 
         &-img {
             width: 4rem;

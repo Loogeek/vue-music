@@ -23,7 +23,7 @@
         position: absolute;
         width: 100%;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translate3d(0, -50%, 0);
         text-align: center;
 
         &-img {
