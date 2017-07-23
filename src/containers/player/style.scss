@@ -2,7 +2,6 @@
 @import "~common/scss/mixin";
 
 .music-player {
-
     .large-player {
         position: fixed;
         top: 0;
@@ -33,7 +32,7 @@
             .large-player-footer {
                 transition: all .4s cubic-bezier(0.86, 0.18, 0.82, 1.32);
             }
-        }        
+        }
 
         &-header {
             position: relative;
@@ -74,13 +73,30 @@
         }
 
         &-body {
-
             &-left {
                 width: 80%;
                 margin: 0 auto;
 
-                >img {
+                > img {
                     border-radius: 50%;
+                }
+
+                .playing {
+                    animation: rotate 20s linear infinite;
+                }
+
+                .playing-pause {
+                    animation-play-state: paused;
+                }
+
+                @keyframes rotate {
+                    0% {
+                        transform: rotate(0);
+                    }
+
+                    100% {
+                        transform: rotate(360deg);
+                    }
                 }
             }
         }
@@ -89,6 +105,32 @@
             position: absolute;
             bottom: 5rem;
             width: 100%;
+
+            .progress {
+                display: flex;
+                align-items: center;
+                width: 80%;
+                margin: 1rem auto;
+
+                &-time {
+                    color: $color-text;
+                    font-size: $font-size-small;
+                    width: 3rem;
+                    line-height: 3rem;
+                }
+
+                &-currentTime {
+                    text-align: left;
+                }
+
+                &-interval {
+                    text-align: right;
+                }
+
+                &-bar {
+                    flex: 1;
+                }
+            }
 
             .operators {
                 display: flex;
@@ -101,6 +143,10 @@
 
                     > i {
                         font-size: 3rem;
+                    }
+
+                    &.disable {
+                        color: $color-theme-d;
                     }
                 }
 
@@ -133,7 +179,7 @@
             opacity: .6;
             filter: blur(2rem);
 
-            >img {
+            > img {
                 width: 100%;
                 height: 100%;
             }
@@ -151,7 +197,6 @@
         height: 60px;
         background: $color-highlight-background;
 
-
         &.mini-player-an-enter,
         &.mini-player-an-leaver-to {
             transform: translate3d(0, 6rem, 0);
@@ -161,14 +206,14 @@
         &.mini-player-an-enter-active,
         &.mini-player-an-leaver-active {
             transition: all .3s;
-        }        
+        }
 
         &-img {
             width: 40px;
             height: 40px;
             padding: 0 10px 0 20px;
 
-            >img {
+            > img {
                 width: 100%;
                 height: 100%;
                 border-radius: 50%;

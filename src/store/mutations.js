@@ -26,6 +26,12 @@ const mutations = {
     },
     [types.SET_FULL_SCREEN](state, fullScreen) {
         state.playSong.fullScreen = fullScreen;
+    },
+    [types.SET_PLAYING_STATUS](state, playingStatus) {
+        state.playSong.playing = playingStatus;
+    },
+    [types.SET_CURRENT_INDEX](state, currentIndex) {
+        state.playSong.currentIndex = currentIndex;
     }
 };
 
