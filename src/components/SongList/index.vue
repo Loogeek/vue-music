@@ -11,50 +11,50 @@
 </template>
 
 <script type="text/ecmascript-6">
-    export default {
-        props: {
-            songList: {
-                type: Array,
-                default: () => []
-            }
-        },
-        methods: {
-            handlePlaySong(item, index) {
-                this.$emit('onPlaySong', item, index);
-            }
+export default {
+    props: {
+        songList: {
+            type: Array,
+            default: () => []
         }
-    };
+    },
+    methods: {
+        handlePlaySong(item, index) {
+            this.$emit('onPlaySong', item, index)
+        }
+    }
+}
 </script>
 
 <style lang="scss" scoped>
-    @import "~common/scss/variable";
-    @import "~common/scss/mixin";
+@import "~common/scss/variable";
+@import "~common/scss/mixin";
 
-    .song-list {
-        &-item {
-            display: flex;
-            align-items: center;
-            box-sizing: border-box;
-            height: 6.4rem;
-            font-size: $font-size-medium;
+.song-list {
+    &-item {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        height: 6.4rem;
+        font-size: $font-size-medium;
 
-            .content {
-                flex: 1;
-                line-height: 2rem;
-                overflow: hidden;
+        .content {
+            flex: 1;
+            line-height: 2rem;
+            overflow: hidden;
 
-                &-name {
-                    @extend %no-wrap;
-                    color: $color-text;
-                }
+            &-name {
+                @extend %no-wrap;
+                color: $color-text;
+            }
 
-                &-singer {
-                    @extend %no-wrap;                    
-                    margin-top: .4rem;
-                    color: $color-text-d;
-                }
+            &-singer {
+                @extend %no-wrap;
+                margin-top: .4rem;
+                color: $color-text-d;
             }
         }
     }
+}
 </style>
 

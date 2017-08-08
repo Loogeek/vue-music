@@ -1,4 +1,4 @@
-import { playMode } from 'api/config';
+import { playMode } from 'api/config'
 
 const state = {
     singerList: [],
@@ -15,6 +15,6 @@ const state = {
         currentIndex: 0,
         currentSong: {}
     }
-};
+}
 
-export default state;
+export default state

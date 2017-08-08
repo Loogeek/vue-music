@@ -1,11 +1,6 @@
 <template>
     <section class="music-player" v-show="playSong.playList.length > 0">
-        <transition name="large-player-an" 
-            @enter="largeEnterAn" 
-            @after-enter="largeAfterEnterAn" 
-            @leave="largeLeaveAn" 
-            @after-leave="largeAfterLeaveAn"
-        >
+        <transition name="large-player-an" @enter="largeEnterAn" @after-enter="largeAfterEnterAn" @leave="largeLeaveAn" @after-leave="largeAfterLeaveAn">
             <article class="large-player" v-show="playSong.fullScreen">
                 <header class="large-player-header">
                     <span class="back">
@@ -23,14 +18,9 @@
                 <footer class="large-player-footer">
                     <div class="progress">
                         <span class="progress-time progress-currentTime">{{ formatPlayTime(currentTime) }}</span>
-                        <ProgressBar />
+                        <ProgressBar :timePercent="timePercent" />
                         <span class="progress-time progress-interval">{{ formatPlayTime(playSong.currentSong.interval) }}</span>
-                        <audio ref="songAudio" :src="playSong.currentSong.url"
-                            @timeupdate="handleUpdateTime" 
-                            @ended="handleNextSong"
-                            @canplay="handleSongCanPlay"
-                            @error="handleSongError"
-                        >
+                        <audio ref="songAudio" :src="playSong.currentSong.url" @timeupdate="handleUpdateTime" @ended="handleNextSong" @canplay="handleSongCanPlay" @error="handleSongError">
                         </audio>
                     </div>
                     <nav class="operators">
@@ -43,7 +33,7 @@
                         <span :class="['operators-icon', 'i-center', {'disable': !canPlay}]" @click="handleTogglePlaying">
                             <i :class="playIcon"></i>
                         </span>
-                        <span :class="['operators-icon', 'i-right', {'disable': !canPlay}]" @click="handleNextSong" >
+                        <span :class="['operators-icon', 'i-right', {'disable': !canPlay}]" @click="handleNextSong">
                             <i class="icon-next"></i>
                         </span>
                         <span class="operators-icon i-right">
@@ -77,24 +67,25 @@
 </template>
 
 <script>
-import createAnimation from 'create-keyframe-animation';
-import { mapGetters, mapMutations } from 'vuex';
-import ProgressBar from 'components/ProgressBar';
-import { prefixStyle } from 'common/js/dom';
-import { formatTime } from 'common/js/utils';
+import createAnimation from 'create-keyframe-animation'
+import { mapGetters, mapMutations } from 'vuex'
+import ProgressBar from 'components/ProgressBar'
+import { prefixStyle } from 'common/js/dom'
+import { formatTime } from 'common/js/utils'
 
-const prefixTransform = prefixStyle('transform');
+const prefixTransform = prefixStyle('transform')
 
 export default {
     data() {
         return {
             canPlay: false,
-            currentTime: 0
-        };
+            currentTime: 0,
+            timePercent: 0
+        }
     },
     computed: {
         playIcon() {
-            return this.playSong.playing ? 'icon-pause' : 'icon-play';
+            return this.playSong.playing ? 'icon-pause' : 'icon-play'
         },
         ...mapGetters([
             'playSong'
@@ -102,10 +93,10 @@ export default {
     },
     methods: {
         formatPlayTime(time) {
-            return formatTime(time);
+            return formatTime(time)
         },
         largeEnterAn(el, done) {
-            const { x, y, scale } = this._getPosAndScale();
+            const { x, y, scale } = this._getPosAndScale()
 
             const animation = {
                 '0%': {
@@ -117,15 +108,15 @@ export default {
                 '100%': {
                     transform: `translate3d(0, 0, 0) scale(1)`
                 }
-            };
-            this._createAnimation(animation, done);
+            }
+            this._createAnimation(animation, done)
         },
         largeAfterEnterAn(el) {
-            createAnimation.unregisterAnimation('move');
-            this.$refs.largeCd.style.animation = '';
+            createAnimation.unregisterAnimation('move')
+            this.$refs.largeCd.style.animation = ''
         },
         largeLeaveAn(el, done) {
-            const { x, y, scale } = this._getPosAndScale();
+            const { x, y, scale } = this._getPosAndScale()
 
             const animation = {
                 '0%': {
@@ -134,56 +125,58 @@ export default {
                 '100%': {
                     transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
                 }
-            };
+            }
 
-            this._createAnimation(animation, done);
+            this._createAnimation(animation, done)
         },
         largeAfterLeaveAn() {
-            const largeCdStyle = this.$refs.largeCd.style;
-            largeCdStyle.animation = '';
-            largeCdStyle[prefixTransform] = '';
+            const largeCdStyle = this.$refs.largeCd.style
+            largeCdStyle.animation = ''
+            largeCdStyle[prefixTransform] = ''
         },
         handleBack() {
-            this.setFullScreen(false);
+            this.setFullScreen(false)
         },
         handleShow() {
-            this.setFullScreen(true);
+            this.setFullScreen(true)
         },
         handlePrevSong() {
             if (this.canPlay) {
-                let index = this.playSong.currentIndex;
-                index--;
+                let index = this.playSong.currentIndex
+                index--
                 if (index === -1) {
-                    index = this.playSong.playList.length - 1;
+                    index = this.playSong.playList.length - 1
                 }
 
-                this.setcurrentIndex(index);
-                this.canPlay = false;
+                this.setcurrentIndex(index)
+                this.canPlay = false
             }
         },
         handleNextSong() {
             if (this.canPlay) {
-                let index = this.playSong.currentIndex;
-                index++;
+                let index = this.playSong.currentIndex
+                index++
                 if (index === this.playSong.playList.length) {
-                    index = 0;
+                    index = 0
                 }
 
-                this.setcurrentIndex(index);
-                this.canPlay = false;
+                this.setcurrentIndex(index)
+                this.canPlay = false
             }
         },
         handleTogglePlaying() {
-            this.setPlayingStatus(!this.playSong.playing);
+            this.setPlayingStatus(!this.playSong.playing)
         },
         handleUpdateTime(e) {
-            this.currentTime = e.target.currentTime;
+            const { currentTime } = e.target
+            this.currentTime = currentTime
+            this.timePercent = currentTime / this.playSong.currentSong.interval
         },
         handleSongCanPlay() {
-            this.canPlay = true;
+            this.canPlay = true
         },
         handleSongError() {
-            this.canPlay = false;
+            this.canPlay = false
         },
         _createAnimation(animation, done) {
             createAnimation.registerAnimation({
@@ -193,23 +186,23 @@ export default {
                     duration: 400,
                     easing: 'linear'
                 }
-            });
+            })
 
-            createAnimation.runAnimation(this.$refs.largeCd, 'move', done);
+            createAnimation.runAnimation(this.$refs.largeCd, 'move', done)
         },
         _getPosAndScale() {
-            const SINGER_NAME_HEIGHT = 40;          // 顶部歌曲栏高度
-            const SINGER_NAME_MAR_BOTTOM = 25;      // 歌曲栏下边距
-            const MINI_CD_WIDTH = 40;
-            const MINI_CD_PADDING_LEFT = 20;
-            const MINI_CD_PADDING_TOP = 10;
-            const LARGE_CD_WIDTH = window.innerWidth * 0.8;
+            const SINGER_NAME_HEIGHT = 40          // 顶部歌曲栏高度
+            const SINGER_NAME_MAR_BOTTOM = 25      // 歌曲栏下边距
+            const MINI_CD_WIDTH = 40
+            const MINI_CD_PADDING_LEFT = 20
+            const MINI_CD_PADDING_TOP = 10
+            const LARGE_CD_WIDTH = window.innerWidth * 0.8
 
-            const x = -(window.innerWidth / 2 - MINI_CD_WIDTH / 2 - MINI_CD_PADDING_LEFT);
-            const y = window.innerHeight - LARGE_CD_WIDTH / 2 - SINGER_NAME_HEIGHT - SINGER_NAME_MAR_BOTTOM - MINI_CD_WIDTH / 2 - MINI_CD_PADDING_TOP;
-            const scale = MINI_CD_WIDTH / LARGE_CD_WIDTH;
+            const x = -(window.innerWidth / 2 - MINI_CD_WIDTH / 2 - MINI_CD_PADDING_LEFT)
+            const y = window.innerHeight - LARGE_CD_WIDTH / 2 - SINGER_NAME_HEIGHT - SINGER_NAME_MAR_BOTTOM - MINI_CD_WIDTH / 2 - MINI_CD_PADDING_TOP
+            const scale = MINI_CD_WIDTH / LARGE_CD_WIDTH
 
-            return { x, y, scale };
+            return { x, y, scale }
         },
         ...mapMutations({
             setFullScreen: 'SET_FULL_SCREEN',
@@ -219,19 +212,19 @@ export default {
     },
     watch: {
         playSong(newStatus) {
-            const audio = this.$refs.songAudio;
+            const audio = this.$refs.songAudio
             this.$nextTick(() => {
-                newStatus.playing ? audio.play() : audio.pause();
-            });
+                newStatus.playing ? audio.play() : audio.pause()
+            })
         }
     },
     components: {
         ProgressBar
     }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-    @import './style';
+@import './style';
 </style>
 

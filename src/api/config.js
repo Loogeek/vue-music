@@ -4,16 +4,16 @@ export const commoneParams = {
     outCharset: 'utf-8',
     notice: 0,
     format: 'jsonp'
-};
+}
 
 export const params = {
     param: 'jsonpCallback'
-};
+}
 
 export const playMode = {
     sequence: 0,
     loop: 1,
     random: 2
-};
+}
 
-export const ERR_OK = 0;
+export const ERR_OK = 0

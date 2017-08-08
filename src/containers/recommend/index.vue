@@ -24,51 +24,51 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import Slider from 'components/Slider';
-    import Loading from 'components/Loading';
-    import Scroll from 'components/Scroll';
-    import { fetchSliderList, fetchRecommendList } from 'api/recommend';
-    import { ERR_OK } from 'api/config';
+import Slider from 'components/Slider'
+import Loading from 'components/Loading'
+import Scroll from 'components/Scroll'
+import { fetchSliderList, fetchRecommendList } from 'api/recommend'
+import { ERR_OK } from 'api/config'
 
-    export default {
-        data() {
-            return {
-                slideList: [],
-                recommendList: []
-            };
-        },
-        created() {
-            this.fetchSliderList();
-            this.fetchRecommendList();
-        },
-        methods: {
-            fetchSliderList() {
-                fetchSliderList().then(resp => {
-                    if (resp.code === ERR_OK) {
-                        this.slideList = resp.data.slider;
-                    }
-                }).catch(err => {
-                    console.warn(err);
-                });
-            },
-            fetchRecommendList() {
-                fetchRecommendList().then(resp => {
-                    if (resp.code === ERR_OK) {
-                        this.recommendList = resp.data.list;
-                    }
-                }).catch(err => {
-                    console.warn(err);
-                });
-            }
-        },
-        components: {
-            Slider,
-            Scroll,
-            Loading
+export default {
+    data() {
+        return {
+            slideList: [],
+            recommendList: []
         }
-    };
+    },
+    created() {
+        this.fetchSliderList()
+        this.fetchRecommendList()
+    },
+    methods: {
+        fetchSliderList() {
+            fetchSliderList().then(resp => {
+                if (resp.code === ERR_OK) {
+                    this.slideList = resp.data.slider
+                }
+            }).catch(err => {
+                console.warn(err)
+            })
+        },
+        fetchRecommendList() {
+            fetchRecommendList().then(resp => {
+                if (resp.code === ERR_OK) {
+                    this.recommendList = resp.data.list
+                }
+            }).catch(err => {
+                console.warn(err)
+            })
+        }
+    },
+    components: {
+        Slider,
+        Scroll,
+        Loading
+    }
+}
 </script>
 
 <style scoped lang="scss">
-    @import './style';
+@import './style';
 </style>

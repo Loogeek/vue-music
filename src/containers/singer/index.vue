@@ -27,12 +27,12 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { mapGetters, mapActions, mapMutations } from 'vuex';
-import Scroll from 'components/Scroll';
-import Loading from 'components/Loading';
+import { mapGetters, mapActions, mapMutations } from 'vuex'
+import Scroll from 'components/Scroll'
+import Loading from 'components/Loading'
 
-const ALPHABET_ITEM_HEIGHT = 18;
-const LIST_TOP_TITLE_HEIGHT = 30;
+const ALPHABET_ITEM_HEIGHT = 18
+const LIST_TOP_TITLE_HEIGHT = 30
 
 export default {
     data() {
@@ -41,23 +41,23 @@ export default {
             scrollY: 0,
             listTitleDiff: 0,
             listGroupHeight: []
-        };
+        }
     },
     created() {
-        this.touches = {};
+        this.touches = {}
     },
     mounted() {
-        this.fetchSingerList();
+        this.fetchSingerList()
     },
     computed: {
         alphabetName() {
-            return this.singerList.map(item => item.title.slice(0, 1));
+            return this.singerList.map(item => item.title.slice(0, 1))
         },
         listTopTitle() {
             if (this.scrollY < 0) {
-                return;
+                return
             }
-            return this.singerList[this.currentIndex] && this.singerList[this.currentIndex].title;
+            return this.singerList[this.currentIndex] && this.singerList[this.currentIndex].title
         },
         ...mapGetters([
             'singerList'
@@ -65,46 +65,46 @@ export default {
     },
     methods: {
         handleTouchStart(e) {
-            this.touches.startIndex = parseInt(e.target.dataset.index);
-            this.touches.startY = e.touches[0].pageY;
-            this.currentIndex = this.touches.startIndex;
-            this._scrollToElement();
+            this.touches.startIndex = parseInt(e.target.dataset.index)
+            this.touches.startY = e.touches[0].pageY
+            this.currentIndex = this.touches.startIndex
+            this._scrollToElement()
         },
         handleTouchMove(e) {
-            const moveY = Math.floor((e.touches[0].pageY - this.touches.startY) / ALPHABET_ITEM_HEIGHT);
-            let changeIndex = this.touches.startIndex + moveY;
+            const moveY = Math.floor((e.touches[0].pageY - this.touches.startY) / ALPHABET_ITEM_HEIGHT)
+            let changeIndex = this.touches.startIndex + moveY
 
             if (changeIndex < 0) {
-                changeIndex = 0;
+                changeIndex = 0
             } else if (changeIndex > this.singerList.length - 1) {
-                changeIndex = this.singerList.length - 1;
+                changeIndex = this.singerList.length - 1
             }
 
-            this.currentIndex = changeIndex;
-            this._scrollToElement();
+            this.currentIndex = changeIndex
+            this._scrollToElement()
         },
         handleScroll(pos) {
-            this.scrollY = -pos.y;
+            this.scrollY = -pos.y
         },
         setCurrentSinger(singerItem) {
-            this.setCurrentSinger(singerItem);
+            this.setCurrentSinger(singerItem)
         },
         _routerPath(item) {
-            return `/singer/${item.id}`;
+            return `/singer/${item.id}`
         },
         _scrollToElement() {
-            const targetDOM = this.$refs.listGroup[this.currentIndex];
-            this.$refs.singerScroll.scrollToElement(targetDOM, 0);
+            const targetDOM = this.$refs.listGroup[this.currentIndex]
+            this.$refs.singerScroll.scrollToElement(targetDOM, 0)
         },
         _calculateHeight() {
-            let height = 0;
+            let height = 0
             let _listGroupHeight = [0];
 
             [...this.$refs.listGroup].map(item => {
-                height = height + item.clientHeight;
-                _listGroupHeight.push(height);
-            });
-            this.listGroupHeight = _listGroupHeight;
+                height = height + item.clientHeight
+                _listGroupHeight.push(height)
+            })
+            this.listGroupHeight = _listGroupHeight
         },
         ...mapActions([
             'fetchSingerList'
@@ -116,25 +116,25 @@ export default {
     watch: {
         singerList() {
             this.$nextTick(() => {
-                this._calculateHeight();
-            });
+                this._calculateHeight()
+            })
         },
         scrollY() {
             for (let i = 0, len = this.listGroupHeight.length; i < len; i++) {
-                const height1 = this.listGroupHeight[i];
-                const height2 = this.listGroupHeight[i + 1];
+                const height1 = this.listGroupHeight[i]
+                const height2 = this.listGroupHeight[i + 1]
 
                 if (this.scrollY >= height1 && this.scrollY < height2) {
-                    this.currentIndex = i;
-                    this.listTitleDiff = height2 - this.scrollY;
-                    break;
+                    this.currentIndex = i
+                    this.listTitleDiff = height2 - this.scrollY
+                    break
                 }
             }
         },
         listTitleDiff(newValue) {
             if (this.$refs.listTitle) {
-                let diffY = newValue > 0 && newValue < LIST_TOP_TITLE_HEIGHT ? newValue - LIST_TOP_TITLE_HEIGHT : 0;
-                this.$refs.listTitle.style.webkitTransform = `translateY(${diffY}px)`;
+                let diffY = newValue > 0 && newValue < LIST_TOP_TITLE_HEIGHT ? newValue - LIST_TOP_TITLE_HEIGHT : 0
+                this.$refs.listTitle.style.webkitTransform = `translateY(${diffY}px)`
             }
         }
     },
@@ -142,10 +142,10 @@ export default {
         Scroll,
         Loading
     }
-};
+}
 
 </script>
 
 <style scoped lang="scss">
-    @import './style';
+@import './style';
 </style>

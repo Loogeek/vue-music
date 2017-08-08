@@ -1,9 +1,9 @@
-import axios from 'axios';
-import jsonp from 'common/js/jsonp';
-import { commoneParams } from './config';
+import axios from 'axios'
+import jsonp from 'common/js/jsonp'
+import { commoneParams } from './config'
 
 export function fetchSliderList() {
-    const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg';
+    const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
     const opts = {
         ...commoneParams,
         ...{
@@ -11,14 +11,14 @@ export function fetchSliderList() {
             notice: 0,
             needNewCode: 1
         }
-    };
+    }
 
-    return jsonp(url, opts);
+    return jsonp(url, opts)
 }
 
 export function fetchRecommendList() {
-    const url = '/api/getDiscList';
-    
+    const url = '/api/getDiscList'
+
     const opts = {
         ...commoneParams,
         ...{
@@ -32,11 +32,13 @@ export function fetchRecommendList() {
             rnd: Math.random(),
             format: 'json'
         }
-    };
+    }
 
-    return axios.get(url, {
-        params: opts
-    }).then(resp => {
-        return Promise.resolve(resp.data);
-    });
-};
+    return axios
+        .get(url, {
+            params: opts
+        })
+        .then(resp => {
+            return Promise.resolve(resp.data)
+        })
+}

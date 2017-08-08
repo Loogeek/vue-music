@@ -13,7 +13,7 @@
                 default: '正在载入...'
             }
         }
-    };
+    }
 </script>
 
 <style scoped lang="scss">

@@ -10,17 +10,17 @@
 </template>
 
 <script>
-    import MHeader from 'components/MHeader';
-    import MTab from 'components/MTab';
-    import player from 'containers/player';
+import MHeader from 'components/MHeader'
+import MTab from 'components/MTab'
+import player from 'containers/player'
 
-    export default {
-      components: {
-        MHeader,
-        MTab,
-        player
-      }
-    };
+export default {
+  components: {
+    MHeader,
+    MTab,
+    player
+  }
+}
 </script>
 
 <style>

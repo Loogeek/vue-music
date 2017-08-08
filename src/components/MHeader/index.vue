@@ -6,34 +6,34 @@
 </template>
 
 <script type="text/ecmascript-6">
-    export default {};
+export default {}
 </script>
 
 <style scoped lang="scss">
-    @import "~common/scss/variable";
-    @import "~common/scss/mixin";
+@import "~common/scss/variable";
+@import "~common/scss/mixin";
 
-    .m-header {
-        text-align: center;
-        color: $color-theme;
-        font-size: 0;
+.m-header {
+    text-align: center;
+    color: $color-theme;
+    font-size: 0;
 
-        &-icon {
-            display: inline-block;
-            vertical-align: top;
-            width: 3rem;
-            height: 3.2rem;
-            margin-top: .6rem;
-            margin-right: .9rem;
-            @include bg-image('logo');
-            background-size: 30px 32px;
-        }
-
-        &-text {
-            display: inline-block;
-            vertical-align: top;
-            line-height: 4.4rem;
-            font-size: $font-size-large;            
-        }
+    &-icon {
+        display: inline-block;
+        vertical-align: top;
+        width: 3rem;
+        height: 3.2rem;
+        margin-top: .6rem;
+        margin-right: .9rem;
+        @include bg-image('logo');
+        background-size: 30px 32px;
     }
+
+    &-text {
+        display: inline-block;
+        vertical-align: top;
+        line-height: 4.4rem;
+        font-size: $font-size-large;
+    }
+}
 </style>

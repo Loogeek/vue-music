@@ -1,44 +1,44 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import recommend from 'containers/recommend';
-import rank from 'containers/rank';
-import search from 'containers/search';
-import singer from 'containers/singer';
-import singerDetail from 'containers/singerDetail';
+import Vue from 'vue'
+import Router from 'vue-router'
+import recommend from 'containers/recommend'
+import rank from 'containers/rank'
+import search from 'containers/search'
+import singer from 'containers/singer'
+import singerDetail from 'containers/singerDetail'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      redirect: '/recommend'
-    },
-    {
-      path: '/recommend',
-      name: 'recommend',
-      component: recommend
-    },
-    {
-      path: '/rank',
-      name: 'rank',
-      component: rank
-    },
-    {
-      path: '/search',
-      name: 'search',
-      component: search
-    },
-    {
-      path: '/singer',
-      name: 'singer',
-      component: singer,
-      children: [
+    routes: [
         {
-          path: ':id',
-          component: singerDetail
+            path: '/',
+            redirect: '/recommend'
+        },
+        {
+            path: '/recommend',
+            name: 'recommend',
+            component: recommend
+        },
+        {
+            path: '/rank',
+            name: 'rank',
+            component: rank
+        },
+        {
+            path: '/search',
+            name: 'search',
+            component: search
+        },
+        {
+            path: '/singer',
+            name: 'singer',
+            component: singer,
+            children: [
+                {
+                    path: ':id',
+                    component: singerDetail
+                }
+            ]
         }
-      ]
-    }             
-  ]
-});
+    ]
+})
