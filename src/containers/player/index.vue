@@ -18,7 +18,7 @@
                 <footer class="large-player-footer">
                     <div class="progress">
                         <span class="progress-time progress-currentTime">{{ formatPlayTime(currentTime) }}</span>
-                        <ProgressBar :timePercent="timePercent" />
+                        <ProgressBar :timePercent="timePercent" @onPercentChange="handlePercentChange" />
                         <span class="progress-time progress-interval">{{ formatPlayTime(playSong.currentSong.interval) }}</span>
                         <audio ref="songAudio" :src="playSong.currentSong.url" @timeupdate="handleUpdateTime" @ended="handleNextSong" @canplay="handleSongCanPlay" @error="handleSongError">
                         </audio>
@@ -147,6 +147,7 @@ export default {
                 if (index === -1) {
                     index = this.playSong.playList.length - 1
                 }
+                this._stopToPlay()
 
                 this.setcurrentIndex(index)
                 this.canPlay = false
@@ -159,6 +160,7 @@ export default {
                 if (index === this.playSong.playList.length) {
                     index = 0
                 }
+                this._stopToPlay()
 
                 this.setcurrentIndex(index)
                 this.canPlay = false
@@ -177,6 +179,15 @@ export default {
         },
         handleSongError() {
             this.canPlay = false
+        },
+        handlePercentChange(newPercent) {
+            this.$refs.songAudio.currentTime = newPercent * this.playSong.currentSong.interval
+            this._stopToPlay()
+        },
+        _stopToPlay() {
+            if (!this.playSong.playing) {
+                this.handleTogglePlaying()
+            }
         },
         _createAnimation(animation, done) {
             createAnimation.registerAnimation({

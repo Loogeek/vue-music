@@ -1,8 +1,12 @@
 <template>
     <section class="progress-bar" ref="progressBar">
-        <article class="progress-bar-wrp" ref="barWrp">
+        <article class="progress-bar-wrp" ref="barWrp" @click="handleProgressClick">
             <div class="progress" ref="progress"></div>
-            <div class="btn" ref="progressBtn" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
+            <div class="btn" ref="progressBtn" 
+                @touchstart.prevent="handleTouchStart" 
+                @touchmove.prevent="handleTouchMove" 
+                @touchend="handleTouchEnd"
+            >
             </div>
         </article>
     </section>
@@ -21,32 +25,51 @@ export default {
         }
     },
     created() {
-        this.touches = {
+        this.touch = {
+            touching: false,
             startX: 0,
-            changeX: 0
+            changeX: 0,
+            progressWidth: 0
         }
     },
     methods: {
         handleTouchStart(e) {
-            this.touches.startX = e.touches[0].pageX
+            this.touch.touching = true
+            this.touch.startX = e.touches[0].pageX
+            this.touch.progressWidth = this.$refs.progress.offsetWidth
         },
         handleTouchMove(e) {
-            this.touches.changeX = e.touches[0].pageX - this.touches.startX
-            console.log(e.touches[0].pageX, this.touches.startX)
-            this.moveProgressBtn(this.touches.changeX)
+            const barWidth = this.$refs.barWrp.clientWidth
+            const difX = e.touches[0].pageX - this.touch.startX
+            this.touch.changeX = Math.min(barWidth, Math.max(0, this.touch.progressWidth + difX))
+            this._moveProgressBtn(this.touch.changeX)
         },
-        handleleTouchEnd(e) {
-
+        handleTouchEnd(e) {
+            this.touch.touching = false
+            this._emitNewPercent()
         },
-        moveProgressBtn(offChange) {
+        handleProgressClick(e) {
+            const changeX = e.pageX - this.$refs.progress.getBoundingClientRect().left
+            this._moveProgressBtn(changeX)
+            this._emitNewPercent()
+        },
+        _moveProgressBtn(offChange) {
             this.$refs.progress.style.width = `${offChange}px`
             this.$refs.progressBtn.style[prefixTransform] = `translate3d(${offChange}px, 0, 0)`
+        },
+        _emitNewPercent() {
+            const barWidth = this.$refs.barWrp.clientWidth
+            const newPercent = this.$refs.progress.offsetWidth / barWidth
+            this.$emit('onPercentChange', newPercent)
         }
     },
     watch: {
         timePercent(newPercent) {
-            const offChange = newPercent * this.$refs.barWrp.clientWidth
-            this.moveProgressBtn(offChange)
+            if (newPercent >= 0 && !this.touch.touching) {
+                const barWidth = this.$refs.barWrp.clientWidth
+                const offChange = newPercent * barWidth
+                this._moveProgressBtn(offChange)
+            }
         }
     }
 }
