@@ -80,24 +80,6 @@
                 > img {
                     border-radius: 50%;
                 }
-
-                .playing {
-                    animation: rotate 20s linear infinite;
-                }
-
-                .playing-pause {
-                    animation-play-state: paused;
-                }
-
-                @keyframes rotate {
-                    0% {
-                        transform: rotate(0);
-                    }
-
-                    100% {
-                        transform: rotate(360deg);
-                    }
-                }
             }
         }
 
@@ -260,6 +242,24 @@
                 left: 0;
                 top: 0;
             }
+        }
+    }
+
+    .playing {
+        animation: rotate 20s linear infinite;
+    }
+
+    .playing-pause {
+        animation-play-state: paused;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0);
+        }
+
+        100% {
+            transform: rotate(360deg);
         }
     }
 }

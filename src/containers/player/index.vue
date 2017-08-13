@@ -49,14 +49,21 @@
         <transition name="mini-player-an">
             <article class="mini-player" v-show="!playSong.fullScreen" @click="handleShow">
                 <div class="mini-player-img">
-                    <img :src="playSong.currentSong.image" ref="miniCd">
+                    <img ref="miniCd" 
+                        :src="playSong.currentSong.image" 
+                        :class="['playing', { 'playing-pause': !playSong.playing } ]"
+                    >
                 </div>
                 <div class="mini-player-content">
                     <h3 class="songname" v-html="playSong.currentSong.songname"></h3>
                     <p class="singer" v-html="playSong.currentSong.singer"></p>
                 </div>
                 <div class="mini-player-control">
-                    <i class="icon-mini"></i>
+                    <ProgressCircle :timePercent="timePercent">
+                        <i :class="['icon-mini', miniPlayIcon]"
+                            @click.stop="handleTogglePlaying">
+                        </i>
+                    </ProgressCircle>
                 </div>
                 <div class="mini-player-control">
                     <i class="icon-playlist"></i>
@@ -70,6 +77,7 @@
 import createAnimation from 'create-keyframe-animation'
 import { mapGetters, mapMutations } from 'vuex'
 import ProgressBar from 'components/ProgressBar'
+import ProgressCircle from 'components/ProgressCircle'
 import { prefixStyle } from 'common/js/dom'
 import { formatTime } from 'common/js/utils'
 
@@ -86,6 +94,9 @@ export default {
     computed: {
         playIcon() {
             return this.playSong.playing ? 'icon-pause' : 'icon-play'
+        },
+        miniPlayIcon() {
+            return this.playSong.playing ? 'icon-pause-mini' : 'icon-play-mini'
         },
         ...mapGetters([
             'playSong'
@@ -230,7 +241,8 @@ export default {
         }
     },
     components: {
-        ProgressBar
+        ProgressBar,
+        ProgressCircle
     }
 }
 </script>

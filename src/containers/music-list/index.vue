@@ -1,33 +1,31 @@
 <template>
-    <transition name="slide">
-        <section class="singer-detail">
-            <header class="singer-detail-header">
-                <span class="back">
-                    <i class="icon-back" @click="handleBack"></i>
-                </span>
-                <h2 class="title" v-html="singerDetail.name"></h2>
-            </header>
-            <div class="singer-detail-image" :style="bgStyle" ref="singerBg">
-                <div class="filter"></div>
-                <div class="play-btn" v-if="singerDetail.list.length > 0" ref="playBtn">
-                    <i class="icon-play"></i>
-                    <span class="play-btn-text">随机播放全部</span>
-                </div>
+    <section class="singer-detail">
+        <header class="singer-detail-header">
+            <span class="back">
+                <i class="icon-back" @click="handleBack"></i>
+            </span>
+            <h2 class="title" v-html="musics.name"></h2>
+        </header>
+        <div class="singer-detail-image" :style="bgStyle" ref="singerBg">
+            <div class="filter"></div>
+            <div class="play-btn" v-if="musics.list.length > 0" ref="playBtn">
+                <i class="icon-play"></i>
+                <span class="play-btn-text">随机播放全部</span>
             </div>
-            <div class="singer-detail-layer" ref="layerHook"></div>
-            <div class="singer-detail-list" ref="listWrap">
-                <scroll ref="scrollHook" @onScroll="handleScroll" :data="singerDetail.list" :listenScroll="true" :probeType="3">
-                    <song-list :songList="singerDetail.list" @onPlaySong="handlePlaySong">
-                    </song-list>
-                </scroll>
-                <Loading v-if="singerDetail.list.length === 0"></Loading>
-            </div>
-        </section>
-    </transition>
+        </div>
+        <div class="singer-detail-layer" ref="layerHook"></div>
+        <div class="singer-detail-list" ref="listWrap">
+            <scroll ref="scrollHook" @onScroll="handleScroll" :data="musics.list" :listenScroll="true" :probeType="3">
+                <song-list :songList="musics.list" @onPlaySong="handlePlaySong">
+                </song-list>
+            </scroll>
+            <Loading v-if="musics.list.length === 0"></Loading>
+        </div>
+    </section>
 </template>
 
 <script>
-    import { mapActions, mapGetters, mapMutations } from 'vuex'
+    import { mapGetters, mapMutations } from 'vuex'
     import Scroll from 'components/Scroll'
     import SongList from 'components/SongList'
     import Loading from 'components/Loading'
@@ -39,33 +37,29 @@
     const prefixBackdrop = prefixStyle('backdrop-filter')
 
     export default {
+        props: {
+            musics: {
+                type: Object,
+                default: {}
+            }
+        },
+        mounted() {
+            this.bgHeight = window.innerWidth * 0.7
+            this.$refs.listWrap.style.top = `${this.bgHeight}px`
+            this.maxScrollY = this.bgHeight - TOP_TITLE_HEIGHT
+        },
         data() {
             return {
                 scrollY: 0
             }
         },
-        mounted() {
-            const singerId = this.$route.params.id
-
-            if (this.singerDetail.id !== singerId) {
-                this.resetSingerDetail()
-                this.fetchSingerDetail(singerId)
-            } else if (!singerId) {
-                this.$router.back()
-            }
-
-            this.bgHeight = window.innerWidth * 0.7
-            this.$refs.listWrap.style.top = `${this.bgHeight}px`
-            this.maxScrollY = this.bgHeight - TOP_TITLE_HEIGHT
-        },
         computed: {
             bgStyle() {
-                return `background-image: url(${this.currentSinger.avatar || this.singerDetail.avatar})`
+                return `background-image: url(${this.currentSinger.avatar || this.musics.avatar})`
             },
             ...mapGetters([
-                'singerDetail',
                 'currentSinger'
-            ])
+            ])            
         },
         methods: {
             handleBack() {
@@ -76,17 +70,18 @@
             },
             handlePlaySong(item, index) {
                 this.setPlaySong({
-                    list: this.singerDetail.list,
+                    list: this.musics.list,
                     currentIndex: index
                 })
             },
-            ...mapActions([
-                'fetchSingerDetail'
-            ]),
             ...mapMutations({
-                setPlaySong: 'SET_PLAY_SONG',
-                resetSingerDetail: 'RESET_SINGER_DETAIL'
+                setPlaySong: 'SET_PLAY_SONG'
             })
+        },
+        components: {
+            Scroll,
+            SongList,
+            Loading
         },
         watch: {
             scrollY(newVal) {
@@ -119,12 +114,7 @@
 
                 this.$refs.singerBg.style.zIndex = zIndex
             }
-        },
-        components: {
-            Scroll,
-            SongList,
-            Loading
-        }
+        }     
     }
 </script>
 

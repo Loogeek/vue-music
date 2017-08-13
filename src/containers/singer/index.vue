@@ -6,7 +6,7 @@
                     <h3 class="singer-item-index">{{singer.title}}</h3>
                     <ul class="singer-item-list">
                         <li class="singer-item-list-item" v-for="(item, index) in singer.items" :key="index" @click="setCurrentSinger(item)">
-                            <router-link :to="_routerPath(item)" class="item-link">
+                            <router-link :to="`/singer/${item.id}`" class="item-link">
                                 <img class="item-avatar" v-lazy="item.avatar">
                                 <span class="item-name">{{item.name}}</span>
                             </router-link>
@@ -88,9 +88,6 @@ export default {
         },
         setCurrentSinger(singerItem) {
             this.setCurrentSinger(singerItem)
-        },
-        _routerPath(item) {
-            return `/singer/${item.id}`
         },
         _scrollToElement() {
             const targetDOM = this.$refs.listGroup[this.currentIndex]
