@@ -14,7 +14,8 @@ const state = {
         mode: playMode.sequence,
         currentIndex: 0,
         currentSong: {}
-    }
+    },
+    recommendDetail: {}
 }
 
 export default state

@@ -32,6 +32,14 @@ const mutations = {
     },
     [types.SET_CURRENT_INDEX](state, currentIndex) {
         state.playSong.currentIndex = currentIndex
+    },
+    [types.RECEIVE_RECOMMEND_DETAIL](state, payload) {
+        state.recommendDetail = payload.recommendDetail
+    },
+    [types.RESET_RECOMMEND_DETAIL](state, payload) {
+        state.recommendDetail = {
+            list: []
+        }
     }
 }
 

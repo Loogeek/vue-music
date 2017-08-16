@@ -7,7 +7,8 @@ export const commoneParams = {
 }
 
 export const params = {
-    param: 'jsonpCallback'
+    param: 'jsonpCallback',
+    prefix: 'jp'
 }
 
 export const playMode = {

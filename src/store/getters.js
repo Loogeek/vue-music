@@ -77,3 +77,20 @@ export const playSong = state => {
         currentSong: state.playSong.playList[state.playSong.currentIndex] || {}
     }
 }
+
+export const recommendDetail = state => {
+    const { recommendDetail } = state
+
+    if (recommendDetail && recommendDetail[0] && recommendDetail[0].songlist) {
+        return {
+            list: recommendDetail[0].songlist.map(song => new CreateSong(song)),
+            name: recommendDetail[0].dissname,
+            avatar: recommendDetail[0].logo,
+            id: recommendDetail[0].disstid
+        }
+    } else {
+        return {
+            list: []
+        }
+    }
+}

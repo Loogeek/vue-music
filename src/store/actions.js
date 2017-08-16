@@ -1,4 +1,5 @@
 import { fetchSingerListReq, fetchSingerDetailReq } from 'api/singer'
+import { fetchRecommendDetailReq } from 'api/recommend'
 import * as types from './mutation-types'
 import { ERR_OK } from 'api/config'
 
@@ -24,6 +25,17 @@ export const fetchSingerDetail = ({ commit }, singerId) => {
             })
         } else {
             console.warn('fetch singer detail error:', resp.message)
+        }
+    })
+}
+
+export const fetchRecommendDetail = ({ commit }, recommendId) => {
+    fetchRecommendDetailReq(recommendId).then(resp => {
+        if (resp.code === ERR_OK) {
+            commit({
+                type: types.RECEIVE_RECOMMEND_DETAIL,
+                recommendDetail: resp.cdlist
+            })
         }
     })
 }
