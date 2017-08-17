@@ -15,7 +15,8 @@ const state = {
         currentIndex: 0,
         currentSong: {}
     },
-    recommendDetail: {}
+    recommendDetail: {},
+    rank: []
 }
 
 export default state

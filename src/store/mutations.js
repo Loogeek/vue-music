@@ -40,6 +40,9 @@ const mutations = {
         state.recommendDetail = {
             list: []
         }
+    },
+    [types.RECEIVE_RANK_LIST](state, payload) {
+        state.rank = payload.rank
     }
 }
 
