@@ -1,6 +1,6 @@
 import { fetchSingerListReq, fetchSingerDetailReq } from 'api/singer'
 import { fetchRecommendDetailReq } from 'api/recommend'
-import { fetchRankListReq } from 'api/rank'
+import { fetchRankListReq, fetchRankDetailReq } from 'api/rank'
 import * as types from './mutation-types'
 import { ERR_OK } from 'api/config'
 
@@ -50,6 +50,19 @@ export const fetchRankList = ({ commit }) => {
             })
         } else {
             console.warn('fetch rank error:', resp.message)
+        }
+    })
+}
+
+export const fetchRankDetail = ({ commit }, id) => {
+    fetchRankDetailReq(id).then(resp => {
+        if (resp.code === ERR_OK) {
+            commit({
+                type: types.RECEIVE_RANK_DETAIL,
+                rankDetail: resp
+            })
+        } else {
+            console.warn('fetch rank detail error')
         }
     })
 }

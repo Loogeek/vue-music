@@ -1,10 +1,10 @@
 import jsonp from 'common/js/jsonp'
-import { commoneParams } from './config'
+import { commonParams } from './config'
 
 export function fetchSingerListReq() {
     const url = 'https://c.y.qq.com/v8/fcg-bin/v8.fcg'
     const opts = {
-        ...commoneParams,
+        ...commonParams,
         ...{
             channel: 'singer',
             page: 'list',
@@ -23,7 +23,7 @@ export function fetchSingerListReq() {
 export function fetchSingerDetailReq(singerId) {
     const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg'
     const opts = {
-        ...commoneParams,
+        ...commonParams,
         ...{
             hostUin: 0,
             needNewCode: 0,

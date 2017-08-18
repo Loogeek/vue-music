@@ -2,7 +2,7 @@
     <section class="rank">
         <scroll :data="rank">
             <ul class="rank-list">
-                <li class="rank-list-item" v-for="(rankItem, index) in rank" :key="index">
+                <router-link :to="`/rank/${rankItem.id}`" class="rank-list-item" v-for="(rankItem, index) in rank" :key="index">
                     <div class="list-img">
                         <img :src="rankItem.picUrl">
                     </div>
@@ -12,9 +12,10 @@
                             <span>{{ item.singername }}-{{ item.songname }}</span>
                         </li>
                     </ul>    
-                </li>
+                </router-link>
             </ul>
         </scroll>
+        <router-view></router-view>
     </section>
 </template>
 

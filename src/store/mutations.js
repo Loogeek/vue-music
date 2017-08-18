@@ -43,6 +43,10 @@ const mutations = {
     },
     [types.RECEIVE_RANK_LIST](state, payload) {
         state.rank = payload.rank
+    },
+    [types.RECEIVE_RANK_DETAIL](state, payload) {
+        state.rankDetail = payload.rankDetail
+        console.log(222, state.rankDetail)
     }
 }
 

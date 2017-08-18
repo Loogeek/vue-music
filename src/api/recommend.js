@@ -1,11 +1,11 @@
 import axios from 'axios'
 import jsonp from 'common/js/jsonp'
-import { commoneParams } from './config'
+import { commonParams } from './config'
 
 export function fetchSliderList() {
     const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
     const opts = {
-        ...commoneParams,
+        ...commonParams,
         ...{
             platform: 'h5',
             notice: 0,
@@ -20,7 +20,7 @@ export function fetchRecommendList() {
     const url = '/api/getDiscList'
 
     const opts = {
-        ...commoneParams,
+        ...commonParams,
         ...{
             platform: 'yqq',
             hostUin: 0,
@@ -47,7 +47,7 @@ export function fetchRecommendDetailReq(disstid) {
     const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
 
     const opts = { 
-        ...commoneParams, 
+        ...commonParams, 
         ...{
         disstid,
         type: 1,

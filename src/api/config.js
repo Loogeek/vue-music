@@ -1,4 +1,4 @@
-export const commoneParams = {
+export const commonParams = {
     g_tk: 818308264,
     inCharset: 'utf-8',
     outCharset: 'utf-8',
