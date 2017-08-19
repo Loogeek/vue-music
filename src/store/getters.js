@@ -90,20 +90,32 @@ export const recommendDetail = state => {
         }
     } else {
         return {
-            list: []
+            list: [],
+            name: '',
+            avatar: '',
+            id: ''
         }
     }
 }
 
 export const rankDetail = state => {
     const { rankDetail } = state
-    const list = rankDetail.songlist && rankDetail.songlist.map(song => new CreateSong(song))
-    console.log(123, rankDetail)
+    const list = rankDetail.songlist && rankDetail.songlist.map(song => new CreateSong(song.data)) || []
     const topinfo = rankDetail.topinfo || {}
-    return {
-        list,
-        name: topinfo.ListName,
-        avator: list[0].image,
-        id: topinfo.topID
+    
+    if (list.length > 0) {
+        return {
+            list,
+            name: topinfo.ListName,
+            avatar: topinfo.pic_album,
+            id: topinfo.topID
+        }
+    } else {
+        return {
+            list: [],
+            name: '',
+            avatar: '',
+            id: ''
+        }
     }
 }

@@ -9,7 +9,10 @@ const mutations = {
     },
     [types.RESET_SINGER_DETAIL](state, payload) {
         state.singerDetail = {
-            list: []
+            list: [],
+            name: '',
+            avatar: '',
+            id: ''
         }
     },
     [types.SET_CURRENT_SINGER](state, currentSinger) {
@@ -38,7 +41,10 @@ const mutations = {
     },
     [types.RESET_RECOMMEND_DETAIL](state, payload) {
         state.recommendDetail = {
-            list: []
+            list: [],
+            name: '',
+            avatar: '',
+            id: ''
         }
     },
     [types.RECEIVE_RANK_LIST](state, payload) {
@@ -46,7 +52,14 @@ const mutations = {
     },
     [types.RECEIVE_RANK_DETAIL](state, payload) {
         state.rankDetail = payload.rankDetail
-        console.log(222, state.rankDetail)
+    },
+    [types.RESET_RANK_DETAIL](state, payload) {
+        state.rankDetail = {
+            list: [],
+            name: '',
+            avatar: '',
+            id: ''
+        }
     }
 }
 

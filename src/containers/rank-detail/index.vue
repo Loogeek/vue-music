@@ -1,6 +1,6 @@
 <template>
     <transition name="slide">
-        <music-list :musics="rankDetail"></music-list>
+        <music-list :musics="rankDetail" :showRank="true"></music-list>
     </transition>
 </template>
 
@@ -11,13 +11,12 @@
     export default {
         mounted() {
             const { id } = this.$route.params
-            console.log(111)
+            if (this.rankDetail.id !== id) {
+                this.resetRankDetail()
                 this.fetchRankDetail(id)
-            // if (this.recommendDetail.id !== recommendId) {
-            //     this.fetchRecommendDetail(recommendId)
-            // } else if (!recommendId) {
-            //     this.$router.back()
-            // }
+            } else if (!id) {
+                this.$router.back()
+            }
         },
         computed: {
             ...mapGetters([
@@ -27,10 +26,10 @@
         methods: {
             ...mapActions([
                 'fetchRankDetail'
-            ])
-            // ...mapMutations({
-            //     resetRecommendDetail: 'RESET_RECOMMEND_DETAIL'
-            // })
+            ]),
+            ...mapMutations({
+                resetRankDetail: 'RESET_RANK_DETAIL'
+            })
         },
         components: {
             MusicList

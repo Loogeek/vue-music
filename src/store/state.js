@@ -3,7 +3,10 @@ import { playMode } from 'api/config'
 const state = {
     singerList: [],
     singerDetail: {
-        list: []
+        list: [],
+        name: '',
+        avatar: '',
+        id: ''
     },
     currentSinger: {},
     playSong: {
@@ -15,9 +18,19 @@ const state = {
         currentIndex: 0,
         currentSong: {}
     },
-    recommendDetail: {},
+    recommendDetail: {
+        list: [],
+        name: '',
+        avatar: '',
+        id: ''
+    },
     rank: [],
-    rankDetail: {}
+    rankDetail: {
+        list: [],
+        name: '',
+        avatar: '',
+        id: ''
+    }
 }
 
 export default state

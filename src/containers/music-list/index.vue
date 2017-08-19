@@ -16,7 +16,11 @@
         <div class="singer-detail-layer" ref="layerHook"></div>
         <div class="singer-detail-list" ref="listWrap">
             <scroll ref="scrollHook" @onScroll="handleScroll" :data="musics.list" :listenScroll="true" :probeType="3">
-                <song-list :songList="musics.list" @onPlaySong="handlePlaySong">
+                <song-list 
+                    :songList="musics.list" 
+                    @onPlaySong="handlePlaySong"
+                    :showRank="showRank"
+                >
                 </song-list>
             </scroll>
             <Loading v-if="musics.list.length === 0"></Loading>
@@ -25,7 +29,7 @@
 </template>
 
 <script>
-    import { mapGetters, mapMutations } from 'vuex'
+    import { mapMutations } from 'vuex'
     import Scroll from 'components/Scroll'
     import SongList from 'components/SongList'
     import Loading from 'components/Loading'
@@ -41,6 +45,10 @@
             musics: {
                 type: Object,
                 default: {}
+            },
+            showRank: {
+                type: Boolean,
+                default: false
             }
         },
         mounted() {
@@ -55,11 +63,8 @@
         },
         computed: {
             bgStyle() {
-                return `background-image: url(${this.currentSinger.avatar || this.musics.avatar})`
-            },
-            ...mapGetters([
-                'currentSinger'
-            ])            
+                return `background-image: url(${this.musics.avatar})`
+            }          
         },
         methods: {
             handleBack() {
