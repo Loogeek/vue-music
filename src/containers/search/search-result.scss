@@ -1,0 +1,17 @@
+@import '~common/scss/variable';
+@import '~common/scss/mixin';
+
+.search-result {
+    height: 100%;
+    overflow: hidden;
+    padding: 0 1rem;
+
+    // &-list {
+
+        &-item {
+            display: flex;
+            align-items: center;
+            padding-bottom: 2rem;
+        }
+    // }
+}

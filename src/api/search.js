@@ -15,21 +15,29 @@ export function fetchHotSearchReq() {
     return jsonp(url, opts)
 }
 
-// export function fetchRankDetailReq(topid) {
-//     const url = 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_toplist_cp.fcg'
+export function fetchSearchQueryReq(query, page = 1, pageNum = 20, zhida = 1) {
+    const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
   
-//     const opts = {
-//         ...commonParams, 
-//         ...{
-//             topid,
-//             needNewCode: 1,
-//             uin: 0,
-//             tpl: 3,
-//             page: 'detail',
-//             type: 'top',
-//             platform: 'h5'
-//         }
-//     }
+    const opts = {
+        ...commonParams, 
+        ...{
+            w: query,
+            p: page,
+            perpage: pageNum,
+            n: pageNum,
+            catZhida: zhida ? 1 : 0,
+            zhidaqu: 1,
+            t: 0,
+            flag: 1,
+            ie: 'utf-8',
+            sem: 1,
+            aggr: 0,
+            remoteplace: 'txt.mqq.all',
+            uin: 0,
+            needNewCode: 1,
+            platform: 'h5'
+        }
+    }
   
-//     return jsonp(url, opts)
-// }
+    return jsonp(url, opts)
+}

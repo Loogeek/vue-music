@@ -63,7 +63,14 @@ const mutations = {
     },
     [types.RECEIVE_HOT_SEARCH](state, payload) {
         state.search = {
+            ...state.search,
             hotkey: payload.hotkey && payload.hotkey.slice(0, 10)
+        }
+    },
+    [types.RECEIVE_SEARCH_QUERY](state, payload) {
+        state.search = {
+            ...state.search,
+            result: payload.result
         }
     }
 }

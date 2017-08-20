@@ -1,7 +1,7 @@
 <template>
     <article class="search-list">
         <ul>
-            <li class="search-list-item" v-for="(item, index) in searches" :key="index">
+            <li class="search-list-item" v-for="(item, index) in searchSong" :key="index">
                 <span class="text">{{ item }}</span>
                 <span class="icon">
                     <i class="icon-delete"></i>
@@ -17,6 +17,11 @@ export default {
         searches: {
             type: Array,
             default: []
+        }
+    },
+    computed: {
+        searchSong() {
+            return this.searches.song && this.searches.song.list || []
         }
     }
 }

@@ -32,7 +32,8 @@ const state = {
         id: ''
     },
     search: {
-        hotkey: []
+        hotkey: [],
+        result: {}
     }
 }
 

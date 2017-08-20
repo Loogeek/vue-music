@@ -1,7 +1,7 @@
 import { fetchSingerListReq, fetchSingerDetailReq } from 'api/singer'
 import { fetchRecommendDetailReq } from 'api/recommend'
 import { fetchRankListReq, fetchRankDetailReq } from 'api/rank'
-import { fetchHotSearchReq } from 'api/search'
+import { fetchHotSearchReq, fetchSearchQueryReq } from 'api/search'
 import * as types from './mutation-types'
 import { ERR_OK } from 'api/config'
 
@@ -68,6 +68,7 @@ export const fetchRankDetail = ({ commit }, id) => {
     })
 }
 
+// search
 export const fetchHotSearch = ({ commit }) => {
     fetchHotSearchReq().then(resp => {
         if (resp.code === ERR_OK) {
@@ -80,3 +81,17 @@ export const fetchHotSearch = ({ commit }) => {
         }
     })
 }
+
+export const fetchSearchQuery = ({ commit }, query) => {
+    fetchSearchQueryReq(query).then(resp => {
+        if (resp.code === ERR_OK) {
+            commit({
+                type: types.RECEIVE_SEARCH_QUERY,
+                result: resp.data
+            })
+        } else {
+            console.warn('fetch search query error:', resp.message)
+        }
+    })
+}
+

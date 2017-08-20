@@ -1,8 +1,16 @@
 <template>
     <article class="search-input">
         <i class="icon-search"></i>
-        <input type="text" class="search-input-box" :placeholder="placeholder">
-        <i class="icon-dismiss search-input-clear" ></i>
+        <input type="text" 
+            class="search-input-box"         
+            :placeholder="placeholder"
+            v-model="inputQuery"
+        >
+        <i class="icon-dismiss search-input-clear" 
+            v-show="inputQuery"
+            @click="handleClearQuery"
+        >
+        </i>
     </article>
 </template>
 
@@ -12,6 +20,21 @@
             placeholder: {
                 type: String,
                 default: '搜索歌曲、歌手'
+            }
+        },
+        data() {
+            return {
+                inputQuery: ''
+            }
+        },
+        mounted() {
+            this.$watch('inputQuery', (newQuery) => {
+                this.$emit('onSearchInput', newQuery)
+            })
+        },
+        methods: {
+            handleClearQuery() {
+                this.inputQuery = ''
             }
         }
     }

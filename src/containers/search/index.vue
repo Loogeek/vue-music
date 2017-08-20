@@ -1,6 +1,6 @@
 <template>
     <section class="search">
-        <search-input></search-input>
+        <search-input @onSearchInput="handleSearchInput"></search-input>
         <div class="search-hot">
             <scroll>
                 <div class="search-hot-key">
@@ -22,6 +22,7 @@
                 </div>
             </scroll>
         </div>
+        <search-result></search-result>
     </section>
 </template>
 
@@ -30,6 +31,7 @@
     import Scroll from 'components/Scroll'
     import SearchInput from 'components/SearchInput'
     import SearchList from 'components/SearchList'
+    import SearchResult from './search-result'
 
     export default {
         created() {
@@ -41,11 +43,16 @@
             ])
         },
         methods: {
+            handleSearchInput(query) {
+                this.fetchSearchQuery(query)
+            },
             ...mapActions([
-                'fetchHotSearch'
+                'fetchHotSearch',
+                'fetchSearchQuery'
             ])
         },
         components: {
+            SearchResult,
             Scroll,
             SearchInput,
             SearchList
