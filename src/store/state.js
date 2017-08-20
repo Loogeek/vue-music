@@ -30,6 +30,9 @@ const state = {
         name: '',
         avatar: '',
         id: ''
+    },
+    search: {
+        hotkey: []
     }
 }
 

@@ -1,6 +1,7 @@
 import { fetchSingerListReq, fetchSingerDetailReq } from 'api/singer'
 import { fetchRecommendDetailReq } from 'api/recommend'
 import { fetchRankListReq, fetchRankDetailReq } from 'api/rank'
+import { fetchHotSearchReq } from 'api/search'
 import * as types from './mutation-types'
 import { ERR_OK } from 'api/config'
 
@@ -63,6 +64,19 @@ export const fetchRankDetail = ({ commit }, id) => {
             })
         } else {
             console.warn('fetch rank detail error')
+        }
+    })
+}
+
+export const fetchHotSearch = ({ commit }) => {
+    fetchHotSearchReq().then(resp => {
+        if (resp.code === ERR_OK) {
+            commit({
+                type: types.RECEIVE_HOT_SEARCH,
+                hotkey: resp.data.hotkey
+            })
+        } else {
+            console.warn('fetch hot search error')
         }
     })
 }

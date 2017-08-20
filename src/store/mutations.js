@@ -60,6 +60,11 @@ const mutations = {
             avatar: '',
             id: ''
         }
+    },
+    [types.RECEIVE_HOT_SEARCH](state, payload) {
+        state.search = {
+            hotkey: payload.hotkey && payload.hotkey.slice(0, 10)
+        }
     }
 }
 
