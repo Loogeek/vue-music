@@ -82,8 +82,8 @@ export const fetchHotSearch = ({ commit }) => {
     })
 }
 
-export const fetchSearchQuery = ({ commit }, query) => {
-    fetchSearchQueryReq(query).then(resp => {
+export const fetchSearchQuery = ({ commit }, props) => {
+    fetchSearchQueryReq(props).then(resp => {
         if (resp.code === ERR_OK) {
             commit({
                 type: types.RECEIVE_SEARCH_QUERY,

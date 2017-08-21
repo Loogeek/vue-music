@@ -68,9 +68,16 @@ const mutations = {
         }
     },
     [types.RECEIVE_SEARCH_QUERY](state, payload) {
-        state.search = {
-            ...state.search,
-            result: payload.result
+        if (payload.result.song.curpage > 1) {
+            state.search.result.song = {
+                ...payload.result.song,
+                list: state.search.result.song.list.concat(payload.result.song.list)
+            }
+        } else {
+            state.search = {
+                ...state.search,
+                result: payload.result
+            }
         }
     }
 }

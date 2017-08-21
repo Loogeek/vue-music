@@ -1,7 +1,7 @@
 <template>
     <section class="search">
         <search-input @onSearchInput="handleSearchInput"></search-input>
-        <div class="search-hot">
+        <div class="search-hot" v-show="!query">
             <scroll>
                 <div class="search-hot-key">
                     <h1 class="title">热门搜索</h1>
@@ -22,12 +22,12 @@
                 </div>
             </scroll>
         </div>
-        <search-result></search-result>
+        <search-result v-show="query" :query="query"></search-result>
     </section>
 </template>
 
 <script>
-    import { mapActions, mapState } from 'vuex'
+    import { mapActions, mapState, mapGetters } from 'vuex'
     import Scroll from 'components/Scroll'
     import SearchInput from 'components/SearchInput'
     import SearchList from 'components/SearchList'
@@ -37,18 +37,26 @@
         created() {
             this.fetchHotSearch()
         },
+        data() {
+            return {
+                query: ''
+            }
+        },
         computed: {
             ...mapState([
                 'search'
+            ]),
+            ...mapGetters([
+                'searchResult'
             ])
         },
         methods: {
             handleSearchInput(query) {
-                this.fetchSearchQuery(query)
+                console.log(22, query)
+                this.query = query
             },
             ...mapActions([
-                'fetchHotSearch',
-                'fetchSearchQuery'
+                'fetchHotSearch'
             ])
         },
         components: {

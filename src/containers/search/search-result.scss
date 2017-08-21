@@ -2,16 +2,42 @@
 @import '~common/scss/mixin';
 
 .search-result {
-    height: 100%;
-    overflow: hidden;
-    padding: 0 1rem;
+    position: fixed;
+    top: 17.8rem;
+    bottom: 0;
+    width: 100%;
+    padding: 0 3rem;
+    box-sizing: border-box;
 
-    // &-list {
+    &-item {
+        display: flex;
+        align-items: center;
+        padding-bottom: 2rem;
 
-        &-item {
-            display: flex;
-            align-items: center;
-            padding-bottom: 2rem;
+        .icon {
+            width: 3rem;
+            
+            [class^="icon-"] {
+                font-size: 1.4rem;
+                color: $color-text-d;
+            }
         }
-    // }
+
+        .name {
+            flex: 1;
+            font-size: $font-size-medium;
+            color: $color-text-d;
+            overflow: hidden;
+
+            .text {
+                @extend %no-wrap;
+            }
+        }
+    }
+
+    .loading {
+        position: inherit;
+        top: 0;
+        transform: translate(0);
+    }
 }

@@ -15,6 +15,8 @@
 </template>
 
 <script>
+    import { debounce } from 'common/js/utils'
+
     export default {
         props: {
             placeholder: {
@@ -28,9 +30,9 @@
             }
         },
         mounted() {
-            this.$watch('inputQuery', (newQuery) => {
+            this.$watch('inputQuery', debounce(newQuery => {
                 this.$emit('onSearchInput', newQuery)
-            })
+            }))
         },
         methods: {
             handleClearQuery() {
@@ -47,8 +49,8 @@
         display: flex;
         align-items: center;
         box-sizing: border-box;
-        width: 100%;
         padding: 0 .6rem;
+        margin: 2rem;
         height: 4rem;
         background-color: $color-highlight-background;
         border-radius: .6rem;

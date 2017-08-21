@@ -121,21 +121,25 @@ export const rankDetail = state => {
 }
 
 export const searchResult = state => {
-    const { result } = state.search
+    const { zhida, song } = state.search.result
     
-    if (result.zhida && result.zhida.singername) {
+    if (zhida && zhida.singername) {
         let searchResult = []
-        searchResult.push(result.zhida)
-
+        searchResult.push(zhida)
         return {
-            ...result.song,
-            totalnum: result.song.totalnum + 1,     // 总数需加上添加的1个歌手
+            ...song,
+            totalnum: song.totalnum + 1,     // 总数需加上添加的1个歌手
             list: [
                 ...searchResult,
-                ...result.song.list.map(songItem => new CreateSong(songItem))
-            ]
+                ...song.list.map(songItem => new CreateSong(songItem))
+            ],
+            hasMore: song && song.list.length < song.totalnum
         }
     } else {
-        return result.song || {}
+        return {
+            ...song,
+            list: song && song.list.map(songItem => new CreateSong(songItem)),
+            hasMore: song && song.list.length < song.totalnum
+        }
     }
 }
