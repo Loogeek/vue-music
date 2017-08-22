@@ -37,6 +37,9 @@
         methods: {
             handleClearQuery() {
                 this.inputQuery = ''
+            },
+            handleSearchQuery(newValue) {
+                this.inputQuery = newValue
             }
         }
     }

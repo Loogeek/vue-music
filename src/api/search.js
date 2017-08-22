@@ -15,17 +15,17 @@ export function fetchHotSearchReq() {
     return jsonp(url, opts)
 }
 
-export function fetchSearchQueryReq(props) {
+export function fetchSearchQueryReq({query = '', page = 1, pageNum = 20, zhida = 1}) {
     const url = 'https://c.y.qq.com/soso/fcgi-bin/search_for_qq_cp'
   
     const opts = {
         ...commonParams, 
         ...{
-            w: props.query || '',
-            p: props.page || 1,
-            perpage: props.pageNum || 20,
-            n: props.pageNum || 20,
-            catZhida: props.zhida ? 1 : 0,
+            w: query,
+            p: page,
+            perpage: pageNum,
+            n: pageNum,
+            catZhida: zhida,
             zhidaqu: 1,
             t: 0,
             flag: 1,

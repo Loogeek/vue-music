@@ -3,9 +3,10 @@
         <scroll :data="searchResult.list" 
             :scrollMore="true" 
             @onScrollEnd="handleScrollEnd"
+            v-show="searchResult.list.length"
         >
             <ul>
-                <li class="search-result-item" v-for="(item, index) in searchResult.list" :key="index">
+                <li tag="li" @click="handleSelectSong(item, index)" class="search-result-item" v-for="(item, index) in searchResult.list" :key="index">
                     <span class="icon">
                         <i :class="renderResultIcon(item)"></i>
                     </span>
@@ -14,12 +15,14 @@
                 <Loading v-show="searchResult.hasMore" desc="" ></Loading>
             </ul>
         </scroll>
+        <no-result v-show="!searchResult.list.lenght"></no-result>
     </div>
 </template>
 
 <script>
-    import { mapActions, mapGetters } from 'vuex'
+    import { mapActions, mapGetters, mapMutations } from 'vuex'
     import Scroll from 'components/Scroll'
+    import NoResult from 'components/NoResult'
     import Loading from 'components/Loading'
 
     export default {
@@ -54,6 +57,18 @@
                     return `${item.songname}-${item.singer}`
                 }
             },
+            handleSelectSong(item, index) {
+                if (item.singername) {
+                    this.$router.push({
+                        path: `/singer/${item.singermid}`
+                    })
+                } else {
+                    this.setPlaySong({
+                        list: this.searchResult.list,
+                        currentIndex: index
+                    })
+                }
+            },
             handleScrollEnd() {
                 if (this.searchResult.hasMore) {
                     this.page++
@@ -62,7 +77,10 @@
             },
             ...mapActions([
                 'fetchSearchQuery'
-            ])
+            ]),
+            ...mapMutations({
+                 setPlaySong: 'SET_PLAY_SONG'
+            })
         },
         watch: {
             query(newQuery) {
@@ -71,7 +89,8 @@
         },
         components: {
             Scroll,
-            Loading
+            Loading,
+            NoResult
         }
     }
 </script>

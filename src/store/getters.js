@@ -132,14 +132,14 @@ export const searchResult = state => {
             list: [
                 ...searchResult,
                 ...song.list.map(songItem => new CreateSong(songItem))
-            ],
-            hasMore: song && song.list.length < song.totalnum
+            ] || [],
+            hasMore: song && song.list.length < song.totalnum || false
         }
     } else {
         return {
             ...song,
-            list: song && song.list.map(songItem => new CreateSong(songItem)),
-            hasMore: song && song.list.length < song.totalnum
+            list: song && song.list.map(songItem => new CreateSong(songItem)) || [],
+            hasMore: song && song.list.length < song.totalnum || false
         }
     }
 }

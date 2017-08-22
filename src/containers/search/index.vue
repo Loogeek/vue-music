@@ -1,12 +1,14 @@
 <template>
     <section class="search">
-        <search-input @onSearchInput="handleSearchInput"></search-input>
+        <search-input @onSearchInput="handleSearchInput" ref="searchInput"></search-input>
         <div class="search-hot" v-show="!query">
             <scroll>
                 <div class="search-hot-key">
                     <h1 class="title">热门搜索</h1>
                     <ul v-if="search.hotkey.length > 0">
-                        <li class="item" v-for="(hotItem, index) in search.hotkey" :key="index">
+                        <li class="item" v-for="(hotItem, index) in search.hotkey"             :key="index"
+                            @click="handleSelectHot(hotItem.k)"
+                        >
                             <span>{{ hotItem.k }}</span>
                         </li>
                     </ul>
@@ -52,8 +54,10 @@
         },
         methods: {
             handleSearchInput(query) {
-                console.log(22, query)
                 this.query = query
+            },
+            handleSelectHot(hotKey) {
+                this.$refs.searchInput.handleSearchQuery(hotKey)
             },
             ...mapActions([
                 'fetchHotSearch'
