@@ -5,6 +5,7 @@
             class="search-input-box"         
             :placeholder="placeholder"
             v-model="inputQuery"
+            ref="searchInput"
         >
         <i class="icon-dismiss search-input-clear" 
             v-show="inputQuery"
@@ -37,6 +38,9 @@
         methods: {
             handleClearQuery() {
                 this.inputQuery = ''
+            },
+            handleBlurInput() {
+                this.$refs.searchInput.blur()
             },
             handleSearchQuery(newValue) {
                 this.inputQuery = newValue

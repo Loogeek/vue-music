@@ -20,11 +20,15 @@
                             <i class="icon-clear"></i>
                         </span>
                     </h1>
-                    <search-list :searches="[]"></search-list>
+                    <search-list :searches="searchHistory"></search-list>
                 </div>
             </scroll>
         </div>
-        <search-result v-show="query" :query="query"></search-result>
+        <search-result v-show="query" 
+            :query="query"
+            @onBeforeScroll="handleBlurInput"
+        >
+        </search-result>
     </section>
 </template>
 
@@ -49,7 +53,8 @@
                 'search'
             ]),
             ...mapGetters([
-                'searchResult'
+                'searchResult',
+                'searchHistory'
             ])
         },
         methods: {
@@ -58,6 +63,9 @@
             },
             handleSelectHot(hotKey) {
                 this.$refs.searchInput.handleSearchQuery(hotKey)
+            },
+            handleBlurInput() {
+                this.$refs.searchInput.handleBlurInput()
             },
             ...mapActions([
                 'fetchHotSearch'

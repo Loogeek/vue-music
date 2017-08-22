@@ -143,3 +143,5 @@ export const searchResult = state => {
         }
     }
 }
+
+export const searchHistory = state => state.search.history.slice(0, 15)

@@ -4,6 +4,8 @@
             :scrollMore="true" 
             @onScrollEnd="handleScrollEnd"
             v-show="searchResult.list.length"
+            :beforeScroll="true"
+            @onBeforeScroll="handleBeforeScroll"
         >
             <ul>
                 <li tag="li" @click="handleSelectSong(item, index)" class="search-result-item" v-for="(item, index) in searchResult.list" :key="index">
@@ -12,7 +14,7 @@
                     </span>
                     <p class="name" v-html="renderResultName(item)"></p>
                 </li>
-                <Loading v-show="searchResult.hasMore" desc="" ></Loading>
+                <Loading v-show="searchResult.hasMore" desc=""></Loading>
             </ul>
         </scroll>
         <no-result v-show="!searchResult.list.lenght"></no-result>
@@ -59,10 +61,12 @@
             },
             handleSelectSong(item, index) {
                 if (item.singername) {
+                    this.setSearchHistory(item.singername)
                     this.$router.push({
                         path: `/singer/${item.singermid}`
                     })
                 } else {
+                    this.setSearchHistory(`${item.songname}-${item.singer}`)
                     this.setPlaySong({
                         list: this.searchResult.list,
                         currentIndex: index
@@ -75,11 +79,15 @@
                     this.fetchSearchQuery({query: this.query, page: this.page})
                 }
             },
+            handleBeforeScroll() {
+                this.$emit('onBeforeScroll')
+            },
             ...mapActions([
                 'fetchSearchQuery'
             ]),
             ...mapMutations({
-                 setPlaySong: 'SET_PLAY_SONG'
+                 setPlaySong: 'SET_PLAY_SONG',
+                 setSearchHistory: 'SET_SEARCH_HISTORY'
             })
         },
         watch: {

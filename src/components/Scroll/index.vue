@@ -32,6 +32,10 @@
             scrollMore: {
                 type: Boolean,
                 default: false
+            },
+            beforeScroll: {
+                type: Boolean,
+                default: false
             }
         },
         mounted() {
@@ -47,9 +51,8 @@
                 })
 
                 if (this.listenScroll) {
-                    const _this = this
                     this.scroll.on('scroll', pos => {
-                        _this.$emit('onScroll', pos)
+                        this.$emit('onScroll', pos)
                     })
                 }
 
@@ -59,6 +62,12 @@
                             this.$emit('onScrollEnd')
                         }
                     })                
+                }
+
+                if (this.beforeScroll) {
+                    this.scroll.on('beforeScrollStart', () => {
+                        this.$emit('onBeforeScroll')
+                    })
                 }
             },
             enable() {

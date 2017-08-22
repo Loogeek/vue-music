@@ -79,6 +79,15 @@ const mutations = {
                 result: payload.result
             }
         }
+    },
+    [types.SET_SEARCH_HISTORY](state, payload) {
+        const { history } = state.search
+        const index = history.findIndex(value => value === payload)
+        
+        if (index !== -1) {
+            history.splice(index, 1)
+        }
+        history.unshift(payload)
     }
 }
 
