@@ -1,4 +1,5 @@
 import * as types from './mutation-types'
+import store from 'common/js/store'
 
 const mutations = {
     [types.RECEIVE_SINGER_LIST](state, payload) {
@@ -83,11 +84,13 @@ const mutations = {
     [types.SET_SEARCH_HISTORY](state, payload) {
         const { history } = state.search
         const index = history.findIndex(value => value === payload)
+        const storeName = '__SEARCH_HISTORY__'
         
         if (index !== -1) {
             history.splice(index, 1)
         }
         history.unshift(payload)
+        store.set(storeName, history.slice(0, 15))
     }
 }
 

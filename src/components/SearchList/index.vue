@@ -1,14 +1,15 @@
 <template>
-    <article class="search-list">
-        <ul>
-            <li class="search-list-item" v-for="(item, index) in searches" :key="index">
-                <span class="text">{{ item }}</span>
-                <span class="icon">
-                    <i class="icon-delete"></i>
-                </span>
-            </li>
-        </ul>
-    </article>
+    <ul class="search-list">
+        <li class="search-list-item" :key="index"
+            v-for="(item, index) in searches" 
+            @click="handleSelectHistory(item)"
+        >
+            <span class="text">{{ item }}</span>
+            <span class="icon">
+                <i class="icon-delete"></i>
+            </span>
+        </li>
+    </ul>
 </template>
 
 <script>
@@ -17,6 +18,11 @@ export default {
         searches: {
             type: Array,
             default: []
+        }
+    },
+    methods: {
+        handleSelectHistory(historySong) {
+            this.$emit('onSelectHistory', historySong)
         }
     }
 }

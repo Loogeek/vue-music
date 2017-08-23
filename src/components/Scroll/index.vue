@@ -19,7 +19,7 @@
             },
             data: {
                 type: Array,
-                default: () => []
+                default: []
             },
             listenScroll: {
                 type: Boolean,
@@ -87,8 +87,9 @@
             }
         },
         watch: {
-            data() {
+            data(newVal) {
                 this.$nextTick(() => {
+                    console.log(11, newVal)
                     this.refresh()
                 })
             },

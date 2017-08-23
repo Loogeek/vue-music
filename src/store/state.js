@@ -1,4 +1,7 @@
 import { playMode } from 'api/config'
+import store from 'common/js/store'
+
+const storeName = '__SEARCH_HISTORY__'
 
 const state = {
     singerList: [],
@@ -34,7 +37,7 @@ const state = {
     search: {
         hotkey: [],
         result: {},
-        history: []
+        history: store.get(storeName) || []
     }
 }
 
