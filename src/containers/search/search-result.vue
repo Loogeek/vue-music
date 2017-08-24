@@ -1,10 +1,10 @@
 <template>
     <div class="search-result">
-        <scroll :data="searchResult.list" 
+        <scroll v-show="!showNoResult"
+            :data="searchResult.list"
             :scrollMore="true" 
-            @onScrollEnd="handleScrollEnd"
-            v-show="searchResult.list.length"
             :beforeScroll="true"
+            @onScrollEnd="handleScrollEnd"
             @onBeforeScroll="handleBeforeScroll"
         >
             <ul>
@@ -17,7 +17,7 @@
                 <Loading v-show="searchResult.hasMore" desc=""></Loading>
             </ul>
         </scroll>
-        <no-result v-show="!searchResult.list.lenght"></no-result>
+        <no-result v-show="showNoResult"></no-result>
     </div>
 </template>
 
@@ -40,6 +40,14 @@
             }
         },
         computed: {
+            showNoResult() {
+                const { keyword, list } = this.searchResult
+                if (keyword && list.length === 0) {
+                    return true
+                } else {
+                    return false
+                }
+            },
             ...mapGetters([
                 'searchResult'
             ])

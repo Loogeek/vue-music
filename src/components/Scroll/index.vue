@@ -89,7 +89,6 @@
         watch: {
             data(newVal) {
                 this.$nextTick(() => {
-                    console.log(11, newVal)
                     this.refresh()
                 })
             },

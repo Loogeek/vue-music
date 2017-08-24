@@ -5,7 +5,7 @@
             @click="handleSelectHistory(item)"
         >
             <span class="text">{{ item }}</span>
-            <span class="icon">
+            <span class="icon" @click.stop="handleDeleteHistory(index)">
                 <i class="icon-delete"></i>
             </span>
         </li>
@@ -23,6 +23,9 @@ export default {
     methods: {
         handleSelectHistory(historySong) {
             this.$emit('onSelectHistory', historySong)
+        },
+        handleDeleteHistory(song, index) {
+            this.$emit('onDeleteHistory', song, index)
         }
     }
 }

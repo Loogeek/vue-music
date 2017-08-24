@@ -1,6 +1,8 @@
 import * as types from './mutation-types'
 import store from 'common/js/store'
 
+const storeName = '__SEARCH_HISTORY__'
+
 const mutations = {
     [types.RECEIVE_SINGER_LIST](state, payload) {
         state.singerList = payload.singerList
@@ -72,7 +74,9 @@ const mutations = {
         if (payload.result.song.curpage > 1) {
             state.search.result.song = {
                 ...payload.result.song,
-                list: state.search.result.song.list.concat(payload.result.song.list)
+                list: state.search.result.song.list.concat(
+                    payload.result.song.list
+                )
             }
         } else {
             state.search = {
@@ -84,13 +88,22 @@ const mutations = {
     [types.SET_SEARCH_HISTORY](state, payload) {
         const { history } = state.search
         const index = history.findIndex(value => value === payload)
-        const storeName = '__SEARCH_HISTORY__'
-        
+
         if (index !== -1) {
             history.splice(index, 1)
         }
         history.unshift(payload)
         store.set(storeName, history.slice(0, 15))
+    },
+    [types.DELE_SEARCH_HISTORY](state, payload) {
+        const { history } = state.search
+        
+        history.splice(payload, 1)
+        store.set(storeName, history)
+    },
+    [types.DELE_SEARCH_HISTORY_LIST](state, payload) {
+        state.search.history = []
+        store.clear()
     }
 }
 
