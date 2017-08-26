@@ -1,0 +1,27 @@
+{
+    "apps": [
+        {
+            "name": "vue-music",
+            "script": "pre.server.js",
+            "env": {
+                "COMMON_VARIABLE": "true"
+            },
+            "env_production" : {
+                "NODE_ENV": "production"
+            }
+        }
+    ],
+    "deploy": {
+        "production": {
+            "user": "root",
+            "host": ["39.108.179.151"],
+            "ref": "origin/master",
+            "repo": "https://github.com/Loogeek/vue-music.git",
+            "path": "/root/Github/vue-music",
+            "ssh_options": "StrictHostKeyChecking=no",
+            "env"  : {
+                "NODE_ENV": "production"
+            }
+        }
+    }
+}
