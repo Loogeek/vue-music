@@ -19,7 +19,7 @@ export const formatTime = time => {
 
 export const debounce = (func, delay = 200) => {
     let timer
-    
+
     return (...args) => {
         if (timer) {
             clearTimeout(timer)
@@ -28,4 +28,20 @@ export const debounce = (func, delay = 200) => {
             func.apply(this, args)
         }, delay)
     }
-} 
+}
+
+function getRandomInc(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+
+export const shuffle = arr => {
+    const _arr = arr.slice()
+    for (let i = 0; i < _arr.length; i++) {
+        const t = getRandomInc(0, i)
+        const l = _arr[i]
+        arr[i] = _arr[t]
+        _arr[t] = l
+    }
+
+    return _arr
+}

@@ -23,6 +23,7 @@ const mutations = {
     },
     [types.SET_PLAY_SONG](state, payload) {
         state.playSong = {
+            ...state.playSong,
             playing: true,
             fullScreen: true,
             sequenceList: payload.list,
@@ -39,6 +40,12 @@ const mutations = {
     [types.SET_CURRENT_INDEX](state, currentIndex) {
         state.playSong.currentIndex = currentIndex
     },
+    [types.SET_PLAY_MODE](state, playMode) {
+        state.playSong.mode = playMode
+    },
+    [types.SET_PLAY_LIST](state, playList) {
+        state.playSong.playList = playList
+    }, 
     [types.RECEIVE_RECOMMEND_DETAIL](state, payload) {
         state.recommendDetail = payload.recommendDetail
     },

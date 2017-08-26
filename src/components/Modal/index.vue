@@ -7,7 +7,8 @@
                         <h3 class="Modal-header-title">{{ title }}</h3>
                     </header>
                     <div class="Modal-content">
-                        <p class="Modal-content-text">{{ contentText }}</p>
+                        <p class="Modal-content-text" v-if="type === 'smail'">{{ contentText }}</p>
+                        <slot></slot>
                     </div>
                     <footer class="Modal-footer">
                         <span class="Modal-footer-btn Modal-footer-cancel"

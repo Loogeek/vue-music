@@ -8,6 +8,7 @@ export class Singer {
 
 export class CreateSong {
     constructor(props) {
+        this.id = props.songid
         this.albumname = props.albumname
         this.albummid = props.albummid
         this.songname = props.songname

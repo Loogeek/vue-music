@@ -38,7 +38,8 @@
         </search-result>
         <Modal ref="modal" contentText="是否清空所有搜索历史"
             @onSelectConfirm="handleSelectConfirm"
-            @onSelectCancel="handleSelectCancel">
+            @onSelectCancel="handleSelectCancel"
+        >
         </Modal>
     </section>
 </template>

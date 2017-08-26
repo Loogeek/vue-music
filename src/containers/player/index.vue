@@ -24,8 +24,8 @@
                         </audio>
                     </div>
                     <nav class="operators">
-                        <span class="operators-icon i-left">
-                            <i class="icon-loop"></i>
+                        <span class="operators-icon i-left" @click.stop="handleSetPlayMode">
+                            <i :class="playMode"></i>
                         </span>
                         <span :class="['operators-icon', 'i-left', {'disable': !canPlay}]" @click="handlePrevSong">
                             <i class="icon-prev"></i>
@@ -65,189 +65,229 @@
                         </i>
                     </ProgressCircle>
                 </div>
-                <div class="mini-player-control">
+                <div class="mini-player-control" @click.stop="handleShowPlayList">
                     <i class="icon-playlist"></i>
                 </div>
             </article>
         </transition>
+        <Modal ref="modal" 
+            @onSelectConfirm="handleSelectConfirm"
+            @onSelectCancel="handleSelectCancel"
+        >
+        </Modal>
     </section>
 </template>
 
 <script>
-import createAnimation from 'create-keyframe-animation'
-import { mapGetters, mapMutations } from 'vuex'
-import ProgressBar from 'components/ProgressBar'
-import ProgressCircle from 'components/ProgressCircle'
-import { prefixStyle } from 'common/js/dom'
-import { formatTime } from 'common/js/utils'
+    import createAnimation from 'create-keyframe-animation'
+    import { mapGetters, mapMutations } from 'vuex'
+    import ProgressBar from 'components/ProgressBar'
+    import ProgressCircle from 'components/ProgressCircle'
+    import { prefixStyle } from 'common/js/dom'
+    import { formatTime, shuffle } from 'common/js/utils'
+    import Modal from 'components/Modal'
+    import { playMode } from 'api/config'
 
-const prefixTransform = prefixStyle('transform')
+    const prefixTransform = prefixStyle('transform')
 
-export default {
-    data() {
-        return {
-            canPlay: false,
-            currentTime: 0,
-            timePercent: 0
-        }
-    },
-    computed: {
-        playIcon() {
-            return this.playSong.playing ? 'icon-pause' : 'icon-play'
-        },
-        miniPlayIcon() {
-            return this.playSong.playing ? 'icon-pause-mini' : 'icon-play-mini'
-        },
-        ...mapGetters([
-            'playSong'
-        ])
-    },
-    methods: {
-        formatPlayTime(time) {
-            return formatTime(time)
-        },
-        largeEnterAn(el, done) {
-            const { x, y, scale } = this._getPosAndScale()
-
-            const animation = {
-                '0%': {
-                    transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
-                },
-                '50%': {
-                    transform: `translate3d(0, 0, 0) scale(1.1)`
-                },
-                '100%': {
-                    transform: `translate3d(0, 0, 0) scale(1)`
-                }
+    export default {
+        data() {
+            return {
+                canPlay: false,
+                currentTime: 0,
+                timePercent: 0
             }
-            this._createAnimation(animation, done)
         },
-        largeAfterEnterAn(el) {
-            createAnimation.unregisterAnimation('move')
-            this.$refs.largeCd.style.animation = ''
-        },
-        largeLeaveAn(el, done) {
-            const { x, y, scale } = this._getPosAndScale()
+        computed: {
+            playIcon() {
+                return this.playSong.playing ? 'icon-pause' : 'icon-play'
+            },
+            miniPlayIcon() {
+                return this.playSong.playing ? 'icon-pause-mini' : 'icon-play-mini'
+            },
+            playMode() {
+                const { mode } = this.playSong
 
-            const animation = {
-                '0%': {
-                    transform: `translate3d(0, 0, 0) scale(1)`
-                },
-                '100%': {
-                    transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+                return mode === playMode.sequence ? 'icon-sequence' : mode === playMode.loop ? 'icon-loop' : 'icon-random'
+            },
+            ...mapGetters([
+                'playSong'
+            ])
+        },
+        methods: {
+            formatPlayTime(time) {
+                return formatTime(time)
+            },
+            largeEnterAn(el, done) {
+                const { x, y, scale } = this._getPosAndScale()
+
+                const animation = {
+                    '0%': {
+                        transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+                    },
+                    '50%': {
+                        transform: `translate3d(0, 0, 0) scale(1.1)`
+                    },
+                    '100%': {
+                        transform: `translate3d(0, 0, 0) scale(1)`
+                    }
                 }
-            }
+                this._createAnimation(animation, done)
+            },
+            largeAfterEnterAn(el) {
+                createAnimation.unregisterAnimation('move')
+                this.$refs.largeCd.style.animation = ''
+            },
+            largeLeaveAn(el, done) {
+                const { x, y, scale } = this._getPosAndScale()
 
-            this._createAnimation(animation, done)
-        },
-        largeAfterLeaveAn() {
-            const largeCdStyle = this.$refs.largeCd.style
-            largeCdStyle.animation = ''
-            largeCdStyle[prefixTransform] = ''
-        },
-        handleBack() {
-            this.setFullScreen(false)
-        },
-        handleShow() {
-            this.setFullScreen(true)
-        },
-        handlePrevSong() {
-            if (this.canPlay) {
-                let index = this.playSong.currentIndex
-                index--
-                if (index === -1) {
-                    index = this.playSong.playList.length - 1
+                const animation = {
+                    '0%': {
+                        transform: `translate3d(0, 0, 0) scale(1)`
+                    },
+                    '100%': {
+                        transform: `translate3d(${x}px, ${y}px, 0) scale(${scale})`
+                    }
                 }
-                this._stopToPlay()
 
-                this.setcurrentIndex(index)
+                this._createAnimation(animation, done)
+            },
+            largeAfterLeaveAn() {
+                const largeCdStyle = this.$refs.largeCd.style
+                largeCdStyle.animation = ''
+                largeCdStyle[prefixTransform] = ''
+            },
+            handleBack() {
+                this.setFullScreen(false)
+            },
+            handleShow() {
+                this.setFullScreen(true)
+            },
+            handlePrevSong() {
+                if (this.canPlay) {
+                    let index = this.playSong.currentIndex
+                    index--
+                    if (index === -1) {
+                        index = this.playSong.playList.length - 1
+                    }
+                    this._stopToPlay()
+
+                    this.setCurrentIndex(index)
+                    this.canPlay = false
+                }
+            },
+            handleNextSong() {
+                if (this.canPlay) {
+                    let index = this.playSong.currentIndex
+                    index++
+                    if (index === this.playSong.playList.length) {
+                        index = 0
+                    }
+                    this._stopToPlay()
+
+                    this.setCurrentIndex(index)
+                    this.canPlay = false
+                }
+            },
+            handleTogglePlaying() {
+                this.setPlayingStatus(!this.playSong.playing)
+            },
+            handleUpdateTime(e) {
+                const { currentTime } = e.target
+                this.currentTime = currentTime
+                this.timePercent = currentTime / this.playSong.currentSong.interval
+            },
+            handleSongCanPlay() {
+                this.canPlay = true
+            },
+            handleSongError() {
                 this.canPlay = false
-            }
-        },
-        handleNextSong() {
-            if (this.canPlay) {
-                let index = this.playSong.currentIndex
-                index++
-                if (index === this.playSong.playList.length) {
-                    index = 0
-                }
+            },
+            handlePercentChange(newPercent) {
+                this.$refs.songAudio.currentTime = newPercent * this.playSong.currentSong.interval
                 this._stopToPlay()
+            },
+            handleShowPlayList() {
+                this.$refs.modal.show()
+            },
+            handleSelectConfirm() {
+                this.$refs.modal.hide()
+            },
+            handleSelectCancel() {
+                this.$refs.modal.hide()
+            },
+            handleSetPlayMode() {
+                const mode = (this.playSong.mode + 1) % 3
+                const { sequenceList } = this.playSong
+                this.setPlayMode(mode)
 
-                this.setcurrentIndex(index)
-                this.canPlay = false
-            }
-        },
-        handleTogglePlaying() {
-            this.setPlayingStatus(!this.playSong.playing)
-        },
-        handleUpdateTime(e) {
-            const { currentTime } = e.target
-            this.currentTime = currentTime
-            this.timePercent = currentTime / this.playSong.currentSong.interval
-        },
-        handleSongCanPlay() {
-            this.canPlay = true
-        },
-        handleSongError() {
-            this.canPlay = false
-        },
-        handlePercentChange(newPercent) {
-            this.$refs.songAudio.currentTime = newPercent * this.playSong.currentSong.interval
-            this._stopToPlay()
-        },
-        _stopToPlay() {
-            if (!this.playSong.playing) {
-                this.handleTogglePlaying()
-            }
-        },
-        _createAnimation(animation, done) {
-            createAnimation.registerAnimation({
-                name: 'move',
-                animation,
-                presets: {
-                    duration: 400,
-                    easing: 'linear'
+                if (mode === playMode.random) {
+                    const playList = shuffle(sequenceList)
+                    // const songId = this.playSong.currentSong.albummid
+                    // this.handleResetCurrentIndex(playList)
+                    // this.setPlayList(playList)
                 }
+            },
+            handleResetCurrentIndex(playList) {
+                const index = playList.findIndex(item => item.id === this.playSong.currentSong.id)
+                this.setCurrentIndex(index)
+            },
+            _stopToPlay() {
+                if (!this.playSong.playing) {
+                    this.handleTogglePlaying()
+                }
+            },
+            _createAnimation(animation, done) {
+                createAnimation.registerAnimation({
+                    name: 'move',
+                    animation,
+                    presets: {
+                        duration: 400,
+                        easing: 'linear'
+                    }
+                })
+
+                createAnimation.runAnimation(this.$refs.largeCd, 'move', done)
+            },
+            _getPosAndScale() {
+                const SINGER_NAME_HEIGHT = 40          // 顶部歌曲栏高度
+                const SINGER_NAME_MAR_BOTTOM = 25      // 歌曲栏下边距
+                const MINI_CD_WIDTH = 40
+                const MINI_CD_PADDING_LEFT = 20
+                const MINI_CD_PADDING_TOP = 10
+                const LARGE_CD_WIDTH = window.innerWidth * 0.8
+
+                const x = -(window.innerWidth / 2 - MINI_CD_WIDTH / 2 - MINI_CD_PADDING_LEFT)
+                const y = window.innerHeight - LARGE_CD_WIDTH / 2 - SINGER_NAME_HEIGHT - SINGER_NAME_MAR_BOTTOM - MINI_CD_WIDTH / 2 - MINI_CD_PADDING_TOP
+                const scale = MINI_CD_WIDTH / LARGE_CD_WIDTH
+
+                return { x, y, scale }
+            },
+            ...mapMutations({
+                setFullScreen: 'SET_FULL_SCREEN',
+                setPlayingStatus: 'SET_PLAYING_STATUS',
+                setCurrentIndex: 'SET_CURRENT_INDEX',
+                setPlayMode: 'SET_PLAY_MODE',
+                setPlayList: 'SET_PLAY_LIST'
             })
-
-            createAnimation.runAnimation(this.$refs.largeCd, 'move', done)
         },
-        _getPosAndScale() {
-            const SINGER_NAME_HEIGHT = 40          // 顶部歌曲栏高度
-            const SINGER_NAME_MAR_BOTTOM = 25      // 歌曲栏下边距
-            const MINI_CD_WIDTH = 40
-            const MINI_CD_PADDING_LEFT = 20
-            const MINI_CD_PADDING_TOP = 10
-            const LARGE_CD_WIDTH = window.innerWidth * 0.8
-
-            const x = -(window.innerWidth / 2 - MINI_CD_WIDTH / 2 - MINI_CD_PADDING_LEFT)
-            const y = window.innerHeight - LARGE_CD_WIDTH / 2 - SINGER_NAME_HEIGHT - SINGER_NAME_MAR_BOTTOM - MINI_CD_WIDTH / 2 - MINI_CD_PADDING_TOP
-            const scale = MINI_CD_WIDTH / LARGE_CD_WIDTH
-
-            return { x, y, scale }
+        watch: {
+            playSong(newStatus) {
+                const audio = this.$refs.songAudio
+                this.$nextTick(() => {
+                    newStatus.playing ? audio.play() : audio.pause()
+                })
+            }
         },
-        ...mapMutations({
-            setFullScreen: 'SET_FULL_SCREEN',
-            setPlayingStatus: 'SET_PLAYING_STATUS',
-            setcurrentIndex: 'SET_CURRENT_INDEX'
-        })
-    },
-    watch: {
-        playSong(newStatus) {
-            const audio = this.$refs.songAudio
-            this.$nextTick(() => {
-                newStatus.playing ? audio.play() : audio.pause()
-            })
+        components: {
+            ProgressBar,
+            ProgressCircle,
+            Modal
         }
-    },
-    components: {
-        ProgressBar,
-        ProgressCircle
     }
-}
 </script>
 
 <style lang="scss" scoped>
-@import './style';
+    @import './style';
 </style>
 

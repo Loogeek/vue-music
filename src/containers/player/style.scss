@@ -119,6 +119,8 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                width: 90%;
+                margin: 0 auto;
 
                 &-icon {
                     flex: 1;
@@ -134,12 +136,11 @@
                 }
 
                 .i-left {
-                    text-align: right;
+                    text-align: center;
                 }
 
                 .i-center {
                     text-align: center;
-                    padding: 0 2rem;
 
                     > i {
                         font-size: 4rem;
@@ -147,7 +148,7 @@
                 }
 
                 .i-right {
-                    text-align: left;
+                    text-align: center;
                 }
             }
         }
