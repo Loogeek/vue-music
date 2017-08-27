@@ -1,6 +1,10 @@
 # vue-music
 
-> A Vue.js project
+> A Vue.js Music
+
+## [demo](http://39.108.179.151)
+
+![demo](./static/vue-music.png)
 
 ## Build Setup
 
