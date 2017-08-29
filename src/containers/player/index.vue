@@ -10,10 +10,22 @@
                     <h3 class="singer" v-html="playSong.currentSong.singer"></h3>
                 </header>
                 <div class="large-player-body">
-                    <div class="large-player-body-left" ref="largeCd">
+                    <!-- <div class="large-player-body-left" ref="largeCd">
                         <img :src="playSong.currentSong.image" :class="['playing', { 'playing-pause': !playSong.playing } ]">
+                    </div> -->
+                    <div class="large-player-body-right" v-if="currentLyric && currentLyric.lines.length > 0">
+                        <scroll :data="currentLyric.lines" ref="lyricScroll">
+                            <ul class="song-lyric">
+                                <li :class="['song-lyric-item', {'current': currentLyricNum === index}]" 
+                                    v-for="(line, index) in currentLyric.lines" 
+                                    :key="index"
+                                    ref="songLyricItem"
+                                >
+                                    {{ line.txt }}
+                                </li>
+                            </ul>
+                        </scroll>
                     </div>
-                    <div class="large-player-body-right"></div>
                 </div>
                 <footer class="large-player-footer">
                     <div class="progress">
@@ -85,8 +97,12 @@
     import ProgressCircle from 'components/ProgressCircle'
     import { prefixStyle } from 'common/js/dom'
     import { formatTime, shuffle } from 'common/js/utils'
+    import Lyric from 'lyric-parser'
     import Modal from 'components/Modal'
-    import { playMode } from 'api/config'
+    import Scroll from 'components/Scroll'
+    import { Base64 } from 'js-base64'
+    import { ERR_OK, playMode } from 'api/config'
+    import { fetchSongLyricReq } from 'api/song'
 
     const prefixTransform = prefixStyle('transform')
 
@@ -95,7 +111,9 @@
             return {
                 canPlay: false,
                 currentTime: 0,
-                timePercent: 0
+                timePercent: 0,
+                currentLyric: '',
+                currentLyricNum: 0
             }
         },
         computed: {
@@ -191,6 +209,9 @@
             },
             handleTogglePlaying() {
                 this.setPlayingStatus(!this.playSong.playing)
+                if (this.currentLyric) {
+                    this.currentLyric.togglePlay()   // 暂停or播放歌词
+                }
             },
             handleUpdateTime(e) {
                 const { currentTime } = e.target
@@ -204,7 +225,11 @@
                 this.canPlay = false
             },
             handlePercentChange(newPercent) {
-                this.$refs.songAudio.currentTime = newPercent * this.playSong.currentSong.interval
+                const currentTime = newPercent * this.playSong.currentSong.interval
+                this.$refs.songAudio.currentTime = currentTime
+                if (this.currentLyric) {
+                    this.currentLyric.seek(currentTime * 1000)
+                }
                 this._stopToPlay()
             },
             handleShowPlayList() {
@@ -263,26 +288,57 @@
 
                 return { x, y, scale }
             },
+            handlerSongLyric({lineNum, txt}) {
+                const lyricLen = this.currentLyric.lines.length
+                this.currentLyricNum = lineNum
+                if (lineNum > 6) {
+                    const el = this.$refs.songLyricItem[lineNum - 6]
+                    this.$refs.lyricScroll.scrollToElement(el, 1000)
+                }
+            },
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN',
                 setPlayingStatus: 'SET_PLAYING_STATUS',
                 setCurrentIndex: 'SET_CURRENT_INDEX',
                 setPlayMode: 'SET_PLAY_MODE',
-                setPlayList: 'SET_PLAY_LIST'
+                setPlayList: 'SET_PLAY_LIST',
+                setSongLyric: 'SET_SONG_LYRIC'
             })
         },
         watch: {
-            playSong(newStatus) {
+            playSong(newSong, oldSong) {
+                const { currentSong } = newSong
+                if (currentSong.id !== oldSong.currentSong.id) {
+                    if (this.currentLyric) {    // 切换歌曲时需要清除之前歌词数据
+                        this.currentLyricNum = 0
+                        this.currentLyric.stop()
+                        this.currentLyric = ''
+                    }
+                    fetchSongLyricReq(currentSong.songmid).then(resp => {
+                        if (resp.code === ERR_OK) {
+                            const lyric = Base64.decode(resp.lyric)
+                            this.setSongLyric(lyric)
+                            this.currentLyric = new Lyric(lyric, this.handlerSongLyric)
+                            if (newSong.playing) {
+                                this.currentLyric.play()
+                            }
+                        } else {
+                            console.warn('fetch song lyric error:', resp.message)
+                        }
+                    })
+                }
+
                 const audio = this.$refs.songAudio
                 this.$nextTick(() => {
-                    newStatus.playing ? audio.play() : audio.pause()
+                    newSong.playing ? audio.play() : audio.pause()
                 })
             }
         },
         components: {
             ProgressBar,
             ProgressCircle,
-            Modal
+            Modal,
+            Scroll
         }
     }
 </script>

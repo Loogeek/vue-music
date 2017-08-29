@@ -73,12 +73,42 @@
         }
 
         &-body {
+            position: fixed;
+            width: 100%;
+            top: 80px;
+            bottom: 170px;
+            
             &-left {
                 width: 80%;
                 margin: 0 auto;
 
                 > img {
                     border-radius: 50%;
+                }
+            }
+
+            &-right {
+                display: inline-block;
+                vertical-align: top;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+
+                .song-lyric {
+                    width: 80%;
+                    margin: 0 auto;
+                    overflow: hidden;
+                    text-align: center;
+
+                    &-item {
+                        line-height: 3.2rem;
+                        color: $color-text-l;
+                        font-size: $font-size-medium;
+
+                        &.current {
+                            color: $color-text;
+                        }
+                    }
                 }
             }
         }

@@ -28,17 +28,39 @@ var app = express()
 var apiRoutes = express.Router();
 
 apiRoutes.get('/getDiscList', function(req, res) {
-  var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg';
+    var url = 'https://c.y.qq.com/splcloud/fcgi-bin/fcg_get_diss_by_tag.fcg'
 
-  axios.get(url, {
-    headers: {
-      referer: 'https://y.qq.com/portal/playlist.html',
-      authority: 'c.y.qq.com'
-    },
-    params: req.query
-  }).then(resp => {
-    res.json(resp.data);
-  }).catch(e => console.warn(e));
+    axios.get(url, {
+        headers: {
+          referer: 'https://c.y.qq.com/',
+          authority: 'c.y.qq.com'
+        },
+        params: req.query
+    }).then(resp => {
+        res.json(resp.data);
+    }).catch(e => console.warn(e));
+});
+
+apiRoutes.get('/lyric', function(req, res) {
+    var url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+
+    axios.get(url, {
+        headers: {
+          referer: 'https://c.y.qq.com/',
+          authority: 'c.y.qq.com'
+        },
+        params: req.query
+    }).then(resp => {
+        let data = resp.data
+        if (typeof data === 'string') {
+            const reg = /^\w+\(({[^()]+})\)$/
+            const matches = data.match(reg)
+            if (matches) {
+                data = JSON.parse(matches[1])     
+            }
+        }
+        res.json(data);
+    }).catch(e => console.warn(e));
 });
 
 app.use('/api', apiRoutes);
@@ -46,8 +68,8 @@ app.use('/api', apiRoutes);
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
-  publicPath: webpackConfig.output.publicPath,
-  quiet: true
+    publicPath: webpackConfig.output.publicPath,
+    quiet: true
 })
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
@@ -55,10 +77,10 @@ var hotMiddleware = require('webpack-hot-middleware')(compiler, {
 })
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
-  compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-    hotMiddleware.publish({ action: 'reload' })
-    cb()
-  })
+    compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
+        hotMiddleware.publish({ action: 'reload' })
+        cb()
+    })
 })
 
 // proxy api requests

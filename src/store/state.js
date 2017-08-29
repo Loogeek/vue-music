@@ -19,7 +19,8 @@ const state = {
         playList: [],
         mode: playMode.sequence,
         currentIndex: 0,
-        currentSong: {}
+        currentSong: {},
+        lyric: ''
     },
     recommendDetail: {
         list: [],

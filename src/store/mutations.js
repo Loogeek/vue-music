@@ -111,6 +111,12 @@ const mutations = {
     [types.DELE_SEARCH_HISTORY_LIST](state, payload) {
         state.search.history = []
         store.clear()
+    },
+    [types.SET_SONG_LYRIC](state, lyric) {
+        state.playSong = {
+            ...state.playSong,
+            lyric: lyric
+        }
     }
 }
 

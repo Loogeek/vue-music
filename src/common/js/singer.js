@@ -10,6 +10,7 @@ export class CreateSong {
     constructor(props) {
         this.id = props.songid
         this.albumname = props.albumname
+        this.songmid = props.songmid
         this.albummid = props.albummid
         this.songname = props.songname
         this.singer = filterSinger(props.singer)

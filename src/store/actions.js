@@ -2,6 +2,7 @@ import { fetchSingerListReq, fetchSingerDetailReq } from 'api/singer'
 import { fetchRecommendDetailReq } from 'api/recommend'
 import { fetchRankListReq, fetchRankDetailReq } from 'api/rank'
 import { fetchHotSearchReq, fetchSearchQueryReq } from 'api/search'
+
 import * as types from './mutation-types'
 import { ERR_OK } from 'api/config'
 
