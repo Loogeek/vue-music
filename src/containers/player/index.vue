@@ -9,12 +9,21 @@
                     <h2 class="songname" v-html="playSong.currentSong.songname"></h2>
                     <h3 class="singer" v-html="playSong.currentSong.singer"></h3>
                 </header>
-                <div class="large-player-body">
-                    <!-- <div class="large-player-body-left" ref="largeCd">
-                        <img :src="playSong.currentSong.image" :class="['playing', { 'playing-pause': !playSong.playing } ]">
-                    </div> -->
-                    <div class="large-player-body-right" v-if="currentLyric && currentLyric.lines.length > 0">
-                        <scroll :data="currentLyric.lines" ref="lyricScroll">
+                <div class="large-player-body"
+                    @touchstart.prevent="handlePlayerBodyStart" 
+                    @touchmove.prevent="handlePlayerBodyMove" 
+                    @touchend="handlePlayerBodyEnd"
+                >
+                    <div class="large-player-body-left" ref="largeCd">
+                        <div class="cd-wrapper">
+                            <img :src="playSong.currentSong.image" :class="['playing', { 'playing-pause': !playSong.playing } ]">
+                        </div>
+                    </div>
+                    <div class="large-player-body-right" ref="songLyric">
+                        <scroll :data="currentLyric && currentLyric.lines"
+                            ref="lyricScroll"
+                            v-if="currentLyric && currentLyric.lines.length > 0"  
+                        >
                             <ul class="song-lyric">
                                 <li :class="['song-lyric-item', {'current': currentLyricNum === index}]" 
                                     v-for="(line, index) in currentLyric.lines" 
@@ -26,6 +35,10 @@
                             </ul>
                         </scroll>
                     </div>
+                    <ul class="lyric-dot">
+                        <li :class="['lyric-dot-item', {'active': !showLyric}]"></li>
+                        <li :class="['lyric-dot-item', {'active': showLyric}]"></li>
+                    </ul>
                 </div>
                 <footer class="large-player-footer">
                     <div class="progress">
@@ -105,15 +118,25 @@
     import { fetchSongLyricReq } from 'api/song'
 
     const prefixTransform = prefixStyle('transform')
+    const prefixTransition = prefixStyle('transition')
 
     export default {
+        mouthed() {
+            this.touch = {
+                touching: false,
+                startX: 0,
+                startY: 0,
+                changeX: 0
+            }
+        },
         data() {
             return {
                 canPlay: false,
                 currentTime: 0,
                 timePercent: 0,
                 currentLyric: '',
-                currentLyricNum: 0
+                currentLyricNum: 0,
+                showLyric: false
             }
         },
         computed: {
@@ -256,6 +279,68 @@
             handleResetCurrentIndex(playList) {
                 const index = playList.findIndex(item => item.id === this.playSong.currentSong.id)
                 this.setCurrentIndex(index)
+            },
+            handlePlayerBodyStart(e) {
+                this.touch = {
+                    startX: e.touches[0].pageX,
+                    startY: e.touches[0].pageY,
+                    offWidth: -window.innerWidth,
+                    offPercent: 0
+                }
+            },
+            handlePlayerBodyMove(e) {
+                this.touch.diffX = e.touches[0].pageX - this.touch.startX
+                this.touch.diffY = e.touches[0].pageY - this.touch.startY
+
+                if (Math.abs(this.touch.diffY) > Math.abs(this.touch.diffX)) {   // 忽略垂直滚动
+                    return
+                } 
+                
+                const offLeft = this.showLyric ? -window.innerWidth : 0 
+                this.touch.offWidth = Math.min(0, Math.max(-window.innerWidth, offLeft + this.touch.diffX))
+                this.touch.offPercent = Math.abs(this.touch.offWidth / window.innerWidth)
+
+                this.$refs.songLyric.style[prefixTransform] = `translate3d(${this.touch.offWidth}px, 0, 0)`
+                this.$refs.largeCd.style.opacity = 1 - this.touch.offPercent
+            },
+            handlePlayerBodyEnd(e) {
+                if (Math.abs(this.touch.diffY) > Math.abs(this.touch.diffX)) {   // 忽略垂直滚动
+                    return
+                } 
+
+                const offPercent = this.touch.offPercent
+                const time = 300
+                let offWidth
+                let cdOpacity
+                
+                if (this.showLyric) {
+                    if (offPercent > 0.9) {
+                        offWidth = -window.innerWidth
+                        cdOpacity = 0
+                        this.showLyric = true                        
+                    } else {
+                        offWidth = 0
+                        cdOpacity = 1                        
+                        this.showLyric = false                        
+                    }
+                } else {
+                    if (offPercent > 0.1) {
+                        offWidth = -window.innerWidth
+                        cdOpacity = 0
+                        this.showLyric = true
+                    } else {
+                        offWidth = 0
+                        cdOpacity = 1                        
+                        this.showLyric = false
+                    }                    
+                }
+
+                const songLyricStyle = this.$refs.songLyric.style
+                const cdStyle =  this.$refs.largeCd.style
+                songLyricStyle[prefixTransition] = `${time}ms`
+                songLyricStyle[prefixTransform] = `translate3d(${offWidth}px, 0, 0)`
+                cdStyle[prefixTransition] = `${time}ms`
+                cdStyle.opacity = cdOpacity
             },
             _stopToPlay() {
                 if (!this.playSong.playing) {
