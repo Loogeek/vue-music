@@ -5,7 +5,6 @@
     top: 88px;
     bottom: 0;
     width: 100%;
-    overflow: hidden;
 
     &-item {
         padding-bottom: 3rem;
@@ -60,6 +59,7 @@
         position: fixed;
         top: 50%;
         right: 0;
+        z-index: 100;
         transform: translateY(-50%);
         width: 2rem;
         padding: 2rem 0;

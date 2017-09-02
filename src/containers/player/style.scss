@@ -94,6 +94,20 @@
                         border-radius: 50%;
                     }
                 }
+
+                .playing-lyric-wrapper {
+                    width: 80%;
+                    margin: 3rem auto 0 auto;
+                    overflow: hidden;
+                    text-align: center;
+
+                    .lyric {
+                        height: 2rem;
+                        line-height: 2rem;
+                        font-size: $font-size-medium;
+                        color: $color-text-l;
+                    }
+                }
             }
 
             &-right {

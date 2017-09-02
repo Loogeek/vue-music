@@ -18,6 +18,9 @@
                         <div class="cd-wrapper">
                             <img :src="playSong.currentSong.image" :class="['playing', { 'playing-pause': !playSong.playing } ]">
                         </div>
+                        <div class="playing-lyric-wrapper">
+                            <p class="lyric">{{ playingLyric }}</p>
+                        </div>
                     </div>
                     <div class="large-player-body-right" ref="songLyric">
                         <scroll :data="currentLyric && currentLyric.lines"
@@ -49,7 +52,7 @@
                         </audio>
                     </div>
                     <nav class="operators">
-                        <span class="operators-icon i-left" @click.stop="handleSetPlayMode">
+                        <span class="operators-icon i-left">
                             <i :class="playMode"></i>
                         </span>
                         <span :class="['operators-icon', 'i-left', {'disable': !canPlay}]" @click="handlePrevSong">
@@ -90,7 +93,7 @@
                         </i>
                     </ProgressCircle>
                 </div>
-                <div class="mini-player-control" @click.stop="handleShowPlayList">
+                <div class="mini-player-control">
                     <i class="icon-playlist"></i>
                 </div>
             </article>
@@ -135,6 +138,7 @@
                 currentTime: 0,
                 timePercent: 0,
                 currentLyric: '',
+                playingLyric: '',
                 currentLyricNum: 0,
                 showLyric: false
             }
@@ -376,6 +380,7 @@
             handlerSongLyric({lineNum, txt}) {
                 const lyricLen = this.currentLyric.lines.length
                 this.currentLyricNum = lineNum
+                this.playingLyric = txt
                 if (lineNum > 6) {
                     const el = this.$refs.songLyricItem[lineNum - 6]
                     this.$refs.lyricScroll.scrollToElement(el, 1000)
