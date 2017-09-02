@@ -23,6 +23,28 @@ apiRoutes.get('/getDiscList', function(req, res) {
         }).catch(e => console.warn(e))
 })
 
+apiRoutes.get('/lyric', function(req, res) {
+    var url = 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg'
+
+    axios.get(url, {
+        headers: {
+          referer: 'https://c.y.qq.com/',
+          authority: 'c.y.qq.com'
+        },
+        params: req.query
+    }).then(resp => {
+        let data = resp.data
+        if (typeof data === 'string') {
+            const reg = /^\w+\(({[^()]+})\)$/
+            const matches = data.match(reg)
+            if (matches) {
+                data = JSON.parse(matches[1])     
+            }
+        }
+        res.json(data);
+    }).catch(e => console.warn(e));
+})
+
 app.use('/api', apiRoutes)
 
 app.use(compression())
