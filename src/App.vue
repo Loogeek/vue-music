@@ -15,14 +15,19 @@ import MTab from 'components/MTab'
 import player from 'containers/player'
 
 export default {
-  components: {
-    MHeader,
-    MTab,
-    player
-  }
+    components: {
+        MHeader,
+        MTab,
+        player
+    }
 }
 </script>
 
 <style>
-
+    #app {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
 </style>

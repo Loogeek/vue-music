@@ -1,6 +1,6 @@
 <template>
-    <div class="recommend">
-        <Scroll :data="recommendList">
+    <div class="recommend" ref="listWrap">
+        <Scroll :data="recommendList" ref="scrollHook">
             <div>
                 <slider v-if="slideList.length" :slideList="slideList"></slider>
                 <section class="recommend-list" v-if="recommendList.length > 0">
@@ -30,8 +30,10 @@ import Loading from 'components/Loading'
 import Scroll from 'components/Scroll'
 import { fetchSliderList, fetchRecommendList } from 'api/recommend'
 import { ERR_OK } from 'api/config'
+import { playListBottom } from 'mixins/playList'
 
 export default {
+    mixins: [playListBottom],
     data() {
         return {
             slideList: [],

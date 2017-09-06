@@ -27,7 +27,8 @@ module.exports = {
       'router': resolve('src/router'),
       'common': resolve('src/common'),
       'static': resolve('src/static'),
-      'api': resolve('src/api')
+      'api': resolve('src/api'),
+      'mixins': resolve('src/mixins')
     }
   },
   module: {

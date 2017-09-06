@@ -1,11 +1,12 @@
 <template>
-    <div class="search-result">
+    <div class="search-result" ref="listWrap">
         <scroll v-show="!showNoResult"
             :data="searchResult.list"
             :scrollMore="true" 
             :beforeScroll="true"
             @onScrollEnd="handleScrollEnd"
             @onBeforeScroll="handleBeforeScroll"
+            ref="scrollHook"
         >
             <ul>
                 <li tag="li" @click="handleSelectSong(item, index)" class="search-result-item" v-for="(item, index) in searchResult.list" :key="index">
@@ -26,8 +27,10 @@
     import Scroll from 'components/Scroll'
     import NoResult from 'components/NoResult'
     import Loading from 'components/Loading'
+    import { playListBottom } from 'mixins/playList'
 
     export default {
+        mixins: [playListBottom],
         props: {
             query: {
                 type: String,

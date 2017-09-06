@@ -1,6 +1,6 @@
 <template>
-    <section class="rank">
-        <scroll :data="rank">
+    <section class="rank" ref="listWrap">
+        <scroll :data="rank" ref="scrollHook">
             <ul class="rank-list">
                 <router-link :to="`/rank/${rankItem.id}`" class="rank-list-item" v-for="(rankItem, index) in rank" :key="index">
                     <div class="list-img">
@@ -22,8 +22,10 @@
 <script>
     import { mapActions, mapState } from 'vuex'
     import Scroll from 'components/Scroll'
-
+    import { playListBottom } from 'mixins/playList'
+    
     export default {
+        mixins: [playListBottom],
         mounted() {
             this.fetchRankList()
         },

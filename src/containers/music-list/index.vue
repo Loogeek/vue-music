@@ -34,6 +34,7 @@
     import SongList from 'components/SongList'
     import Loading from 'components/Loading'
     import { prefixStyle } from 'common/js/dom'
+    import { playListBottom } from 'mixins/playList'
 
     const TOP_TITLE_HEIGHT = 40
 
@@ -41,6 +42,7 @@
     const prefixBackdrop = prefixStyle('backdrop-filter')
 
     export default {
+        mixins: [playListBottom],
         props: {
             musics: {
                 type: Object,

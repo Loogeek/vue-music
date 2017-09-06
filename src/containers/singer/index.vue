@@ -1,6 +1,6 @@
 <template>
-    <section class="singer">
-        <scroll ref="singerScroll" @onScroll="handleScroll" :data="singerList" :listenScroll="true" :probeType="3">
+    <section class="singer" ref="listWrap">
+        <scroll ref="scrollHook" @onScroll="handleScroll" :data="singerList" :listenScroll="true" :probeType="3">
             <ul>
                 <li class="singer-item" v-for="(singer, index) in singerList" :key="index" ref="listGroup">
                     <h3 class="singer-item-index">{{singer.title}}</h3>
@@ -28,6 +28,7 @@
 
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions, mapMutations } from 'vuex'
+import { playListBottom } from 'mixins/playList'
 import Scroll from 'components/Scroll'
 import Loading from 'components/Loading'
 
@@ -49,6 +50,7 @@ export default {
     mounted() {
         this.fetchSingerList()
     },
+    mixins: [playListBottom],
     computed: {
         alphabetName() {
             return this.singerList.map(item => item.title.slice(0, 1))
@@ -91,7 +93,7 @@ export default {
         },
         _scrollToElement() {
             const targetDOM = this.$refs.listGroup[this.currentIndex]
-            this.$refs.singerScroll.scrollToElement(targetDOM, 0)
+            this.$refs.scrollHook.scrollToElement(targetDOM, 0)
         },
         _calculateHeight() {
             let height = 0

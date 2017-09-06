@@ -1,8 +1,8 @@
 <template>
     <section class="search">
         <search-input @onSearchInput="handleSearchInput" ref="searchInput"></search-input>
-        <div class="search-hot" v-show="!query">
-            <scroll :data="hotAndHistory">
+        <div class="search-hot" v-show="!query" ref="listWrap">
+            <scroll :data="hotAndHistory" ref="scrollHook">
                 <div>
                     <div class="search-hot-key">
                         <h1 class="title">热门搜索</h1>
@@ -51,8 +51,10 @@
     import SearchList from 'components/SearchList'
     import SearchResult from './search-result'
     import Modal from 'components/Modal'
+    import { playListBottom } from 'mixins/playList'
 
     export default {
+        mixins: [playListBottom],
         created() {
             this.fetchHotSearch()
         },
