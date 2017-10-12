@@ -44,22 +44,26 @@ export function fetchRecommendList() {
 }
 
 export function fetchRecommendDetailReq(disstid) {
-    const url = 'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg'
+    const url = '/api/fetchRecommendDetail'
 
     const opts = { 
         ...commonParams, 
         ...{
-        disstid,
-        type: 1,
-        json: 1,
-        utf8: 1,
-        onlysong: 0,
-        platform: 'yqq',
-        hostUin: 0,
-        needNewCode: 0,
-        g_tk: 1928093487
+            disstid,
+            type: 1,
+            json: 1,
+            utf8: 1,
+            onlysong: 0,
+            platform: 'yqq',
+            hostUin: 0,
+            needNewCode: 0,
+            g_tk: 1928093487
       }
     }
-    
-    return jsonp(url, opts)
+
+    return axios.get(url, {
+        params: opts
+    }).then(resp => {
+        return Promise.resolve(resp.data)
+    })
 }

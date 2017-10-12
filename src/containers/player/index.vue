@@ -93,15 +93,17 @@
                         </i>
                     </ProgressCircle>
                 </div>
-                <div class="mini-player-control">
+                <div class="mini-player-control" @click.stop="handleShowPlayList">
                     <i class="icon-playlist"></i>
                 </div>
             </article>
         </transition>
-        <Modal ref="modal" 
+        <Modal ref="modal"
+            type="bottom" 
             @onSelectConfirm="handleSelectConfirm"
             @onSelectCancel="handleSelectCancel"
         >
+            <playList></playList>
         </Modal>
     </section>
 </template>
@@ -115,6 +117,7 @@
     import { formatTime, shuffle } from 'common/js/utils'
     import Lyric from 'lyric-parser'
     import Modal from 'components/Modal'
+    import playList from './playList'
     import Scroll from 'components/Scroll'
     import { Base64 } from 'js-base64'
     import { ERR_OK, playMode } from 'api/config'
@@ -428,7 +431,8 @@
             ProgressBar,
             ProgressCircle,
             Modal,
-            Scroll
+            Scroll,
+            playList
         }
     }
 </script>

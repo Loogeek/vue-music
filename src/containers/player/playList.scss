@@ -1,0 +1,57 @@
+@import '~common/scss/variable';
+@import '~common/scss/mixin';
+
+.playList {
+    &-header {
+        display: flex;
+        align-items: center;
+
+        .icon {
+            
+        }
+    }
+
+    &-content {
+        max-height: 24rem;
+        overflow: hidden;
+
+        &-item {
+            display: flex;
+            align-items: center;
+            height: 4rem;
+            padding: 0 3rem 0 2rem;
+            overflow: hidden;
+
+            .current {
+                width: 2rem;
+                font-size: $font-size-small;
+                color: $color-theme-d;
+            }
+
+            .songname {
+                flex: 1;
+                @extend %no-wrap;
+                font-size: $font-size-medium;
+                color: $color-text-d;
+                text-align: left;
+            }
+
+            .like {
+                @extend %extend-click;
+                margin-right: 1.5rem;
+                font-size: $font-size-small;
+                color: $color-theme;
+
+                .icon-favorite {
+                    color: $color-sub-theme;
+                }
+            }
+
+            .delete {
+                @extend %extend-click;
+                font-size: $font-size-small;
+                color: $color-theme;
+            }
+        }
+    }
+}

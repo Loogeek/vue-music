@@ -1,13 +1,15 @@
 <template>
     <transition name="Modal-fade">
         <article :class="['Modal', className]" v-if="showModal" @click="handleCancel">
-            <div class="Modal-container-wrp">
+            <div :class="['Modal-container-wrp', type]">
                 <div class="Modal-container">
                     <header class="Modal-header">
                         <h3 class="Modal-header-title">{{ title }}</h3>
                     </header>
                     <div class="Modal-content">
-                        <p class="Modal-content-text" v-if="type === 'smail'">{{ contentText }}</p>
+                        <p class="Modal-content-text" v-if="type === 'small'">
+                            {{ contentText }}
+                        </p>
                         <slot></slot>
                     </div>
                     <footer class="Modal-footer">
@@ -31,7 +33,7 @@
         props: {
             type: {
                 type: String,
-                default: ''
+                default: 'small'
             },
             title: {
                 type: String,
@@ -91,11 +93,20 @@
 
         &-container-wrp {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
             z-index: 5100;
+
+            &.small {                
+                width: 80%;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            &.bottom {
+                width: 100%;
+                left: 0;
+                bottom: 0;
+            }
         }
 
         &-container {
@@ -123,6 +134,7 @@
             &-text {
                 color: $color-text;
                 font-size: $font-size-medium;
+                color: $color-text-l;
             }
         }
 
