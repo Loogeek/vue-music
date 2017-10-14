@@ -3,7 +3,7 @@
         <article :class="['Modal', className]" v-if="showModal" @click="handleCancel">
             <div :class="['Modal-container-wrp', type]">
                 <div class="Modal-container">
-                    <header class="Modal-header">
+                    <header class="Modal-header" v-if="title">
                         <h3 class="Modal-header-title">{{ title }}</h3>
                     </header>
                     <div class="Modal-content">
@@ -18,6 +18,7 @@
                             {{ cancelText }}
                         </span>
                         <span class="Modal-footer-btn Modal-footer-confirm"
+                            v-if="confirmText"
                             @click="handleConfirm">
                             {{ confirmText }}
                         </span>
@@ -103,9 +104,14 @@
             }
 
             &.bottom {
+                position: fixed;
                 width: 100%;
                 left: 0;
                 bottom: 0;
+
+                .Modal-content {
+                    position: relative;
+                }
             }
         }
 

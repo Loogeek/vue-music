@@ -100,6 +100,10 @@
         </transition>
         <Modal ref="modal"
             type="bottom" 
+            className="playList-modal"
+            title=""
+            confirmText=""
+            cancelText="关闭"
             @onSelectConfirm="handleSelectConfirm"
             @onSelectCancel="handleSelectCancel"
         >
