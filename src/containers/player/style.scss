@@ -319,15 +319,6 @@
         }
     }
 
-    .playList-modal {
-        .Modal-footer {
-            line-height: 5rem;
-            background-color: $color-background;
-            font-size: $font-size-medium-x;
-            color: $color-text-l;
-        }
-    }
-
     .playing {
         animation: rotate 20s linear infinite;
     }

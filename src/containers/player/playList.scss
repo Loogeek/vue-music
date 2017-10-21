@@ -41,18 +41,24 @@
             padding: 0 1.5rem 0 .5rem;
             overflow: hidden;
 
-            .current {
-                width: 2rem;
-                font-size: $font-size-small;
-                color: $color-theme-d;
-            }
-
             .songname {
                 flex: 1;
                 @extend %no-wrap;
                 font-size: $font-size-medium;
                 color: $color-text-d;
                 text-align: left;
+                margin-left: .5rem;
+            }
+
+            .current-icon {
+                width: 2rem;
+                font-size: $font-size-small;
+                text-align: left;
+                color: $color-theme;
+            }
+            
+            .current-song {
+                color: $color-theme;
             }
 
             .like {
@@ -70,6 +76,30 @@
                 @extend %extend-click;
                 font-size: $font-size-small;
                 color: $color-theme;
+            }
+        }
+    }
+
+    &-operate {
+        width: 14rem;
+        margin: 2.5rem auto 1rem;
+
+        .add {
+            display: flex;
+            align-items: center;
+            padding: .8rem 1.6rem;
+            border: 1px solid $color-text-l;
+            border-radius: 10rem;
+            color: $color-text-l;
+
+            .icon-add {
+                margin-right: .5rem;
+                font-size: $font-size-small-s;
+            }
+
+            .text {
+                font-size: $font-size-small;
+                line-height: 1;
             }
         }
     }

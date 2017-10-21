@@ -1,5 +1,5 @@
 <template>
-    <transition name="Modal-fade">
+    <transition :name="`Modal-fade-${type}`">
         <article :class="['Modal', className]" v-if="showModal" @click="handleCancel">
             <div :class="['Modal-container-wrp', type]">
                 <div class="Modal-container">
@@ -165,11 +165,12 @@
             }
         }
 
-        &-fade-enter-active, &-fade-leave-active {
+        &-fade-small-enter-active, 
+        &-fade-leave-active {
             transition: all .3s linear;
         }
 
-        &-fade-enter-active {
+        &-fade-small-enter-active {
             .Modal-container {
                 animation: fade-scale-enter .3s;
             }
@@ -187,7 +188,7 @@
             }
         }
 
-        &-fade-leave-active {
+        &-fade-small-leave-active {
             .Modal-container {
                 animation: fade-scale-leave .3s;
             }
@@ -202,8 +203,42 @@
             }
         }
 
-        &-fade-enter, &-fade-leave-to {
+        &-fade-small-enter, &-fade-leave-to {
             opacity: 0;
+        }
+
+        // 底部弹窗过渡动画
+        &-fade-bottom-enter-active,
+        &-fade-bottom-leave-active {
+            transition: all .3s linear;
+
+            .Modal-container-wrp {
+                &.bottom {
+                    transition: all .3s linear;
+                }
+            }
+        }
+
+        &-fade-bottom-enter,
+        &-fade-bottom-leave-to {
+            .Modal {
+                opacity: 0;
+            }
+
+            .Modal-container-wrp {
+                &.bottom {
+                    transform: translate3d(0, 100%, 0);
+                }
+            }
+        }
+    }
+
+    .playList-modal {
+        .Modal-footer {
+            line-height: 5rem;
+            background-color: $color-background;
+            font-size: $font-size-medium-x;
+            color: $color-text-l;
         }
     }
 </style>

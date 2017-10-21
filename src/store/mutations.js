@@ -26,8 +26,8 @@ const mutations = {
             ...state.playSong,
             playing: true,
             fullScreen: true,
-            sequenceList: payload.list,
-            playList: payload.list,
+            sequenceList: payload.list || state.playSong.sequenceList,
+            playList: payload.list || state.playSong.playList,
             currentIndex: payload.currentIndex
         }
     },
