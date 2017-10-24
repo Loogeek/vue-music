@@ -1,6 +1,6 @@
 <template>
     <transition :name="`Modal-fade-${type}`">
-        <article :class="['Modal', className]" v-if="showModal" @click="handleCancel">
+        <article :class="['Modal', className]" v-if="showModal" @click.stop="handleCancel">
             <div :class="['Modal-container-wrp', type]">
                 <div class="Modal-container">
                     <header class="Modal-header" v-if="title">
@@ -12,7 +12,7 @@
                         </p>
                         <slot></slot>
                     </div>
-                    <footer class="Modal-footer">
+                    <footer :class="['Modal-footer', type]">
                         <span class="Modal-footer-btn Modal-footer-cancel"
                             @click="handleCancel">
                             {{ cancelText }}
@@ -163,6 +163,15 @@
                 border-left: 1px solid $color-background-d;
                 color: $color-theme;
             }
+
+            &.bottom {
+                .Modal-footer {
+                    line-height: 5rem;
+                    background-color: $color-background;
+                    font-size: $font-size-medium-x;
+                    color: $color-text-l;
+                }
+            }
         }
 
         &-fade-small-enter-active, 
@@ -230,15 +239,6 @@
                     transform: translate3d(0, 100%, 0);
                 }
             }
-        }
-    }
-
-    .playList-modal {
-        .Modal-footer {
-            line-height: 5rem;
-            background-color: $color-background;
-            font-size: $font-size-medium-x;
-            color: $color-text-l;
         }
     }
 </style>

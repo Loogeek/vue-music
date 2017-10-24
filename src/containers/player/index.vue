@@ -107,7 +107,7 @@
             @onSelectConfirm="handleSelectConfirm"
             @onSelectCancel="handleSelectCancel"
         >
-            <playList></playList>
+            <playList @onDelPlaySongList="handleSelectCancel"></playList>
         </Modal>
     </section>
 </template>
@@ -385,7 +385,7 @@
                 return { x, y, scale }
             },
             handlerSongLyric({lineNum, txt}) {
-                const lyricLen = this.currentLyric.lines.length
+                const lyricLen = this.currentLyric.lines && this.currentLyric.lines.length
                 this.currentLyricNum = lineNum
                 this.playingLyric = txt
                 if (lineNum > 6) {
@@ -405,7 +405,8 @@
         watch: {
             playSong(newSong, oldSong) {
                 const { currentSong } = newSong
-                if (currentSong.id !== oldSong.currentSong.id) {
+
+                if (currentSong.id && currentSong.id !== oldSong.currentSong.id) {
                     if (this.currentLyric) {    // 切换歌曲时需要清除之前歌词数据
                         this.currentLyricNum = 0
                         this.currentLyric.stop()
@@ -425,9 +426,11 @@
                     })
                 }
 
-                const audio = this.$refs.songAudio
                 this.$nextTick(() => {
-                    newSong.playing ? audio.play() : audio.pause()
+                    const audio = this.$refs.songAudio
+                    const isPlaying = audio.currentTime > 0 && !audio.paused && !audio.ended
+
+                    isPlaying && newSong.playing ? audio.play() : audio.pause()
                 })
             }
         },

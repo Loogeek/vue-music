@@ -117,6 +117,34 @@ const mutations = {
             ...state.playSong,
             lyric: lyric
         }
+    },
+    [types.DEL_PLAY_SONG](state, delIndex) {
+        let { currentIndex, playList } = state.playSong
+        const newPlayList = playList.slice()
+        newPlayList.splice(delIndex, 1)
+
+        if (currentIndex > delIndex || currentIndex > newPlayList.length) {
+           currentIndex--
+        }
+        
+        state.playSong = {
+            ...state.playSong,
+            playing: newPlayList.length > 0,
+            playList: newPlayList,
+            sequenceList: newPlayList,
+            currentIndex
+        }
+    },
+    [types.DEL_PLAY_SONG_LIST](state) {
+        state.playSong = {
+            playing: false,
+            fullScreen: false,
+            sequenceList: [],
+            playList: [],
+            currentIndex: 0,
+            currentSong: {},
+            lyric: ''
+        }
     }
 }
 
