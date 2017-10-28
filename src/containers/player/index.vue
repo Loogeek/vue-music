@@ -48,7 +48,13 @@
                         <span class="progress-time progress-currentTime">{{ formatPlayTime(currentTime) }}</span>
                         <ProgressBar :timePercent="timePercent" @onPercentChange="handlePercentChange" />
                         <span class="progress-time progress-interval">{{ formatPlayTime(playSong.currentSong.interval) }}</span>
-                        <audio ref="songAudio" :src="playSong.currentSong.url" @timeupdate="handleUpdateTime" @ended="handleNextSong" @canplay="handleSongCanPlay" @error="handleSongError">
+                        <audio ref="songAudio" :src="playSong.currentSong.url"
+                            @timeupdate="handleUpdateTime" 
+                            @ended="handleNextSong" 
+                            @canplay="handleSongCanPlay" 
+                            @error="handleSongError"
+                            @onPercentChange="handlePercentChange"
+                        >
                         </audio>
                     </div>
                     <nav class="operators">
@@ -107,7 +113,11 @@
             @onSelectConfirm="handleSelectConfirm"
             @onSelectCancel="handleSelectCancel"
         >
-            <playList @onDelPlaySongList="handleSelectCancel"></playList>
+            <playList 
+                @onDelPlaySongList="handleSelectCancel" 
+                ref="playListHook"
+            >
+            </playList>
         </Modal>
     </section>
 </template>
@@ -147,7 +157,8 @@
                 currentLyric: '',
                 playingLyric: '',
                 currentLyricNum: 0,
-                showLyric: false
+                showLyric: false,
+                touchProgressBar: false    // 
             }
         },
         computed: {
@@ -238,6 +249,7 @@
                     this._stopToPlay()
 
                     this.setCurrentIndex(index)
+                    this.$refs.playListHook && this.$refs.playListHook._scrollToSong(index)
                     this.canPlay = false
                 }
             },
@@ -248,9 +260,11 @@
                 }
             },
             handleUpdateTime(e) {
-                const { currentTime } = e.target
-                this.currentTime = currentTime
-                this.timePercent = currentTime / this.playSong.currentSong.interval
+                if (!this.touchProgressBar) {
+                    const { currentTime } = e.target
+                    this.currentTime = currentTime
+                    this.timePercent = currentTime / this.playSong.currentSong.interval
+                }
             },
             handleSongCanPlay() {
                 this.canPlay = true
@@ -258,13 +272,19 @@
             handleSongError() {
                 this.canPlay = false
             },
-            handlePercentChange(newPercent) {
+            handlePercentChange(newPercent, touchProgressBar) {
                 const currentTime = newPercent * this.playSong.currentSong.interval
-                this.$refs.songAudio.currentTime = currentTime
-                if (this.currentLyric) {
-                    this.currentLyric.seek(currentTime * 1000)
+                this.touchProgressBar = touchProgressBar
+
+                if (touchProgressBar) {
+                    this.currentTime = currentTime
+                } else {
+                    this.$refs.songAudio.currentTime = currentTime
+                    if (this.currentLyric) {
+                        this.currentLyric.seek(currentTime * 1000)
+                    }
+                    this._stopToPlay()
                 }
-                this._stopToPlay()
             },
             handleShowPlayList() {
                 this.$refs.modal.show()
@@ -428,9 +448,8 @@
 
                 this.$nextTick(() => {
                     const audio = this.$refs.songAudio
-                    const isPlaying = audio.currentTime > 0 && !audio.paused && !audio.ended
-
-                    isPlaying && newSong.playing ? audio.play() : audio.pause()
+                    
+                    newSong.playing ? audio.play() : audio.pause()
                 })
             }
         },

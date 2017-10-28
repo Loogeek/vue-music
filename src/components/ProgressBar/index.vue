@@ -43,6 +43,7 @@ export default {
             const difX = e.touches[0].pageX - this.touch.startX
             this.touch.changeX = Math.min(barWidth, Math.max(0, this.touch.progressWidth + difX))
             this._moveProgressBtn(this.touch.changeX)
+            this._emitNewPercent(true)
         },
         handleTouchEnd(e) {
             this.touch.touching = false
@@ -57,10 +58,10 @@ export default {
             this.$refs.progress.style.width = `${offChange}px`
             this.$refs.progressBtn.style[prefixTransform] = `translate3d(${offChange}px, 0, 0)`
         },
-        _emitNewPercent() {
+        _emitNewPercent(touchProgressBar = false) {
             const barWidth = this.$refs.barWrp.clientWidth
             const newPercent = this.$refs.progress.offsetWidth / barWidth
-            this.$emit('onPercentChange', newPercent)
+            this.$emit('onPercentChange', newPercent, touchProgressBar)
         }
     },
     watch: {

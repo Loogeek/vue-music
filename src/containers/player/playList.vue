@@ -30,7 +30,7 @@
             </ul>
         </scroll>
         <div class="playList-operate">
-            <div class="add">
+            <div class="add" @click.stop="handleAddSong">
                 <i class="icon-add"></i>
                 <span class="text">添加歌曲到队列</span>
             </div>
@@ -72,8 +72,7 @@
                 this.setPlaySong({
                     currentIndex: index 
                 })
-                const currentEl = this.$refs.playListItem[index]
-                this.$refs.playListHook.scrollToElement(currentEl, 500)
+                this._scrollToSong(index)
             },
             handleDelPlayList() {
                 this.$refs.modal.show()
@@ -91,6 +90,13 @@
             },
             handleSelectCancel() {
                 this.$refs.modal.hide()
+            },
+            handleAddSong() {
+                this.$refs.recentPlayHook.show()
+            },
+            _scrollToSong(index) {
+                const currentEl = this.$refs.playListItem[index]
+                this.$refs.playListHook.scrollToElement(currentEl, 500)
             },
             ...mapMutations({
                 setPlaySong: 'SET_PLAY_SONG',
