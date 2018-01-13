@@ -21,10 +21,10 @@ export default {}
     &-icon {
         display: inline-block;
         vertical-align: top;
-        width: 3rem;
-        height: 3.2rem;
-        margin-top: .6rem;
-        margin-right: .9rem;
+        width: 30px;
+        height: 32px;
+        margin-top: 6px;
+        margin-right: 9px;
         @include bg-image('logo');
         background-size: 30px 32px;
     }

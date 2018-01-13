@@ -1,11 +1,12 @@
 import originJsonp from 'jsonp'
 import { params } from 'api/config'
 
-export default function jsonp(url, data) {
+export default function jsonp(url, data, opts) {
     const newUrl = url + (url.indexOf('?') !== -1 ? '&' : '?') + param(data)
-
+    const newOpts = { ...params, ...opts }
+    
     return new Promise((resolve, reject) => {
-        originJsonp(newUrl, params, (err, data) => {
+        originJsonp(newUrl, newOpts, (err, data) => {
             if (!err) {
                 resolve(data)
             } else {
