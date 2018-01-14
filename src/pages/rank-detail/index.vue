@@ -1,35 +1,34 @@
 <template>
     <transition name="slide">
-        <music-list :musics="singerDetail"></music-list>
+        <music-list :musics="rankDetail" :showRank="true"></music-list>
     </transition>
 </template>
 
 <script>
     import { mapActions, mapGetters, mapMutations } from 'vuex'
-    import MusicList from 'containers/music-list'
+    import MusicList from 'pages/music-list'
 
     export default {
         mounted() {
-            const singerId = this.$route.params.id
-
-            if (this.singerDetail.id !== singerId) {
-                this.resetSingerDetail()
-                this.fetchSingerDetail(singerId)
-            } else if (!singerId) {
+            const { id } = this.$route.params
+            if (this.rankDetail.id !== id) {
+                this.resetRankDetail()
+                this.fetchRankDetail(id)
+            } else if (!id) {
                 this.$router.back()
             }
         },
         computed: {
             ...mapGetters([
-                'singerDetail'
+                'rankDetail'
             ])
         },
         methods: {
             ...mapActions([
-                'fetchSingerDetail'
+                'fetchRankDetail'
             ]),
             ...mapMutations({
-                resetSingerDetail: 'RESET_SINGER_DETAIL'
+                resetRankDetail: 'RESET_RANK_DETAIL'
             })
         },
         components: {
@@ -41,3 +40,4 @@
 <style lang="scss" scoped>
     @import './style';
 </style>
+

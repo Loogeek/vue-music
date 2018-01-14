@@ -12,7 +12,7 @@
 <script>
 import MHeader from 'components/MHeader'
 import MTab from 'components/MTab'
-import player from 'containers/player'
+import player from 'pages/player'
 
 export default {
     components: {
