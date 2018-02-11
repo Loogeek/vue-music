@@ -34,7 +34,7 @@
     import SongList from 'components/SongList'
     import Loading from 'components/Loading'
     import { prefixStyle } from 'common/js/dom'
-    import { playListBottom } from 'mixins/playList'
+    import playListBottom from 'mixins/playList'
 
     const TOP_TITLE_HEIGHT = 40
 

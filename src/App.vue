@@ -13,6 +13,7 @@
 import MHeader from 'components/MHeader'
 import MTab from 'components/MTab'
 import player from 'pages/player'
+import style from 'common/scss/index.scss'
 
 export default {
     components: {

@@ -1,5 +1,5 @@
 import axios from 'axios'
-// // import jsonp from 'common/js/jsonp'
+import jsonp from 'common/js/jsonp'
 import { commonParams } from './config'
 
 export function fetchSliderList() {
@@ -13,7 +13,7 @@ export function fetchSliderList() {
         }
     }
 
-    return axios.get(url, opts)
+    return jsonp(url, opts)
 }
 
 export function fetchRecommendList() {

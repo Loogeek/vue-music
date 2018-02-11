@@ -1,19 +1,19 @@
 import Vue from 'vue'
 import store from './store'
-import App from './App'
+import App from './App.vue'
 import router from './router'
 import 'babel-polyfill'
 import fastclick from 'fastclick'
 import VueLazyload from 'vue-lazyload'
-import style from 'common/scss/index.scss'
+import defaultPng from 'common/images/default.png'
 
-fastclick.attach(document.body)
+// fastclick.attach(document.body)
 
 Vue.use(VueLazyload, {
-    loading: require('common/images/default.png')
+    loading: defaultPng
 })
 
-/* eslint-disable no-new */
+/* tslint-disable no-new */
 new Vue({
     el: '#app',
     router,

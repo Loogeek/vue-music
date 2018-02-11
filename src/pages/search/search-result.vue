@@ -27,7 +27,7 @@
     import Scroll from 'components/Scroll'
     import NoResult from 'components/NoResult'
     import Loading from 'components/Loading'
-    import { playListBottom } from 'mixins/playList'
+    import playListBottom from 'mixins/playList'
 
     export default {
         mixins: [playListBottom],

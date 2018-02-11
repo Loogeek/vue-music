@@ -24,50 +24,51 @@
     </div>
 </template>
 
-<script type="text/ecmascript-6">
-import Slider from 'components/Slider'
-import Loading from 'components/Loading'
-import Scroll from 'components/Scroll'
-import { fetchSliderList, fetchRecommendList } from 'api/recommend'
-import { ERR_OK } from 'api/config'
-import { playListBottom } from 'mixins/playList'
+<script lang="ts">
+import Vue from 'vue'
+import Slider from 'components/Slider/index.vue'
+import Loading from 'components/Loading/index.vue'
+import Scroll from 'components/Scroll/index.vue'
+import Component from 'vue-class-component'
+import { fetchSliderList, fetchRecommendList } from '../../api/recommend'
+import { ERR_OK } from '../../api/config.js'
+import playListBottom from '../../mixins/playList.vue'
 
-export default {
-    mixins: [playListBottom],
-    data() {
-        return {
-            slideList: [],
-            recommendList: []
-        }
-    },
-    created() {
-        this.fetchSliderList()
-        this.fetchRecommendList()
-    },
-    methods: {
-        fetchSliderList() {
-            fetchSliderList().then(resp => {
-                if (resp.code === ERR_OK) {
-                    this.slideList = resp.data.slider
-                }
-            }).catch(err => {
-                console.warn(err)
-            })
-        },
-        fetchRecommendList() {
-            fetchRecommendList().then(resp => {
-                if (resp.code === ERR_OK) {
-                    this.recommendList = resp.data.list
-                }
-            }).catch(err => {
-                console.warn(err)
-            })
-        }
-    },
+@Component({
     components: {
         Slider,
         Scroll,
         Loading
+    },
+    mixins: [playListBottom]
+})
+export default class Recommend extends Vue {
+    slideList: number[] = []
+    recommendList: number[] = []
+
+    created() {
+        this.fetchSliderList()
+        this.fetchRecommendList()
+    }
+
+    fetchSliderList() {
+        fetchSliderList().then((resp: any) => {
+            if (resp.code === ERR_OK) {
+                this.slideList = resp.data.slider
+            }
+        }).catch((err: string) => {
+            console.warn(err)
+        })
+    }
+
+    fetchRecommendList() {
+        fetchRecommendList().then(resp => {
+            if (resp.code === ERR_OK) {
+                this.recommendList = resp.data.list
+            }
+        }).catch(err => {
+            console.warn(err)
+        })
     }
 }
 </script>

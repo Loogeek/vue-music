@@ -22,7 +22,7 @@
 <script>
     import { mapActions, mapState } from 'vuex'
     import Scroll from 'components/Scroll'
-    import { playListBottom } from 'mixins/playList'
+    import playListBottom from 'mixins/playList'
     
     export default {
         mixins: [playListBottom],

@@ -52,7 +52,7 @@
     import SearchList from 'components/SearchList'
     import SearchResult from './search-result'
     import Modal from 'components/Modal'
-    import { playListBottom } from 'mixins/playList'
+    import playListBottom from 'mixins/playList'
 
     export default {
         mixins: [playListBottom],

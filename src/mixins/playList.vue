@@ -5,7 +5,7 @@
 <script>
     import { mapGetters } from 'vuex'
 
-    export const playListBottom = {
+    export default {
         computed: {
             ...mapGetters([
                 'playSong'

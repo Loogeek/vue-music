@@ -1,0 +1,16 @@
+{
+  "extends": "tslint-config-standard",
+  "globals": {
+    "require": true
+  },
+  "rules": {
+      "arrow-parens": 0,
+      "generator-star-spacing": 0,
+      "no-debugger": true,
+      "indent": [true, "tabs", 4],
+      "space-before-function-paren": 0,
+      "semi": [1, "never"],
+      "handle-callback-err": 0,
+      "no-multi-spaces": 0
+  }
+}

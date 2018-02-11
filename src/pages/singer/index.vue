@@ -28,7 +28,7 @@
 
 <script type="text/ecmascript-6">
 import { mapGetters, mapActions, mapMutations } from 'vuex'
-import { playListBottom } from 'mixins/playList'
+import playListBottom from 'mixins/playList'
 import Scroll from 'components/Scroll'
 import Loading from 'components/Loading'
 
