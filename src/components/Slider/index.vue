@@ -8,7 +8,8 @@
             </li>
         </ul>
         <ul class="m-slider-dots">
-            <li :class="[index + 1 === currentPage ? 'active' : '', 'm-slider-dots-item']" v-for="(item, index) in sliderChildren" :key="index"></li>
+            <li :class="[index === currentPage ? 'active' : '', 'm-slider-dots-item']" v-for="(item, index) in sliderChildren" :key="index">
+            </li>
         </ul>
     </article>
 </template>
@@ -20,7 +21,7 @@ export default {
     data() {
         return {
             sliderChildren: [],
-            currentPage: 1
+            currentPage: 0
         }
     },
     props: {
@@ -76,10 +77,11 @@ export default {
                 scrollX: true,
                 scrollY: false,
                 momentum: false,
-                snap: true,
-                snapLoop: this.loop,
-                snapThreshold: 0.3,
-                snapSpeed: 400
+                snap: {
+                    loop: this.loop,
+                    threshold: 0.3,
+                    speed: 400
+                }
             })
 
             if (this.autoPlay) {

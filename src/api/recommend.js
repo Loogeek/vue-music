@@ -1,6 +1,6 @@
 import axios from 'axios'
-// // import jsonp from 'common/js/jsonp'
-import { commonParams } from './config'
+import jsonp from 'common/js/jsonp'
+import { commonParams, params } from './config'
 
 export function fetchSliderList() {
     const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
@@ -13,7 +13,7 @@ export function fetchSliderList() {
         }
     }
 
-    return axios.get(url, opts)
+    return jsonp(url, opts, params)
 }
 
 export function fetchRecommendList() {
