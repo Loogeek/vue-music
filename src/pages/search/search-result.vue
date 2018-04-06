@@ -80,7 +80,8 @@
                     this.setSearchHistory(`${item.songname}-${item.singer}`)
                     this.setPlaySong({
                         list: this.searchResult.list,
-                        currentIndex: index
+                        currentIndex: index,
+                        fullScreen: true
                     })
                 }
             },

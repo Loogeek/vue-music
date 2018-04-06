@@ -61,17 +61,29 @@
                         <span class="operators-icon i-left">
                             <i :class="playMode"></i>
                         </span>
-                        <span :class="['operators-icon', 'i-left', {'disable': !canPlay}]" @click="handlePrevSong">
+                        <span 
+                            :class="['operators-icon', 'i-left', {'disable': !canPlay}]" 
+                            @click="handlePrevSong"
+                        >
                             <i class="icon-prev"></i>
                         </span>
-                        <span :class="['operators-icon', 'i-center', {'disable': !canPlay}]" @click="handleTogglePlaying">
+                        <span 
+                            :class="['operators-icon', 'i-center', {'disable': !canPlay}]" 
+                            @click="handleTogglePlaying"
+                        >
                             <i :class="playIcon"></i>
                         </span>
-                        <span :class="['operators-icon', 'i-right', {'disable': !canPlay}]" @click="handleNextSong">
+                        <span 
+                            :class="['operators-icon', 'i-right', {'disable': !canPlay}]" 
+                            @click="handleNextSong"
+                        >
                             <i class="icon-next"></i>
                         </span>
-                        <span class="operators-icon i-right">
-                            <i class="icon-not-favorite"></i>
+                        <span 
+                            class="operators-icon i-right" 
+                            @click="handleToggleSong"
+                        >
+                            <i :class="favoriteSongIcon"></i>
                         </span>
                     </nav>
                 </footer>
@@ -124,7 +136,7 @@
 
 <script>
     import createAnimation from 'create-keyframe-animation'
-    import { mapGetters, mapMutations } from 'vuex'
+    import { mapState, mapGetters, mapMutations } from 'vuex'
     import ProgressBar from 'components/ProgressBar'
     import ProgressCircle from 'components/ProgressCircle'
     import { prefixStyle } from 'common/js/dom'
@@ -165,6 +177,9 @@
             playIcon() {
                 return this.playSong.playing ? 'icon-pause' : 'icon-play'
             },
+            favoriteSongIcon() {
+                return this.isFavoriteSong() > -1 ? 'icon-favorite' : 'icon-not-favorite'
+            },
             miniPlayIcon() {
                 return this.playSong.playing ? 'icon-pause-mini' : 'icon-play-mini'
             },
@@ -173,6 +188,9 @@
 
                 return mode === playMode.sequence ? 'icon-sequence' : mode === playMode.loop ? 'icon-loop' : 'icon-random'
             },
+            ...mapState([
+                'user'
+            ]),
             ...mapGetters([
                 'playSong'
             ])
@@ -257,6 +275,16 @@
                 this.setPlayingStatus(!this.playSong.playing)
                 if (this.currentLyric) {
                     this.currentLyric.togglePlay()   // 暂停or播放歌词
+                }
+            },
+            handleToggleSong() {
+                const { currentSong } = this.playSong
+                const songIndex = this.isFavoriteSong()
+
+                if (songIndex === -1) {
+                    this.addFavoriteSong(currentSong)
+                } else {
+                    this.delFavoriteSong(songIndex)
                 }
             },
             handleUpdateTime(e) {
@@ -373,6 +401,21 @@
                 cdStyle[prefixTransition] = `${time}ms`
                 cdStyle.opacity = cdOpacity
             },
+            handlerSongLyric({lineNum, txt}) {
+                const lyricLen = this.currentLyric.lines && this.currentLyric.lines.length
+                this.currentLyricNum = lineNum
+                this.playingLyric = txt
+                if (lineNum > 6) {
+                    const el = this.$refs.songLyricItem[lineNum - 6]
+                    this.$refs.lyricScroll.scrollToElement(el, 1000)
+                }
+            },
+            isFavoriteSong() {
+                const { currentSong } = this.playSong
+                const songIndex = this.user.favoriteList.findIndex(song => song.id === currentSong.id)
+
+                return songIndex
+            },
             _stopToPlay() {
                 if (!this.playSong.playing) {
                     this.handleTogglePlaying()
@@ -404,22 +447,15 @@
 
                 return { x, y, scale }
             },
-            handlerSongLyric({lineNum, txt}) {
-                const lyricLen = this.currentLyric.lines && this.currentLyric.lines.length
-                this.currentLyricNum = lineNum
-                this.playingLyric = txt
-                if (lineNum > 6) {
-                    const el = this.$refs.songLyricItem[lineNum - 6]
-                    this.$refs.lyricScroll.scrollToElement(el, 1000)
-                }
-            },
             ...mapMutations({
                 setFullScreen: 'SET_FULL_SCREEN',
                 setPlayingStatus: 'SET_PLAYING_STATUS',
                 setCurrentIndex: 'SET_CURRENT_INDEX',
                 setPlayMode: 'SET_PLAY_MODE',
                 setPlayList: 'SET_PLAY_LIST',
-                setSongLyric: 'SET_SONG_LYRIC'
+                setSongLyric: 'SET_SONG_LYRIC',
+                addFavoriteSong: 'ADD_FAVORITE_SONG',
+                delFavoriteSong: 'DEL_FAVORITE_SONG'
             })
         },
         watch: {

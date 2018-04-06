@@ -7,6 +7,7 @@ const singer = () => import('pages/singer')
 const singerDetail = () => import('pages/singer-detail')
 const recommendDetail = () => import('pages/recommend-detail')
 const rankDetail = () => import('pages/rank-detail')
+const userCenter = () => import('pages/user-center')
 
 Vue.use(Router)
 
@@ -53,6 +54,11 @@ export default new Router({
                     component: singerDetail
                 }
             ]
+        },
+        {
+            path: '/user',
+            name: 'user',
+            component: userCenter
         }
     ]
 })

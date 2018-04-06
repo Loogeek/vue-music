@@ -49,3 +49,8 @@ export const DELE_SEARCH_HISTORY_LIST = 'DELE_SEARCH_HISTORY_LIST'
 
 // song
 export const SET_SONG_LYRIC = 'SET_SONG_LYRIC'
+
+// user
+export const ADD_FAVORITE_SONG = 'ADD_FAVORITE_SONG'
+
+export const DEL_FAVORITE_SONG = 'DEL_FAVORITE_SONG'

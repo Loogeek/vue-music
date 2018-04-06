@@ -1,7 +1,9 @@
 import * as types from './mutation-types'
 import store from 'common/js/store'
 
-const storeName = '__SEARCH_HISTORY__'
+const SEARCH_STORE_NAME = '__SEARCH_HISTORY__'
+const PLAY_HISTORY = '__PLAY_HISTORY__'
+const FAVORITE_LIST = '__FAVORITE_LIST__'
 
 const mutations = {
     [types.RECEIVE_SINGER_LIST](state, payload) {
@@ -25,7 +27,7 @@ const mutations = {
         state.playSong = {
             ...state.playSong,
             playing: true,
-            fullScreen: true,
+            fullScreen: payload.fullScreen,
             sequenceList: payload.list || state.playSong.sequenceList,
             playList: payload.list || state.playSong.playList,
             currentIndex: payload.currentIndex
@@ -100,13 +102,13 @@ const mutations = {
             history.splice(index, 1)
         }
         history.unshift(payload)
-        store.set(storeName, history.slice(0, 15))
+        store.set(SEARCH_STORE_NAME, history.slice(0, 15))
     },
     [types.DELE_SEARCH_HISTORY](state, payload) {
         const { history } = state.search
         
         history.splice(payload, 1)
-        store.set(storeName, history)
+        store.set(SEARCH_STORE_NAME, history)
     },
     [types.DELE_SEARCH_HISTORY_LIST](state, payload) {
         state.search.history = []
@@ -145,6 +147,28 @@ const mutations = {
             currentSong: {},
             lyric: ''
         }
+    },
+    [types.ADD_FAVORITE_SONG](state, payload) {
+        const { favoriteList } = state.user
+        const newFavoriteList = favoriteList.slice()
+        newFavoriteList.unshift(payload)
+
+        state.user = {
+            ...state.user,
+            favoriteList: newFavoriteList
+        }
+        store.set(FAVORITE_LIST, newFavoriteList)
+    },
+    [types.DEL_FAVORITE_SONG](state, payload) {
+        const { favoriteList } = state.user
+        const newFavoriteList = favoriteList.slice()
+        newFavoriteList.splice(payload.songIndex, 1)
+
+        state.user = {
+            ...state.user,
+            favoriteList: newFavoriteList
+        }
+        store.set(FAVORITE_LIST, newFavoriteList)
     }
 }
 

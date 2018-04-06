@@ -15,7 +15,7 @@
                 <li class="playList-content-item" 
                     v-for="(item, index) in playSong.playList" 
                     :key="item.songmid"
-                    @click="handleSetPlaySong(index)"
+                    @click.stop="handleSetPlaySong(index)"
                     ref="playListItem"
                 >
                     <i :class="['current-icon', {'icon-play': currentSong(item)}]"></i>
@@ -70,6 +70,7 @@
             },
             handleSetPlaySong(index) {
                 this.setPlaySong({
+                    fullScreen: false,
                     currentIndex: index 
                 })
                 this._scrollToSong(index)

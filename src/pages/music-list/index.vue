@@ -78,7 +78,8 @@
             handlePlaySong(item, index) {
                 this.setPlaySong({
                     list: this.musics.list,
-                    currentIndex: index
+                    currentIndex: index,
+                    fullScreen: true
                 })
             },
             ...mapMutations({
