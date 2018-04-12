@@ -1,5 +1,15 @@
 @import "~common/scss/variable";
 
+.slide-enter-active,
+.slide-leave-active {
+    transition: all .3s linear;
+}
+
+.slide-enter,
+.slide-leave-to {
+    transform: translate3d(100%, 0, 0);
+}
+
 .user-center {
     position: fixed;
     top: 0;
@@ -7,17 +17,6 @@
     z-index: 100;
     width: 100%;
     background-color: $color-background;
-
-    .slide-enter-active,
-    .slide-leave-active {
-        transition: all .3s linear;
-    }
-
-    .slide-enter,
-    .slide-leave-to {
-        transform: translate3d(100%, 0, 0);
-    }
-
     .back {
         position: absolute;
         top: 0;
@@ -25,7 +24,7 @@
         z-index: 50;
 
         .icon-back {
-            display: black;
+            display: block;
             padding: 10px;
             font-size: $font-size-large-x;
             color: $color-theme;
@@ -33,7 +32,7 @@
     }
 
     &-switches {
-        margin: 1rem 0 3rem 0;
+        margin: 10px 0 30px 0;
     }
 
     .play-btn {

@@ -9,7 +9,12 @@
             ref="scrollHook"
         >
             <ul>
-                <li tag="li" @click="handleSelectSong(item, index)" class="search-result-item" v-for="(item, index) in searchResult.list" :key="index">
+                <li tag="li" 
+                    class="search-result-item"
+                    @click="handleSelectSong(item, index)"  
+                    v-for="(item, index) in searchResult.list" 
+                    :key="index"
+                >
                     <span class="icon">
                         <i :class="renderResultIcon(item)"></i>
                     </span>

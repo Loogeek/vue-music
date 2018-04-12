@@ -1,35 +1,37 @@
 <template>
-    <section class="singer-detail">
-        <header class="singer-detail-header">
-            <span class="back">
-                <i class="icon-back" @click="handleBack"></i>
-            </span>
-            <h2 class="title" v-html="musics.name"></h2>
-        </header>
-        <div class="singer-detail-image" :style="bgStyle" ref="singerBg">
-            <div class="filter"></div>
-            <div class="play-btn" v-if="musics.list.length > 0" ref="playBtn">
-                <i class="icon-play"></i>
-                <span class="play-btn-text">随机播放全部</span>
+    <transition name="slide">
+        <section class="singer-detail">
+            <header class="singer-detail-header">
+                <span class="back">
+                    <i class="icon-back" @click="handleBack"></i>
+                </span>
+                <h2 class="title" v-html="musics.name"></h2>
+            </header>
+            <div class="singer-detail-image" :style="bgStyle" ref="singerBg">
+                <div class="filter"></div>
+                <div class="play-btn" v-if="musics.list.length > 0" ref="playBtn">
+                    <i class="icon-play"></i>
+                    <span class="play-btn-text">随机播放全部</span>
+                </div>
             </div>
-        </div>
-        <div class="singer-detail-layer" ref="layerHook"></div>
-        <div class="singer-detail-list" ref="listWrap">
-            <scroll ref="scrollHook" @onScroll="handleScroll" :data="musics.list" :listenScroll="true" :probeType="3">
-                <song-list 
-                    :songList="musics.list" 
-                    @onPlaySong="handlePlaySong"
-                    :showRank="showRank"
-                >
-                </song-list>
-            </scroll>
-            <Loading v-if="musics.list.length === 0"></Loading>
-        </div>
-    </section>
+            <div class="singer-detail-layer" ref="layerHook"></div>
+            <div class="singer-detail-list" ref="listWrap">
+                <scroll ref="scrollHook" @onScroll="handleScroll" :data="musics.list" :listenScroll="true" :probeType="3">
+                    <song-list 
+                        :songList="musics.list" 
+                        @onPlaySong="handlePlaySong"
+                        :showRank="showRank"
+                    >
+                    </song-list>
+                </scroll>
+                <Loading v-if="musics.list.length === 0"></Loading>
+            </div>
+        </section>
+    </transition>
 </template>
 
 <script>
-    import { mapMutations } from 'vuex'
+    import { mapState, mapMutations } from 'vuex'
     import Scroll from 'components/Scroll'
     import SongList from 'components/SongList'
     import Loading from 'components/Loading'
@@ -81,9 +83,13 @@
                     currentIndex: index,
                     fullScreen: true
                 })
+                this.setPlayHistory({
+                    playSong: item
+                })
             },
             ...mapMutations({
-                setPlaySong: 'SET_PLAY_SONG'
+                setPlaySong: 'SET_PLAY_SONG',
+                setPlayHistory: 'SET_PLAY_HISTORY'
             })
         },
         components: {

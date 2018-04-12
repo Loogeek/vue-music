@@ -2,6 +2,7 @@
     <ul class="switches">
         <li class="switches-item"
             v-for="(item, index) in switches"
+            :key="index"
             :class="{'active': currentIndex === index}"
             @click="handleSwitchItem(index)"
         >

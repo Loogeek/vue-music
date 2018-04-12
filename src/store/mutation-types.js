@@ -19,6 +19,8 @@ export const SET_PLAY_MODE = 'SET_PLAY_MODE'
 
 export const SET_PLAY_LIST = 'SET_PLAY_LIST'
 
+export const SET_PLAY_HISTORY = 'SET_PLAY_HISTORY'
+
 // playList
 export const DEL_PLAY_SONG = 'DEL_PLAY_SONG'
 

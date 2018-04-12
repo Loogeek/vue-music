@@ -48,6 +48,21 @@ const mutations = {
     [types.SET_PLAY_LIST](state, playList) {
         state.playSong.playList = playList
     }, 
+    [types.SET_PLAY_HISTORY](state, payload = {}) {
+        const { playSong } = payload
+        let playHistory = store.get(PLAY_HISTORY) || []
+
+        const songIndex = playHistory.findIndex(song => song.id === playSong.id)
+        if (songIndex > -1) {
+            playHistory.splice(songIndex, 1)
+            playHistory.unshift(playSong)
+        } else {
+            playHistory.unshift(playSong)
+        }
+        state.user.playHistory = playHistory
+
+        store.set(PLAY_HISTORY, playHistory)
+    },
     [types.RECEIVE_RECOMMEND_DETAIL](state, payload) {
         state.recommendDetail = payload.recommendDetail
     },
@@ -151,7 +166,7 @@ const mutations = {
     [types.ADD_FAVORITE_SONG](state, payload) {
         const { favoriteList } = state.user
         const newFavoriteList = favoriteList.slice()
-        newFavoriteList.unshift(payload)
+        newFavoriteList.unshift(payload.targetSong)
 
         state.user = {
             ...state.user,

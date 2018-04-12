@@ -15,12 +15,14 @@
                 <li class="playList-content-item" 
                     v-for="(item, index) in playSong.playList" 
                     :key="item.songmid"
-                    @click.stop="handleSetPlaySong(index)"
+                    @click.stop="handleSetPlaySong(index, item)"
                     ref="playListItem"
                 >
                     <i :class="['current-icon', {'icon-play': currentSong(item)}]"></i>
                     <span :class="['songname', {'current-song': currentSong(item)}]" v-html="item.songname"></span>
-                    <span class="like">
+                    <span class="like"
+                        @click.stop="handleToggleSong(item)"
+                    >
                         <i :class="getFavoriteIcon(item)"></i>
                     </span>
                     <span class="delete" @click.stop="handleDelPlaySong(item, index)">
@@ -29,12 +31,12 @@
                 </li>
             </ul>
         </scroll>
-        <div class="playList-operate">
+        <!-- <div class="playList-operate">
             <div class="add" @click.stop="handleAddSong">
                 <i class="icon-add"></i>
                 <span class="text">添加歌曲到队列</span>
             </div>
-        </div>
+        </div> -->
         <Modal ref="modal" 
             contentText="是否清空播放列表"
             @onSelectConfirm="handleSelectConfirm"
@@ -45,7 +47,7 @@
 </template>
 
 <script>
-    import { mapGetters, mapMutations } from 'vuex'
+    import { mapState, mapGetters, mapMutations } from 'vuex'
     import Scroll from 'components/Scroll'
     import Modal from 'components/Modal'
 
@@ -57,6 +59,12 @@
             })
         },
         computed: {
+            favoriteSongIcon() {
+                return this.isFavoriteSong() > -1 ? 'icon-favorite' : 'icon-not-favorite'
+            },
+            ...mapState([
+                'user'
+            ]),
             ...mapGetters([
                 'playSong'
             ])
@@ -66,12 +74,15 @@
                 return song.id === this.playSong.currentSong.id
             },
             getFavoriteIcon(song) {
-                return 'icon-not-favorite'
+                return this.isFavoriteSong(song) > -1 ? 'icon-favorite' : 'icon-not-favorite'
             },
-            handleSetPlaySong(index) {
+            handleSetPlaySong(index, song) {
                 this.setPlaySong({
                     fullScreen: false,
                     currentIndex: index 
+                })
+                this.setPlayHistory({
+                    playSong: song
                 })
                 this._scrollToSong(index)
             },
@@ -95,6 +106,24 @@
             handleAddSong() {
                 this.$refs.recentPlayHook.show()
             },
+            handleToggleSong(item) {
+                const songIndex = this.isFavoriteSong(item)
+
+                if (songIndex === -1) {
+                    this.addFavoriteSong({
+                        targetSong: item
+                    })
+                } else {
+                    this.delFavoriteSong({
+                        songIndex
+                    })
+                }
+            },
+            isFavoriteSong(item) {
+                const songIndex = this.user.favoriteList.findIndex(song => song && song.id === item.id)
+
+                return songIndex
+            },
             _scrollToSong(index) {
                 const currentEl = this.$refs.playListItem[index]
                 this.$refs.playListHook.scrollToElement(currentEl, 500)
@@ -102,7 +131,10 @@
             ...mapMutations({
                 setPlaySong: 'SET_PLAY_SONG',
                 delPlaySong: 'DEL_PLAY_SONG',
-                delPlaySongList: 'DEL_PLAY_SONG_LIST'
+                delPlaySongList: 'DEL_PLAY_SONG_LIST',
+                addFavoriteSong: 'ADD_FAVORITE_SONG',
+                delFavoriteSong: 'DEL_FAVORITE_SONG',
+                setPlayHistory: 'SET_PLAY_HISTORY'
             })
         },
         components: {

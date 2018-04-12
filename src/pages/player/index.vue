@@ -282,9 +282,13 @@
                 const songIndex = this.isFavoriteSong()
 
                 if (songIndex === -1) {
-                    this.addFavoriteSong(currentSong)
+                    this.addFavoriteSong({
+                        targetSong: currentSong
+                    })
                 } else {
-                    this.delFavoriteSong(songIndex)
+                    this.delFavoriteSong({
+                        songIndex
+                    })
                 }
             },
             handleUpdateTime(e) {
@@ -412,7 +416,7 @@
             },
             isFavoriteSong() {
                 const { currentSong } = this.playSong
-                const songIndex = this.user.favoriteList.findIndex(song => song.id === currentSong.id)
+                const songIndex = this.user.favoriteList.findIndex(song => song && song.id === currentSong.id)
 
                 return songIndex
             },
