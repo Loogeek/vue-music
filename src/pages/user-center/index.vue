@@ -16,9 +16,9 @@
                 <i class="icon-play"></i>
                 <span class="text">随机播放全部</span>
             </div>
-            <div class="user-center-list" v-show="!noResult">
+            <div class="user-center-list" v-show="!noResult" ref="listWrap">
                 <scroll 
-                    ref="favoriteList" 
+                    ref="favoriteList scrollHook" 
                     class="list-scroll" 
                     v-if="currentIndex === 0" 
                     :data="user.favoriteList"
@@ -31,7 +31,12 @@
                         </song-list>
                     </div>
                 </scroll>
-                <scroll ref="playList" class="list-scroll" v-if="currentIndex===1" :data="user.playHistory">
+                <scroll 
+                    ref="playList scrollHook" 
+                    class="list-scroll" 
+                    v-if="currentIndex===1" 
+                    :data="user.playHistory"
+                >
                     <div class="list-inner">
                         <song-list 
                             :songList="user.playHistory" 
