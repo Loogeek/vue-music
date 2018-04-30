@@ -12,7 +12,7 @@ export function fetchSliderList() {
             needNewCode: 1
         }
     }
-
+    
     return jsonp(url, opts, params)
 }
 

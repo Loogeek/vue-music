@@ -18,7 +18,7 @@
             </div>
             <div class="user-center-list" v-show="!noResult" ref="listWrap">
                 <scroll 
-                    ref="favoriteList scrollHook" 
+                    ref="scrollHook" 
                     class="list-scroll" 
                     v-if="currentIndex === 0" 
                     :data="user.favoriteList"
@@ -32,7 +32,7 @@
                     </div>
                 </scroll>
                 <scroll 
-                    ref="playList scrollHook" 
+                    ref="scrollHook" 
                     class="list-scroll" 
                     v-if="currentIndex===1" 
                     :data="user.playHistory"
