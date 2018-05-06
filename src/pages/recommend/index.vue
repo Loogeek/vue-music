@@ -46,10 +46,8 @@ export default {
     },
     methods: {
         fetchSliderList() {
-            fetchSliderList().then(resp => {
-                if (resp.code === ERR_OK) {
-                    this.slideList = resp.data.slider
-                }
+            fetchSliderList().then(data => {
+                this.slideList = data.slider
             }).catch(err => {
                 console.warn(err)
             })
