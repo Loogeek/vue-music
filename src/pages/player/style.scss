@@ -1,0 +1,343 @@
+@import "~common/scss/variable";
+@import "~common/scss/mixin";
+
+.music-player {
+    .large-player {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 200;
+        background-color: $color-background;
+
+        &.large-player-an-enter,
+        &.large-player-an-leave-to {
+            opacity: 0;
+
+            .large-player-header {
+                transform: translate3d(0, -10rem, 0);
+            }
+
+            .large-player-footer {
+                transform: translate3d(0, 10rem, 0);
+            }
+        }
+
+        &.large-player-an-enter-active,
+        &.large-player-an-leave-active {
+            transition: all .4s;
+
+            .large-player-header,
+            .large-player-footer {
+                transition: all .4s cubic-bezier(0.86, 0.18, 0.82, 1.32);
+            }
+        }
+
+        &-header {
+            position: relative;
+            margin-bottom: 25px;
+
+            .back {
+                position: absolute;
+                top: 0;
+                left: .6rem;
+                z-index: 50;
+
+                .icon-back {
+                    display: block;
+                    padding: 1rem;
+                    font-size: $font-size-large-x;
+                    color: $color-theme;
+                    transform: rotate(-90deg);
+                }
+            }
+
+            .songname {
+                width: 70%;
+                margin: 0 auto;
+                @extend %no-wrap;
+                z-index: 50;
+                text-align: center;
+                line-height: 40px;
+                font-size: $font-size-large;
+                color: $color-text;
+            }
+
+            .singer {
+                line-height: 2rem;
+                text-align: center;
+                font-size: $font-size-medium;
+                color: $color-text;
+            }
+        }
+
+        &-body {
+            position: fixed;
+            width: 100%;
+            top: 80px;
+            bottom: 170px;
+            white-space: nowrap;
+
+            &-left {
+                display: inline-block;
+                vertical-align: top;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+
+                .cd-wrapper {
+                    width: 80%;
+                    margin: 0 auto;
+
+                    > img {
+                        border-radius: 50%;
+                    }
+                }
+
+                .playing-lyric-wrapper {
+                    width: 80%;
+                    margin: 3rem auto 0 auto;
+                    overflow: hidden;
+                    text-align: center;
+
+                    .lyric {
+                        height: 2rem;
+                        line-height: 2rem;
+                        font-size: $font-size-medium;
+                        color: $color-text-l;
+                    }
+                }
+            }
+
+            &-right {
+                display: inline-block;
+                vertical-align: top;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+
+                .song-lyric {
+                    width: 80%;
+                    margin: 0 auto;
+                    overflow: hidden;
+                    text-align: center;
+
+                    &-item {
+                        line-height: 3.2rem;
+                        color: $color-text-l;
+                        font-size: $font-size-medium;
+
+                        &.current {
+                            color: $color-text;
+                        }
+                    }
+                }
+            }
+
+            .lyric-dot {
+                margin-top: .5rem;
+                text-align: center;
+    
+                &-item {
+                    display: inline-block;
+                    margin: 0 .4rem;
+                    width: .8rem;
+                    height: .8rem;
+                    border-radius: 50%;
+                    background-color: $color-text-l;
+    
+                    &.active {
+                        width: 2rem;
+                        border-radius: .5rem;
+                        background-color: $color-text-ll;
+                    }
+                }
+            }
+        }
+
+        &-footer {
+            position: absolute;
+            bottom: 5rem;
+            width: 100%;
+
+            .progress {
+                display: flex;
+                align-items: center;
+                width: 80%;
+                margin: 1rem auto;
+
+                &-time {
+                    color: $color-text;
+                    font-size: $font-size-small;
+                    width: 3rem;
+                    line-height: 3rem;
+                }
+
+                &-currentTime {
+                    text-align: left;
+                }
+
+                &-interval {
+                    text-align: right;
+                }
+
+                &-bar {
+                    flex: 1;
+                    margin: 0 1.2rem;
+                }
+            }
+
+            .operators {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 90%;
+                margin: 0 auto;
+
+                &-icon {
+                    flex: 1;
+                    color: $color-theme;
+
+                    > i {
+                        font-size: 3rem;
+                    }
+
+                    &.disable {
+                        color: $color-theme-d;
+                    }
+                }
+
+                .i-left {
+                    text-align: center;
+                }
+
+                .i-center {
+                    text-align: center;
+
+                    > i {
+                        font-size: 4rem;
+                    }
+                }
+
+                .i-right {
+                    text-align: center;
+                }
+
+                .icon-favorite {
+                    color: $color-sub-theme;
+                }
+            }
+        }
+
+        &-bgimg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: .6;
+            filter: blur(2rem);
+
+            > img {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
+    .mini-player {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        z-index: 300;
+        height: 60px;
+        background: $color-highlight-background;
+
+        &.mini-player-an-enter,
+        &.mini-player-an-leaver-to {
+            transform: translate3d(0, 6rem, 0);
+            opacity: 0;
+        }
+
+        &.mini-player-an-enter-active,
+        &.mini-player-an-leaver-active {
+            transition: all .3s;
+        }
+
+        &-img {
+            width: 40px;
+            height: 40px;
+            padding: 0 10px 0 20px;
+
+            > img {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        }
+
+        &-content {
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 2rem;
+            overflow: hidden;
+
+            .songname {
+                margin-bottom: .2rem;
+                @extend %no-wrap;
+                font-size: $font-size-medium;
+                color: $color-text;
+            }
+
+            .singer {
+                @extend %no-wrap;
+                font-size: $font-size-small;
+                color: $color-text-d;
+            }
+        }
+
+        &-control {
+            width: 3rem;
+            padding: 0 1rem;
+
+            .icon-play-mini,
+            .icon-pause-mini,
+            .icon-playlist {
+                font-size: 3rem;
+                color: $color-theme-d;
+            }
+
+            .icon-mini {
+                font-size: 3.2rem;
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        }
+    }
+
+    .playing {
+        animation: rotate 20s linear infinite;
+    }
+
+    .playing-pause {
+        animation-play-state: paused;
+    }
+
+    @keyframes rotate {
+        0% {
+            transform: rotate(0);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+}

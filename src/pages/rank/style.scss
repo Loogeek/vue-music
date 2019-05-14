@@ -1,0 +1,49 @@
+@import '~common/scss/variable';
+@import '~common/scss/mixin';
+
+.rank {
+    position: fixed;
+    width: 100%;
+    top: 8.8rem;
+    bottom: 0;
+
+    &-list {
+        &-item {
+            display: flex;
+            margin: 0 2rem;
+            padding-top: 2rem;
+            height: 10rem;
+
+            &:last-child {
+                padding-bottom: 2rem;
+            }
+
+            .list-img {
+                width: 100px;
+                height: 100px;
+
+                > img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            .song-list {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 0 2rem;
+                overflow: hidden;
+                background-color: $color-highlight-background;
+                color: $color-text-d;
+                font-size: $font-size-small;
+
+                &-item {
+                    @extend %no-wrap;
+                    line-height: 2.6rem;
+                }
+            }
+        }
+    }
+}

@@ -3,25 +3,25 @@ import jsonp from 'common/js/jsonp'
 import { commonParams, params } from './config'
 
 export function fetchSliderList() {
-    const url = '/api/v1/music/slider'
+    // const url = '/api/v1/music/slider'
 
-    return axios.get(url).then(resp => {
-        const { data = {} } = resp
-        if (data.code === 0) {
-            return Promise.resolve(data.data)
-        }
-    })
-    // const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
-    // const opts = {
-    //     ...commonParams,
-    //     ...{
-    //         platform: 'h5',
-    //         notice: 0,
-    //         needNewCode: 1
+    // return axios.get(url).then(resp => {
+    //     const { data = {} } = resp
+    //     if (data.code === 0) {
+    //         return Promise.resolve(data.data)
     //     }
-    // }
+    // })
+    const url = 'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg'
+    const opts = {
+        ...commonParams,
+        ...{
+            platform: 'h5',
+            notice: 0,
+            needNewCode: 1
+        }
+    }
 
-    // return jsonp(url, opts, params)
+    return jsonp(url, opts, params)
 }
 
 export function fetchRecommendList() {

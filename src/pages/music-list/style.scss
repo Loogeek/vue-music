@@ -1,0 +1,106 @@
+@import "~common/scss/variable";
+@import "~common/scss/mixin";
+
+.singer-detail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background-color: $color-background;
+
+    &-header {
+        display: flex;
+
+        .back {
+            position: absolute;
+            top: 0;
+            left: .6rem;
+            z-index: 50;
+
+            .icon-back {
+                display: block;
+                padding: 1rem;
+                font-size: $font-size-large-x;
+                color: $color-theme;
+            }
+        }
+
+        .title {
+            position: absolute;
+            top: 0;
+            left: 10%;
+            width: 80%;
+            @extend %no-wrap;
+            z-index: 50;
+            text-align: center;
+            line-height: 4rem;
+            font-size: $font-size-large;
+            color: $color-text;
+        }
+    }
+
+    &-image {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-top: 70%;
+        background-size: cover;
+        transform-origin: top;
+
+        .filter {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(7, 17, 27, 0.4);
+        }
+
+        .play-btn {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 2rem;
+            padding: .7rem 2rem;
+            text-align: center;
+            border: .5px solid $color-theme;
+            color: $color-theme;
+            border-radius: 3rem;
+            font-size: 0;
+
+            .icon-play {
+                vertical-align: middle;
+                margin-right: .6rem;
+                font-size: $font-size-medium-x;
+            }
+
+            &-text {
+                vertical-align: middle;
+                font-size: $font-size-small;
+            }
+        }
+    }
+
+    &-layer {
+        position: relative;
+        height: 100%;
+        background-color: $color-background;
+    }
+
+    &-list {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+
+        .m-scroll {
+            overflow: initial;
+        }
+
+        .song-list {
+            padding: 2rem 3rem;
+        }
+    }
+}
